@@ -54,7 +54,7 @@ const Dashboard = ({ state, issues }: Props) => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <Shield className="w-6 h-6 text-civic-teal" />
-              <span className="font-heading font-bold text-primary-foreground text-lg">CivicPulse</span>
+              <span className="font-heading font-bold text-primary-foreground text-lg">TAP</span>
             </div>
             <button className="relative">
               <Bell className="w-5 h-5 text-primary-foreground/70" />

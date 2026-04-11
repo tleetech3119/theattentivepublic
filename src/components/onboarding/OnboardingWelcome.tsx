@@ -14,7 +14,7 @@ const OnboardingWelcome = ({ onNext }: Props) => {
         </div>
 
         <h1 className="text-4xl md:text-5xl font-heading font-extrabold text-primary-foreground mb-4 leading-tight">
-          CivicPulse
+          The Attentive People
         </h1>
         <p className="text-lg text-primary-foreground/70 mb-3">
           Your personal guide to what's happening in government — made simple, unbiased, and actionable.

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import tapLogo from "@/assets/tap-logo-v2.png";
 import { BILLS_DATA } from "@/data/bills";
+import { REPS_DATA } from "@/data/representatives";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
@@ -15,11 +16,6 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
   taxes: DollarSign, immigration: Users, defense: Shield,
 };
 
-const MOCK_REPS = [
-  { name: "Sen. Maria Chen", party: "D", chamber: "Senate", rating: "A-" },
-  { name: "Rep. James Walker", party: "R", chamber: "House", rating: "B+" },
-  { name: "Sen. David Park", party: "D", chamber: "Senate", rating: "B" },
-];
 
 const MOCK_ELECTIONS = [
   { title: "State Primary Election", date: "May 14, 2026", daysAway: 33 },

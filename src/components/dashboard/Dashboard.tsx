@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import tapLogo from "@/assets/tap-logo-v2.png";
+import { BILLS_DATA } from "@/data/bills";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
@@ -8,24 +10,10 @@ import {
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
-  healthcare: Heart,
-  economy: Briefcase,
-  education: GraduationCap,
-  environment: Leaf,
-  justice: Scale,
-  housing: Home,
-  technology: Wifi,
-  taxes: DollarSign,
-  immigration: Users,
-  defense: Shield,
+  healthcare: Heart, economy: Briefcase, education: GraduationCap,
+  environment: Leaf, justice: Scale, housing: Home, technology: Wifi,
+  taxes: DollarSign, immigration: Users, defense: Shield,
 };
-
-const MOCK_BILLS = [
-  { id: 1, title: "Clean Energy Investment Act", status: "In Committee", topic: "environment", progress: 35 },
-  { id: 2, title: "Education Funding Reform", status: "Floor Vote", topic: "education", progress: 70 },
-  { id: 3, title: "Digital Privacy Protection Act", status: "Introduced", topic: "technology", progress: 15 },
-  { id: 4, title: "Affordable Housing Expansion", status: "In Committee", topic: "housing", progress: 45 },
-];
 
 const MOCK_REPS = [
   { name: "Sen. Maria Chen", party: "D", chamber: "Senate", rating: "A-" },
@@ -38,14 +26,16 @@ const MOCK_ELECTIONS = [
   { title: "City Council Special Election", date: "Jun 2, 2026", daysAway: 52 },
 ];
 
+
 interface Props {
   state: string;
   issues: string[];
 }
 
 const Dashboard = ({ state, issues }: Props) => {
-  const relevantBills = MOCK_BILLS.filter((b) => issues.includes(b.topic));
-  const displayBills = relevantBills.length > 0 ? relevantBills : MOCK_BILLS.slice(0, 3);
+  const navigate = useNavigate();
+  const relevantBills = BILLS_DATA.filter((b) => issues.includes(b.topic));
+  const displayBills = relevantBills.length > 0 ? relevantBills : BILLS_DATA.slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background">
@@ -126,7 +116,7 @@ const Dashboard = ({ state, issues }: Props) => {
             {displayBills.map((bill) => {
               const Icon = ISSUE_ICONS[bill.topic] || FileText;
               return (
-                <div key={bill.id} className="bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
+                <div key={bill.id} onClick={() => navigate(`/bill/${bill.id}`)} className="bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
                   <div className="flex items-start gap-3">
                     <div className="w-9 h-9 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
                       <Icon className="w-4 h-4 text-civic-teal" />

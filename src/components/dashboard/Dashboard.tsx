@@ -26,16 +26,6 @@ const MOCK_ELECTIONS = [
   { title: "City Council Special Election", date: "Jun 2, 2026", daysAway: 52 },
 ];
 
-const MOCK_REPS = [
-  { name: "Sen. Maria Chen", party: "D", chamber: "Senate", rating: "A-" },
-  { name: "Rep. James Walker", party: "R", chamber: "House", rating: "B+" },
-  { name: "Sen. David Park", party: "D", chamber: "Senate", rating: "B" },
-];
-
-const MOCK_ELECTIONS = [
-  { title: "State Primary Election", date: "May 14, 2026", daysAway: 33 },
-  { title: "City Council Special Election", date: "Jun 2, 2026", daysAway: 52 },
-];
 
 interface Props {
   state: string;

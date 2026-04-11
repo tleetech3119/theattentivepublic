@@ -1,16 +1,54 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import OnboardingWelcome from "@/components/onboarding/OnboardingWelcome";
+import OnboardingState from "@/components/onboarding/OnboardingState";
+import OnboardingIssues from "@/components/onboarding/OnboardingIssues";
+import OnboardingReady from "@/components/onboarding/OnboardingReady";
+import Dashboard from "@/components/dashboard/Dashboard";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
-  return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
-  );
+type Step = "welcome" | "state" | "issues" | "ready" | "dashboard";
+
+const Index = () => {
+  const [step, setStep] = useState<Step>("welcome");
+  const [userState, setUserState] = useState("");
+  const [userIssues, setUserIssues] = useState<string[]>([]);
+
+  if (step === "welcome") {
+    return <OnboardingWelcome onNext={() => setStep("state")} />;
+  }
+
+  if (step === "state") {
+    return (
+      <OnboardingState
+        onNext={(state) => {
+          setUserState(state);
+          setStep("issues");
+        }}
+      />
+    );
+  }
+
+  if (step === "issues") {
+    return (
+      <OnboardingIssues
+        onNext={(issues) => {
+          setUserIssues(issues);
+          setStep("ready");
+        }}
+      />
+    );
+  }
+
+  if (step === "ready") {
+    return (
+      <OnboardingReady
+        state={userState}
+        issues={userIssues}
+        onComplete={() => setStep("dashboard")}
+      />
+    );
+  }
+
+  return <Dashboard state={userState} issues={userIssues} />;
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;

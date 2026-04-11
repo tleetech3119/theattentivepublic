@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import tapLogo from "@/assets/tap-logo.png";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
@@ -53,7 +54,7 @@ const Dashboard = ({ state, issues }: Props) => {
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-              <Shield className="w-6 h-6 text-civic-teal" />
+              <img src={tapLogo} alt="TAP" width={32} height={32} />
               <span className="font-heading font-bold text-primary-foreground text-lg">TAP</span>
             </div>
             <button className="relative">

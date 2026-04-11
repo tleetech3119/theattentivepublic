@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Shield, ArrowRight } from "lucide-react";
+import tapLogo from "@/assets/tap-logo.png";
 
 interface Props {
   onNext: () => void;
@@ -9,9 +10,7 @@ const OnboardingWelcome = ({ onNext }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 gradient-hero">
       <div className="max-w-lg mx-auto text-center animate-fade-up">
-        <div className="w-16 h-16 rounded-2xl gradient-accent flex items-center justify-center mx-auto mb-8 shadow-glow">
-          <Shield className="w-8 h-8 text-primary-foreground" />
-        </div>
+        <img src={tapLogo} alt="TAP logo" width={120} height={120} className="mx-auto mb-6 drop-shadow-lg" />
 
         <h1 className="text-4xl md:text-5xl font-heading font-extrabold text-primary-foreground mb-4 leading-tight">
           The Attentive People

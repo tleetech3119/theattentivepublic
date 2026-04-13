@@ -21,6 +21,7 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
 
 const ELECTIONS_2026 = [
   {
+    slug: "2026-midterms",
     title: "2026 Midterm Elections",
     date: "Nov 3, 2026",
     dateObj: new Date("2026-11-03"),
@@ -28,6 +29,7 @@ const ELECTIONS_2026 = [
     type: "Federal",
   },
   {
+    slug: "2026-primaries",
     title: "State Primary Elections",
     date: "Varies by state (Jun–Sep 2026)",
     dateObj: new Date("2026-06-09"),
@@ -35,6 +37,7 @@ const ELECTIONS_2026 = [
     type: "Primary",
   },
   {
+    slug: "2026-governors",
     title: "Gubernatorial Races",
     date: "Nov 3, 2026",
     dateObj: new Date("2026-11-03"),
@@ -42,6 +45,7 @@ const ELECTIONS_2026 = [
     type: "State",
   },
   {
+    slug: "2026-registration",
     title: "Voter Registration Deadline",
     date: "Varies by state (Oct 2026)",
     dateObj: new Date("2026-10-05"),

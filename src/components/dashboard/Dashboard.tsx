@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import tapLogo from "@/assets/tap-logo-v2.png";
 import { useBills } from "@/hooks/use-bills";
 import { useRepresentatives } from "@/hooks/use-representatives";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
-  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight,
+  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {

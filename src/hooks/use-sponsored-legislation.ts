@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 export interface SponsoredBill {
   id: string;
@@ -25,14 +24,6 @@ export function useSponsoredLegislation(repId: string | undefined) {
     const fetchLegislation = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase.functions.invoke("get-rep-legislation", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          body: undefined,
-        });
-
-        // supabase.functions.invoke doesn't support query params well for GET,
-        // so let's use fetch directly
         const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
         const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
         const res = await fetch(

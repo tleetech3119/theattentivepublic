@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import tapLogo from "@/assets/tap-logo-v2.png";
 import { useBills } from "@/hooks/use-bills";
 import { useRepresentatives } from "@/hooks/use-representatives";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
-  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight,
+  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
@@ -30,6 +33,21 @@ const Dashboard = ({ state, issues }: Props) => {
   const navigate = useNavigate();
   const { bills, loading: billsLoading } = useBills();
   const { reps, loading: repsLoading } = useRepresentatives();
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-congress-data");
+      if (error) throw error;
+      toast.success(`Synced ${data.bills_synced} bills and ${data.reps_synced} representatives from Congress.gov`);
+      window.location.reload();
+    } catch (err: any) {
+      toast.error(err.message || "Failed to sync data");
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const relevantBills = bills.filter((b) => issues.includes(b.topic));
   const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 3);
@@ -44,10 +62,15 @@ const Dashboard = ({ state, issues }: Props) => {
               <img src={tapLogo} alt="TAP" width={32} height={32} />
               <span className="font-heading font-bold text-primary-foreground text-lg">TAP</span>
             </div>
-            <button className="relative">
-              <Bell className="w-5 h-5 text-primary-foreground/70" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-accent rounded-full" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={handleSync} disabled={syncing} className="relative">
+                <RefreshCw className={`w-5 h-5 text-primary-foreground/70 ${syncing ? "animate-spin" : ""}`} />
+              </button>
+              <button className="relative">
+                <Bell className="w-5 h-5 text-primary-foreground/70" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-accent rounded-full" />
+              </button>
+            </div>
           </div>
           <h1 className="text-2xl font-heading font-bold text-primary-foreground mb-1">
             Good morning 👋

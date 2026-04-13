@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import tapLogo from "@/assets/tap-logo-v2.png";
-import { BILLS_DATA } from "@/data/bills";
-import { REPS_DATA } from "@/data/representatives";
+import { useBills } from "@/hooks/use-bills";
+import { useRepresentatives } from "@/hooks/use-representatives";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
@@ -16,12 +16,10 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
   taxes: DollarSign, immigration: Users, defense: Shield,
 };
 
-
 const MOCK_ELECTIONS = [
   { title: "State Primary Election", date: "May 14, 2026", daysAway: 33 },
   { title: "City Council Special Election", date: "Jun 2, 2026", daysAway: 52 },
 ];
-
 
 interface Props {
   state: string;
@@ -30,8 +28,11 @@ interface Props {
 
 const Dashboard = ({ state, issues }: Props) => {
   const navigate = useNavigate();
-  const relevantBills = BILLS_DATA.filter((b) => issues.includes(b.topic));
-  const displayBills = relevantBills.length > 0 ? relevantBills : BILLS_DATA.slice(0, 3);
+  const { bills, loading: billsLoading } = useBills();
+  const { reps, loading: repsLoading } = useRepresentatives();
+
+  const relevantBills = bills.filter((b) => issues.includes(b.topic));
+  const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background">
@@ -62,7 +63,7 @@ const Dashboard = ({ state, issues }: Props) => {
         <div className="grid grid-cols-3 gap-3 animate-fade-up">
           {[
             { icon: FileText, label: "Bills Tracked", value: displayBills.length, color: "text-civic-teal" },
-            { icon: Users, label: "Your Reps", value: REPS_DATA.length, color: "text-civic-coral" },
+            { icon: Users, label: "Your Reps", value: reps.length, color: "text-civic-coral" },
             { icon: Vote, label: "Elections", value: MOCK_ELECTIONS.length, color: "text-civic-purple" },
           ].map(({ icon: Icon, label, value, color }) => (
             <div key={label} className="bg-card rounded-xl p-4 shadow-card text-center">
@@ -149,7 +150,7 @@ const Dashboard = ({ state, issues }: Props) => {
             </button>
           </div>
           <div className="space-y-2">
-            {REPS_DATA.map((rep) => (
+            {reps.map((rep) => (
               <div key={rep.id} onClick={() => navigate(`/rep/${rep.id}`)} className="bg-card rounded-xl p-4 shadow-card flex items-center justify-between hover:shadow-card-hover transition-shadow cursor-pointer">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center font-heading font-bold text-sm ${

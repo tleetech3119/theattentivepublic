@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BILLS_DATA } from "@/data/bills";
+import { useBill } from "@/hooks/use-bills";
 import {
   ArrowLeft, Calendar, CheckCircle2, Circle, Clock, FileText,
   Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home,
@@ -17,7 +17,15 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
 const BillDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const bill = BILLS_DATA.find((b) => b.id === Number(id));
+  const { bill, loading } = useBill(id ? Number(id) : undefined);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Loading…</div>
+      </div>
+    );
+  }
 
   if (!bill) {
     return (

@@ -14,7 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bills: {
+        Row: {
+          code: string
+          created_at: string
+          id: number
+          introduced_date: string
+          last_action: string
+          progress: number
+          sponsors: Json
+          status: string
+          summary: string
+          timeline: Json
+          title: string
+          topic: string
+          updated_at: string
+          votes: Json
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id: number
+          introduced_date: string
+          last_action: string
+          progress?: number
+          sponsors?: Json
+          status: string
+          summary: string
+          timeline?: Json
+          title: string
+          topic: string
+          updated_at?: string
+          votes?: Json
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: number
+          introduced_date?: string
+          last_action?: string
+          progress?: number
+          sponsors?: Json
+          status?: string
+          summary?: string
+          timeline?: Json
+          title?: string
+          topic?: string
+          updated_at?: string
+          votes?: Json
+        }
+        Relationships: []
+      }
+      representatives: {
+        Row: {
+          bio: string
+          chamber: string
+          committees: Json
+          contact: Json
+          created_at: string
+          district: string | null
+          id: string
+          issue_scores: Json
+          name: string
+          party: string
+          photo: string | null
+          rating: string
+          state: string
+          term_end: string
+          term_start: string
+          updated_at: string
+          voting_history: Json
+        }
+        Insert: {
+          bio: string
+          chamber: string
+          committees?: Json
+          contact?: Json
+          created_at?: string
+          district?: string | null
+          id: string
+          issue_scores?: Json
+          name: string
+          party: string
+          photo?: string | null
+          rating: string
+          state: string
+          term_end: string
+          term_start: string
+          updated_at?: string
+          voting_history?: Json
+        }
+        Update: {
+          bio?: string
+          chamber?: string
+          committees?: Json
+          contact?: Json
+          created_at?: string
+          district?: string | null
+          id?: string
+          issue_scores?: Json
+          name?: string
+          party?: string
+          photo?: string | null
+          rating?: string
+          state?: string
+          term_end?: string
+          term_start?: string
+          updated_at?: string
+          voting_history?: Json
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          selected_issues: Json
+          selected_state: string | null
+          session_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          selected_issues?: Json
+          selected_state?: string | null
+          session_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          selected_issues?: Json
+          selected_state?: string | null
+          session_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

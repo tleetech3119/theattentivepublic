@@ -13,7 +13,7 @@ const OnboardingWelcome = ({ onNext }: Props) => {
         <img src={tapLogo} alt="TAP logo" width={120} height={120} className="mx-auto mb-6 drop-shadow-lg" />
 
         <h1 className="text-4xl md:text-5xl font-heading font-extrabold text-primary-foreground mb-4 leading-tight">
-          The Attentive People
+          The Attentive Public
         </h1>
         <p className="text-lg text-primary-foreground/70 mb-3">
           Your personal guide to what's happening in government — made simple, unbiased, and actionable.

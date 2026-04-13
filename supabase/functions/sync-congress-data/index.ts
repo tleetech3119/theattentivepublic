@@ -9,6 +9,7 @@ Deno.serve(async (req) => {
   }
 
   const CONGRESS_API_KEY = Deno.env.get("CONGRESS_API_KEY");
+  
   if (!CONGRESS_API_KEY) {
     return new Response(JSON.stringify({ error: "CONGRESS_API_KEY not configured" }), {
       status: 500,
@@ -217,7 +218,9 @@ async function fetchMembers(apiKey: string, congress: number) {
 
         const currentTerm = member.terms?.item?.[member.terms.item.length - 1];
         const chamber = currentTerm?.chamber === "Senate" ? "Senate" : "House";
-        const party = mapParty(member.partyName);
+        // partyHistory is an array; partyName is top-level on list, but detail uses partyHistory
+        const partyRaw = member.partyName || member.partyHistory?.[0]?.partyName || m.partyName || "";
+        const party = mapParty(partyRaw);
 
         const stateCode = member.state || currentTerm?.stateCode || "";
         const district = currentTerm?.district ? `${stateCode}-${currentTerm.district}` : undefined;

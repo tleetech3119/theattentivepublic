@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Shield, ArrowRight } from "lucide-react";
-import tapLogo from "@/assets/tap-logo-v2.png";
+import tapLogo from "@/assets/tap-logo-v3.png";
 
 interface Props {
   onNext: () => void;

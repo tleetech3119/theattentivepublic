@@ -64,7 +64,7 @@ interface Props {
 const Dashboard = ({ state, issues }: Props) => {
   const navigate = useNavigate();
   const { bills, loading: billsLoading } = useBills();
-  const { reps, loading: repsLoading } = useRepresentatives();
+  const { reps, loading: repsLoading } = useRepresentatives(state);
   const [syncing, setSyncing] = useState(false);
 
   const handleSync = async () => {

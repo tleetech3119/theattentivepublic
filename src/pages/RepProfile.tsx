@@ -34,6 +34,7 @@ const RepProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { rep, loading } = useRepresentative(id);
+  const { bills: sponsoredBills, loading: billsLoading } = useSponsoredLegislation(id);
 
   if (loading) {
     return (

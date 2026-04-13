@@ -1,0 +1,1 @@
+ALTER TABLE public.bills ADD CONSTRAINT bills_code_unique UNIQUE (code);

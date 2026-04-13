@@ -218,7 +218,9 @@ async function fetchMembers(apiKey: string, congress: number) {
 
         const currentTerm = member.terms?.item?.[member.terms.item.length - 1];
         const chamber = currentTerm?.chamber === "Senate" ? "Senate" : "House";
-        const party = mapParty(member.partyName);
+        // partyHistory is an array; partyName is top-level on list, but detail uses partyHistory
+        const partyRaw = member.partyName || member.partyHistory?.[0]?.partyName || m.partyName || "";
+        const party = mapParty(partyRaw);
 
         const stateCode = member.state || currentTerm?.stateCode || "";
         const district = currentTerm?.district ? `${stateCode}-${currentTerm.district}` : undefined;

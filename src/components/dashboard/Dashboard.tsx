@@ -119,7 +119,7 @@ const Dashboard = ({ state, issues }: Props) => {
           {[
             { icon: FileText, label: "Bills Tracked", value: displayBills.length, color: "text-civic-teal" },
             { icon: Users, label: "Your Reps", value: reps.length, color: "text-civic-coral" },
-            { icon: Vote, label: "Elections", value: MOCK_ELECTIONS.length, color: "text-civic-purple" },
+            { icon: Vote, label: "Elections", value: ELECTIONS_2026.length, color: "text-civic-purple" },
           ].map(({ icon: Icon, label, value, color }) => (
             <div key={label} className="bg-card rounded-xl p-4 shadow-card text-center">
               <Icon className={`w-5 h-5 mx-auto mb-2 ${color}`} />

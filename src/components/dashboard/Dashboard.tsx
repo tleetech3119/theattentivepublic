@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
-  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw,
+  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
@@ -21,6 +21,7 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
 
 const ELECTIONS_2026 = [
   {
+    slug: "2026-midterms",
     title: "2026 Midterm Elections",
     date: "Nov 3, 2026",
     dateObj: new Date("2026-11-03"),
@@ -28,6 +29,7 @@ const ELECTIONS_2026 = [
     type: "Federal",
   },
   {
+    slug: "2026-primaries",
     title: "State Primary Elections",
     date: "Varies by state (Jun–Sep 2026)",
     dateObj: new Date("2026-06-09"),
@@ -35,6 +37,7 @@ const ELECTIONS_2026 = [
     type: "Primary",
   },
   {
+    slug: "2026-governors",
     title: "Gubernatorial Races",
     date: "Nov 3, 2026",
     dateObj: new Date("2026-11-03"),
@@ -42,6 +45,7 @@ const ELECTIONS_2026 = [
     type: "State",
   },
   {
+    slug: "2026-registration",
     title: "Voter Registration Deadline",
     date: "Varies by state (Oct 2026)",
     dateObj: new Date("2026-10-05"),
@@ -143,7 +147,7 @@ const Dashboard = ({ state, issues }: Props) => {
             {ELECTIONS_2026.map((e) => {
               const days = daysUntil(e.dateObj);
               return (
-                <div key={e.title} className="bg-card rounded-xl p-4 shadow-card">
+                <div key={e.title} onClick={() => navigate(`/election/${e.slug}`)} className="bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
                   <div className="flex items-center justify-between mb-1">
                     <div className="font-medium text-foreground text-sm">{e.title}</div>
                     <Badge className="bg-accent/10 text-accent border-0 font-semibold text-xs">
@@ -152,6 +156,7 @@ const Dashboard = ({ state, issues }: Props) => {
                   </div>
                   <div className="text-xs text-muted-foreground mb-1">{e.date}</div>
                   <div className="text-xs text-muted-foreground/70">{e.description}</div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto mt-1" />
                 </div>
               );
             })}
@@ -232,6 +237,25 @@ const Dashboard = ({ state, issues }: Props) => {
             ))}
           </div>
         </section>
+
+        {/* Political Glossary */}
+        <section className="animate-fade-up" style={{ animationDelay: "0.4s" }}>
+          <div
+            onClick={() => navigate("/glossary")}
+            className="bg-card rounded-xl p-5 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-civic-purple/10 flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-civic-purple" />
+              </div>
+              <div>
+                <div className="font-heading font-bold text-foreground text-sm">Political Glossary</div>
+                <div className="text-xs text-muted-foreground">Learn key election terms & vocabulary</div>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </div>
+        </section>
       </div>
 
       {/* Bottom Nav */}
@@ -241,9 +265,9 @@ const Dashboard = ({ state, issues }: Props) => {
             { icon: Home, label: "Home", active: true },
             { icon: FileText, label: "Bills" },
             { icon: Users, label: "Reps" },
-            { icon: Vote, label: "Vote" },
+            { icon: BookOpen, label: "Glossary" },
           ].map(({ icon: Icon, label, active }) => (
-            <button key={label} className="flex flex-col items-center gap-1">
+            <button key={label} onClick={() => label === "Glossary" ? navigate("/glossary") : undefined} className="flex flex-col items-center gap-1">
               <Icon className={`w-5 h-5 ${active ? "text-primary" : "text-muted-foreground"}`} />
               <span className={`text-xs ${active ? "text-primary font-medium" : "text-muted-foreground"}`}>{label}</span>
             </button>

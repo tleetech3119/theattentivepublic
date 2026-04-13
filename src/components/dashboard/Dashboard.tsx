@@ -237,6 +237,25 @@ const Dashboard = ({ state, issues }: Props) => {
             ))}
           </div>
         </section>
+
+        {/* Political Glossary */}
+        <section className="animate-fade-up" style={{ animationDelay: "0.4s" }}>
+          <div
+            onClick={() => navigate("/glossary")}
+            className="bg-card rounded-xl p-5 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-civic-purple/10 flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-civic-purple" />
+              </div>
+              <div>
+                <div className="font-heading font-bold text-foreground text-sm">Political Glossary</div>
+                <div className="text-xs text-muted-foreground">Learn key election terms & vocabulary</div>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </div>
+        </section>
       </div>
 
       {/* Bottom Nav */}
@@ -246,9 +265,9 @@ const Dashboard = ({ state, issues }: Props) => {
             { icon: Home, label: "Home", active: true },
             { icon: FileText, label: "Bills" },
             { icon: Users, label: "Reps" },
-            { icon: Vote, label: "Vote" },
+            { icon: BookOpen, label: "Glossary" },
           ].map(({ icon: Icon, label, active }) => (
-            <button key={label} className="flex flex-col items-center gap-1">
+            <button key={label} onClick={() => label === "Glossary" ? navigate("/glossary") : undefined} className="flex flex-col items-center gap-1">
               <Icon className={`w-5 h-5 ${active ? "text-primary" : "text-muted-foreground"}`} />
               <span className={`text-xs ${active ? "text-primary font-medium" : "text-muted-foreground"}`}>{label}</span>
             </button>

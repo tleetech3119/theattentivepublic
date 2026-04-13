@@ -63,7 +63,7 @@ const Dashboard = ({ state, issues }: Props) => {
         <div className="grid grid-cols-3 gap-3 animate-fade-up">
           {[
             { icon: FileText, label: "Bills Tracked", value: displayBills.length, color: "text-civic-teal" },
-            { icon: Users, label: "Your Reps", value: REPS_DATA.length, color: "text-civic-coral" },
+            { icon: Users, label: "Your Reps", value: reps.length, color: "text-civic-coral" },
             { icon: Vote, label: "Elections", value: MOCK_ELECTIONS.length, color: "text-civic-purple" },
           ].map(({ icon: Icon, label, value, color }) => (
             <div key={label} className="bg-card rounded-xl p-4 shadow-card text-center">
@@ -150,7 +150,7 @@ const Dashboard = ({ state, issues }: Props) => {
             </button>
           </div>
           <div className="space-y-2">
-            {REPS_DATA.map((rep) => (
+            {reps.map((rep) => (
               <div key={rep.id} onClick={() => navigate(`/rep/${rep.id}`)} className="bg-card rounded-xl p-4 shadow-card flex items-center justify-between hover:shadow-card-hover transition-shadow cursor-pointer">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center font-heading font-bold text-sm ${

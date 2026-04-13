@@ -2,11 +2,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRepresentative } from "@/hooks/use-representatives";
+import { useSponsoredLegislation } from "@/hooks/use-sponsored-legislation";
 import {
   ArrowLeft, Phone, Mail, MapPin, Globe, ExternalLink,
   TrendingUp, TrendingDown, Minus, Heart, Shield, Briefcase,
   GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users,
-  FileText, ChevronRight, Calendar,
+  FileText, ChevronRight, Calendar, Loader2,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {

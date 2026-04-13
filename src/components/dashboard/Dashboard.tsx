@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import tapLogo from "@/assets/tap-logo-v2.png";
-import { BILLS_DATA } from "@/data/bills";
-import { REPS_DATA } from "@/data/representatives";
+import { useBills } from "@/hooks/use-bills";
+import { useRepresentatives } from "@/hooks/use-representatives";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
@@ -16,12 +16,10 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
   taxes: DollarSign, immigration: Users, defense: Shield,
 };
 
-
 const MOCK_ELECTIONS = [
   { title: "State Primary Election", date: "May 14, 2026", daysAway: 33 },
   { title: "City Council Special Election", date: "Jun 2, 2026", daysAway: 52 },
 ];
-
 
 interface Props {
   state: string;
@@ -30,8 +28,11 @@ interface Props {
 
 const Dashboard = ({ state, issues }: Props) => {
   const navigate = useNavigate();
-  const relevantBills = BILLS_DATA.filter((b) => issues.includes(b.topic));
-  const displayBills = relevantBills.length > 0 ? relevantBills : BILLS_DATA.slice(0, 3);
+  const { bills, loading: billsLoading } = useBills();
+  const { reps, loading: repsLoading } = useRepresentatives();
+
+  const relevantBills = bills.filter((b) => issues.includes(b.topic));
+  const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background">

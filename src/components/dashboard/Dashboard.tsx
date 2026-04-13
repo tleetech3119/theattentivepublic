@@ -33,6 +33,21 @@ const Dashboard = ({ state, issues }: Props) => {
   const navigate = useNavigate();
   const { bills, loading: billsLoading } = useBills();
   const { reps, loading: repsLoading } = useRepresentatives();
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-congress-data");
+      if (error) throw error;
+      toast.success(`Synced ${data.bills_synced} bills and ${data.reps_synced} representatives from Congress.gov`);
+      window.location.reload();
+    } catch (err: any) {
+      toast.error(err.message || "Failed to sync data");
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const relevantBills = bills.filter((b) => issues.includes(b.topic));
   const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 3);

@@ -19,10 +19,42 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
   taxes: DollarSign, immigration: Users, defense: Shield,
 };
 
-const MOCK_ELECTIONS = [
-  { title: "State Primary Election", date: "May 14, 2026", daysAway: 33 },
-  { title: "City Council Special Election", date: "Jun 2, 2026", daysAway: 52 },
+const ELECTIONS_2026 = [
+  {
+    title: "2026 Midterm Elections",
+    date: "Nov 3, 2026",
+    dateObj: new Date("2026-11-03"),
+    description: "All 435 House seats + 34 Senate seats",
+    type: "Federal",
+  },
+  {
+    title: "State Primary Elections",
+    date: "Varies by state (Jun–Sep 2026)",
+    dateObj: new Date("2026-06-09"),
+    description: "Party nominations for midterm candidates",
+    type: "Primary",
+  },
+  {
+    title: "Gubernatorial Races",
+    date: "Nov 3, 2026",
+    dateObj: new Date("2026-11-03"),
+    description: "36 states elect governors",
+    type: "State",
+  },
+  {
+    title: "Voter Registration Deadline",
+    date: "Varies by state (Oct 2026)",
+    dateObj: new Date("2026-10-05"),
+    description: "Register or verify your registration",
+    type: "Deadline",
+  },
 ];
+
+function daysUntil(date: Date): number {
+  const now = new Date();
+  const diff = date.getTime() - now.getTime();
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+}
 
 interface Props {
   state: string;
@@ -87,7 +119,7 @@ const Dashboard = ({ state, issues }: Props) => {
           {[
             { icon: FileText, label: "Bills Tracked", value: displayBills.length, color: "text-civic-teal" },
             { icon: Users, label: "Your Reps", value: reps.length, color: "text-civic-coral" },
-            { icon: Vote, label: "Elections", value: MOCK_ELECTIONS.length, color: "text-civic-purple" },
+            { icon: Vote, label: "Elections", value: ELECTIONS_2026.length, color: "text-civic-purple" },
           ].map(({ icon: Icon, label, value, color }) => (
             <div key={label} className="bg-card rounded-xl p-4 shadow-card text-center">
               <Icon className={`w-5 h-5 mx-auto mb-2 ${color}`} />
@@ -108,17 +140,21 @@ const Dashboard = ({ state, issues }: Props) => {
             </button>
           </div>
           <div className="space-y-2">
-            {MOCK_ELECTIONS.map((e) => (
-              <div key={e.title} className="bg-card rounded-xl p-4 shadow-card flex items-center justify-between">
-                <div>
-                  <div className="font-medium text-foreground text-sm">{e.title}</div>
-                  <div className="text-xs text-muted-foreground">{e.date}</div>
+            {ELECTIONS_2026.map((e) => {
+              const days = daysUntil(e.dateObj);
+              return (
+                <div key={e.title} className="bg-card rounded-xl p-4 shadow-card">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="font-medium text-foreground text-sm">{e.title}</div>
+                    <Badge className="bg-accent/10 text-accent border-0 font-semibold text-xs">
+                      {days > 0 ? `${days} days` : "Today!"}
+                    </Badge>
+                  </div>
+                  <div className="text-xs text-muted-foreground mb-1">{e.date}</div>
+                  <div className="text-xs text-muted-foreground/70">{e.description}</div>
                 </div>
-                <Badge className="bg-accent/10 text-accent border-0 font-semibold text-xs">
-                  {e.daysAway} days
-                </Badge>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 

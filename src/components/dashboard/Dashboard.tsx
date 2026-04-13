@@ -62,10 +62,15 @@ const Dashboard = ({ state, issues }: Props) => {
               <img src={tapLogo} alt="TAP" width={32} height={32} />
               <span className="font-heading font-bold text-primary-foreground text-lg">TAP</span>
             </div>
-            <button className="relative">
-              <Bell className="w-5 h-5 text-primary-foreground/70" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-accent rounded-full" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={handleSync} disabled={syncing} className="relative">
+                <RefreshCw className={`w-5 h-5 text-primary-foreground/70 ${syncing ? "animate-spin" : ""}`} />
+              </button>
+              <button className="relative">
+                <Bell className="w-5 h-5 text-primary-foreground/70" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-accent rounded-full" />
+              </button>
+            </div>
           </div>
           <h1 className="text-2xl font-heading font-bold text-primary-foreground mb-1">
             Good morning 👋

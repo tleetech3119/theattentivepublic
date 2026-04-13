@@ -22,20 +22,21 @@ function mapRow(row: any): Representative {
   };
 }
 
-export function useRepresentatives() {
+export function useRepresentatives(state?: string) {
   const [reps, setReps] = useState<Representative[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from("representatives")
-      .select("*")
-      .then(({ data, error }) => {
-        if (error) console.error("Failed to load reps:", error);
-        else if (data) setReps(data.map(mapRow));
-        setLoading(false);
-      });
-  }, []);
+    let query = supabase.from("representatives").select("*");
+    if (state) {
+      query = query.eq("state", state);
+    }
+    query.then(({ data, error }) => {
+      if (error) console.error("Failed to load reps:", error);
+      else if (data) setReps(data.map(mapRow));
+      setLoading(false);
+    });
+  }, [state]);
 
   return { reps, loading };
 }

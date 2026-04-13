@@ -160,6 +160,46 @@ const RepProfile = () => {
             </div>
           </TabsContent>
 
+          {/* Sponsored Legislation Tab */}
+          <TabsContent value="legislation" className="space-y-3 animate-fade-up">
+            {billsLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                <span className="ml-2 text-sm text-muted-foreground">Loading sponsored bills…</span>
+              </div>
+            ) : sponsoredBills.length === 0 ? (
+              <div className="bg-card rounded-xl p-6 shadow-card text-center">
+                <FileText className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">No sponsored legislation found yet.</p>
+              </div>
+            ) : (
+              sponsoredBills.map((bill) => {
+                const Icon = ISSUE_ICONS[bill.topic] || FileText;
+                return (
+                  <div key={bill.bill_code} className="bg-card rounded-xl p-4 shadow-card">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
+                        <Icon className="w-4 h-4 text-civic-teal" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-foreground text-sm mb-1 line-clamp-2">{bill.bill_title}</div>
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <Badge variant="secondary" className="text-xs capitalize">{bill.topic}</Badge>
+                          <span className="text-xs text-muted-foreground">{bill.bill_code}</span>
+                        </div>
+                        {bill.introduced_date && (
+                          <div className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Calendar className="w-3 h-3" /> Introduced {bill.introduced_date}
+                          </div>
+                        )}
+                        <div className="text-xs text-muted-foreground/70 mt-1 line-clamp-1">{bill.status}</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+
           {/* Votes Tab */}
           <TabsContent value="votes" className="space-y-3 animate-fade-up">
             {rep.votingHistory.map((v) => {

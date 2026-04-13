@@ -25,9 +25,9 @@ export function useBills() {
               progress: row.progress,
               introducedDate: row.introduced_date,
               lastAction: row.last_action,
-              sponsors: row.sponsors as Bill["sponsors"],
-              timeline: row.timeline as Bill["timeline"],
-              votes: row.votes as Bill["votes"],
+              sponsors: row.sponsors as unknown as Bill["sponsors"],
+              timeline: row.timeline as unknown as Bill["timeline"],
+              votes: row.votes as unknown as Bill["votes"],
             }))
           );
         }
@@ -63,9 +63,9 @@ export function useBill(id: number | undefined) {
             progress: data.progress,
             introducedDate: (data as any).introduced_date,
             lastAction: (data as any).last_action,
-            sponsors: data.sponsors as Bill["sponsors"],
-            timeline: data.timeline as Bill["timeline"],
-            votes: data.votes as Bill["votes"],
+            sponsors: data.sponsors as unknown as Bill["sponsors"],
+            timeline: data.timeline as unknown as Bill["timeline"],
+            votes: data.votes as unknown as Bill["votes"],
           });
         }
         setLoading(false);

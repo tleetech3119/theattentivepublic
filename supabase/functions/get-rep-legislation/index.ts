@@ -67,10 +67,15 @@ Deno.serve(async (req) => {
     const data = await res.json();
     const bills = data.sponsoredLegislation || [];
 
-    const rows = bills.map((b: any) => {
+    // Deduplicate by bill_code
+    const seen = new Set<string>();
+    const rows: any[] = [];
+    for (const b of bills) {
       const type = (b.type || "").toLowerCase();
       const code = `${type.toUpperCase()}.${b.number}`;
-      return {
+      if (seen.has(code)) continue;
+      seen.add(code);
+      rows.push({
         rep_id: repId,
         bill_code: code,
         bill_title: b.title || "Untitled",
@@ -78,8 +83,8 @@ Deno.serve(async (req) => {
         status: b.latestAction?.text ? truncate(b.latestAction.text, 100) : "Introduced",
         topic: mapTopic(b.policyArea?.name || ""),
         congress_url: b.url || "",
-      };
-    });
+      });
+    }
 
     if (rows.length > 0) {
       const { error } = await supabase

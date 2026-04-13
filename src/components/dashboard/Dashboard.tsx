@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import {
   FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
-  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw,
+  Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
@@ -147,7 +147,7 @@ const Dashboard = ({ state, issues }: Props) => {
             {ELECTIONS_2026.map((e) => {
               const days = daysUntil(e.dateObj);
               return (
-                <div key={e.title} className="bg-card rounded-xl p-4 shadow-card">
+                <div key={e.title} onClick={() => navigate(`/election/${e.slug}`)} className="bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
                   <div className="flex items-center justify-between mb-1">
                     <div className="font-medium text-foreground text-sm">{e.title}</div>
                     <Badge className="bg-accent/10 text-accent border-0 font-semibold text-xs">
@@ -156,6 +156,7 @@ const Dashboard = ({ state, issues }: Props) => {
                   </div>
                   <div className="text-xs text-muted-foreground mb-1">{e.date}</div>
                   <div className="text-xs text-muted-foreground/70">{e.description}</div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto mt-1" />
                 </div>
               );
             })}

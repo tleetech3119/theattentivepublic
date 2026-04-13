@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import tapLogo from "@/assets/tap-logo-v2.png";
+import tapLogo from "@/assets/tap-logo-v3.png";
 import { useBills } from "@/hooks/use-bills";
 import { useRepresentatives } from "@/hooks/use-representatives";
 import { supabase } from "@/integrations/supabase/client";

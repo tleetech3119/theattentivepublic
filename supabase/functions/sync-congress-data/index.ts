@@ -9,6 +9,7 @@ Deno.serve(async (req) => {
   }
 
   const CONGRESS_API_KEY = Deno.env.get("CONGRESS_API_KEY");
+  console.log("KEY_DEBUG len:", CONGRESS_API_KEY?.length, "first6:", CONGRESS_API_KEY?.slice(0, 6));
   if (!CONGRESS_API_KEY) {
     return new Response(JSON.stringify({ error: "CONGRESS_API_KEY not configured" }), {
       status: 500,

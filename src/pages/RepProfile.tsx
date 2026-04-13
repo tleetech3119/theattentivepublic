@@ -199,6 +199,7 @@ const RepProfile = () => {
                 );
               })
             )}
+          </TabsContent>
 
           {/* Votes Tab */}
           <TabsContent value="votes" className="space-y-3 animate-fade-up">

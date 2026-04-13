@@ -72,7 +72,9 @@ Deno.serve(async (req) => {
     const rows: any[] = [];
     for (const b of bills) {
       const type = (b.type || "").toLowerCase();
-      const code = `${type.toUpperCase()}.${b.number}`;
+      const num = b.number;
+      if (!type || !num) continue; // skip malformed entries
+      const code = `${type.toUpperCase()}.${num}`;
       if (seen.has(code)) continue;
       seen.add(code);
       rows.push({

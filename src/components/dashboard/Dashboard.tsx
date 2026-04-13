@@ -19,10 +19,42 @@ const ISSUE_ICONS: Record<string, React.ElementType> = {
   taxes: DollarSign, immigration: Users, defense: Shield,
 };
 
-const MOCK_ELECTIONS = [
-  { title: "State Primary Election", date: "May 14, 2026", daysAway: 33 },
-  { title: "City Council Special Election", date: "Jun 2, 2026", daysAway: 52 },
+const ELECTIONS_2026 = [
+  {
+    title: "2026 Midterm Elections",
+    date: "Nov 3, 2026",
+    dateObj: new Date("2026-11-03"),
+    description: "All 435 House seats + 34 Senate seats",
+    type: "Federal",
+  },
+  {
+    title: "State Primary Elections",
+    date: "Varies by state (Jun–Sep 2026)",
+    dateObj: new Date("2026-06-09"),
+    description: "Party nominations for midterm candidates",
+    type: "Primary",
+  },
+  {
+    title: "Gubernatorial Races",
+    date: "Nov 3, 2026",
+    dateObj: new Date("2026-11-03"),
+    description: "36 states elect governors",
+    type: "State",
+  },
+  {
+    title: "Voter Registration Deadline",
+    date: "Varies by state (Oct 2026)",
+    dateObj: new Date("2026-10-05"),
+    description: "Register or verify your registration",
+    type: "Deadline",
+  },
 ];
+
+function daysUntil(date: Date): number {
+  const now = new Date();
+  const diff = date.getTime() - now.getTime();
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+}
 
 interface Props {
   state: string;

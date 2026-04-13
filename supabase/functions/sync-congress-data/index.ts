@@ -217,7 +217,9 @@ async function fetchMembers(apiKey: string, congress: number) {
         if (!member) continue;
 
         const currentTerm = member.terms?.item?.[member.terms.item.length - 1];
-        const chamber = currentTerm?.chamber === "Senate" ? "Senate" : "House";
+        // Congress.gov uses "Senate" or "House of Representatives" for chamber
+        const chamberRaw = currentTerm?.chamber || m.terms?.item?.[0]?.chamber || "";
+        const chamber = chamberRaw.toLowerCase().includes("senate") ? "Senate" : "House";
         // partyHistory is an array; partyName is top-level on list, but detail uses partyHistory
         const partyRaw = member.partyName || member.partyHistory?.[0]?.partyName || m.partyName || "";
         const party = mapParty(partyRaw);

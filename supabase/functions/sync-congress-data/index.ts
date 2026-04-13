@@ -202,61 +202,70 @@ async function fetchBills(apiKey: string, congress: number) {
 
 async function fetchMembers(apiKey: string, congress: number) {
   const members: any[] = [];
+  const pageSize = 250; // max allowed by Congress API
+  let offset = 0;
+  let total = Infinity;
 
   try {
-    const data = await congressFetch(
-      `${CONGRESS_API}/member?limit=20&currentMember=true`,
-      apiKey
-    );
-    const memberList = data.members || [];
+    while (offset < total) {
+      const data = await congressFetch(
+        `${CONGRESS_API}/member?limit=${pageSize}&offset=${offset}&currentMember=true`,
+        apiKey
+      );
+      const memberList = data.members || [];
+      if (data.pagination?.count) total = data.pagination.count;
+      else if (memberList.length < pageSize) total = offset + memberList.length;
 
-    for (const m of memberList.slice(0, 10)) {
-      try {
-        const detail = await congressFetch(m.url, apiKey);
-        const member = detail.member;
-        if (!member) continue;
+      for (const m of memberList) {
+        try {
+          // Use list-level data to avoid 535 individual detail calls
+          const termsArr = m.terms?.item || [];
+          const currentTerm = termsArr[termsArr.length - 1];
+          const chamberRaw = currentTerm?.chamber || "";
+          const chamber = chamberRaw.toLowerCase().includes("senate") ? "Senate" : "House";
+          const partyRaw = m.partyName || "";
+          const party = mapParty(partyRaw);
+          const stateVal = m.state || currentTerm?.stateCode || "";
+          const district = currentTerm?.district ? `${stateVal}-${currentTerm.district}` : null;
+          const bioguideId = (m.bioguideId || "").toLowerCase();
+          if (!bioguideId) continue;
 
-        const currentTerm = member.terms?.item?.[member.terms.item.length - 1];
-        // Congress.gov uses "Senate" or "House of Representatives" for chamber
-        const chamberRaw = currentTerm?.chamber || m.terms?.item?.[0]?.chamber || "";
-        const chamber = chamberRaw.toLowerCase().includes("senate") ? "Senate" : "House";
-        // partyHistory is an array; partyName is top-level on list, but detail uses partyHistory
-        const partyRaw = member.partyName || member.partyHistory?.[0]?.partyName || m.partyName || "";
-        const party = mapParty(partyRaw);
+          const fullName = m.name || m.directOrderName || m.invertedOrderName || "Unknown";
 
-        const stateCode = member.state || currentTerm?.stateCode || "";
-        const district = currentTerm?.district ? `${stateCode}-${currentTerm.district}` : undefined;
-
-        members.push({
-          id: (member.bioguideId || "").toLowerCase(),
-          name: `${chamber === "Senate" ? "Sen." : "Rep."} ${member.directOrderName || member.invertedOrderName || "Unknown"}`,
-          party,
-          chamber,
-          state: member.state || stateCode,
-          district: district || null,
-          photo: member.depiction?.imageUrl || null,
-          rating: "N/A",
-          bio: `${chamber === "Senate" ? "Senator" : "Representative"} from ${member.state || "unknown state"}. ${member.directOrderName || ""} has served in the ${congress}th Congress.`,
-          term_start: currentTerm?.startYear ? `Jan ${currentTerm.startYear}` : "",
-          term_end: currentTerm?.endYear ? `Jan ${currentTerm.endYear}` : "Present",
-          contact: {
-            phone: member.officialWebsiteUrl ? "" : "",
-            email: "",
-            office: member.addressInformation?.officeAddress || "",
-            website: member.officialWebsiteUrl || "",
-          },
-          issue_scores: [],
-          voting_history: [],
-          committees: [],
-        });
-      } catch (err) {
-        console.error("Error fetching member detail:", err);
+          members.push({
+            id: bioguideId,
+            name: `${chamber === "Senate" ? "Sen." : "Rep."} ${fullName}`,
+            party,
+            chamber,
+            state: stateVal,
+            district,
+            photo: m.depiction?.imageUrl || null,
+            rating: "N/A",
+            bio: `${chamber === "Senate" ? "Senator" : "Representative"} from ${stateVal}. Member of the ${congress}th Congress.`,
+            term_start: currentTerm?.startYear ? `Jan ${currentTerm.startYear}` : "",
+            term_end: currentTerm?.endYear ? `Jan ${currentTerm.endYear}` : "Present",
+            contact: {
+              phone: "",
+              email: "",
+              office: "",
+              website: m.officialWebsiteUrl || m.url || "",
+            },
+            issue_scores: [],
+            voting_history: [],
+            committees: [],
+          });
+        } catch (err) {
+          console.error("Error processing member:", err);
+        }
       }
+
+      offset += pageSize;
     }
   } catch (err) {
     console.error("Error fetching members:", err);
   }
 
+  console.log(`Fetched ${members.length} total members`);
   return members;
 }
 

@@ -140,17 +140,21 @@ const Dashboard = ({ state, issues }: Props) => {
             </button>
           </div>
           <div className="space-y-2">
-            {MOCK_ELECTIONS.map((e) => (
-              <div key={e.title} className="bg-card rounded-xl p-4 shadow-card flex items-center justify-between">
-                <div>
-                  <div className="font-medium text-foreground text-sm">{e.title}</div>
-                  <div className="text-xs text-muted-foreground">{e.date}</div>
+            {ELECTIONS_2026.map((e) => {
+              const days = daysUntil(e.dateObj);
+              return (
+                <div key={e.title} className="bg-card rounded-xl p-4 shadow-card">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="font-medium text-foreground text-sm">{e.title}</div>
+                    <Badge className="bg-accent/10 text-accent border-0 font-semibold text-xs">
+                      {days > 0 ? `${days} days` : "Today!"}
+                    </Badge>
+                  </div>
+                  <div className="text-xs text-muted-foreground mb-1">{e.date}</div>
+                  <div className="text-xs text-muted-foreground/70">{e.description}</div>
                 </div>
-                <Badge className="bg-accent/10 text-accent border-0 font-semibold text-xs">
-                  {e.daysAway} days
-                </Badge>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 

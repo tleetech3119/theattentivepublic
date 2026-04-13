@@ -125,6 +125,50 @@ export type Database = {
         }
         Relationships: []
       }
+      sponsored_legislation: {
+        Row: {
+          bill_code: string
+          bill_title: string
+          congress_url: string | null
+          created_at: string
+          id: string
+          introduced_date: string | null
+          rep_id: string
+          status: string | null
+          topic: string | null
+        }
+        Insert: {
+          bill_code: string
+          bill_title: string
+          congress_url?: string | null
+          created_at?: string
+          id?: string
+          introduced_date?: string | null
+          rep_id: string
+          status?: string | null
+          topic?: string | null
+        }
+        Update: {
+          bill_code?: string
+          bill_title?: string
+          congress_url?: string | null
+          created_at?: string
+          id?: string
+          introduced_date?: string | null
+          rep_id?: string
+          status?: string | null
+          topic?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsored_legislation_rep_id_fkey"
+            columns: ["rep_id"]
+            isOneToOne: false
+            referencedRelation: "representatives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_preferences: {
         Row: {
           created_at: string

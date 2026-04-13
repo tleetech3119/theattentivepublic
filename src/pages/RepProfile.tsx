@@ -104,6 +104,7 @@ const RepProfile = () => {
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="w-full bg-card shadow-card rounded-xl p-1 mb-6">
             <TabsTrigger value="overview" className="flex-1 text-xs">Overview</TabsTrigger>
+            <TabsTrigger value="legislation" className="flex-1 text-xs">Bills</TabsTrigger>
             <TabsTrigger value="votes" className="flex-1 text-xs">Votes</TabsTrigger>
             <TabsTrigger value="alignment" className="flex-1 text-xs">Alignment</TabsTrigger>
             <TabsTrigger value="contact" className="flex-1 text-xs">Contact</TabsTrigger>

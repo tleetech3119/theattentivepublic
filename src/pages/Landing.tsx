@@ -73,13 +73,7 @@ const Landing = () => {
     <div className="min-h-screen bg-background">
       {/* Top nav */}
       <header className="absolute top-0 left-0 right-0 z-10 px-6 py-5">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-primary-foreground rounded-lg p-1.5 shadow-card">
-              <img src={tapLogo} alt="TAP" className="w-8 h-8" />
-            </div>
-            <span className="text-primary-foreground font-heading font-bold text-lg">TAP</span>
-          </div>
+        <div className="max-w-6xl mx-auto flex items-center justify-end">
           <div className="flex items-center gap-2">
             {user ? (
               <Button asChild variant="hero" size="sm" className="rounded-lg">
@@ -100,19 +94,27 @@ const Landing = () => {
       </header>
 
       {/* Hero */}
-      <section className="gradient-hero px-6 pt-32 pb-24 md:pt-40 md:pb-32">
-        <div className="max-w-4xl mx-auto text-center animate-fade-up">
+      <section className="gradient-hero px-6 pt-28 pb-24 md:pt-36 md:pb-32">
+        <div className="max-w-4xl mx-auto text-center animate-fade-up flex flex-col items-center">
+          <div className="bg-primary-foreground rounded-3xl p-5 mb-7 shadow-2xl">
+            <img
+              src={tapLogo}
+              alt="TAP — The Attentive Public"
+              className="w-40 h-40 md:w-56 md:h-56 block"
+            />
+          </div>
+
           <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/15 rounded-full px-4 py-1.5 mb-6">
             <Shield className="w-3.5 h-3.5 text-civic-teal" />
             <span className="text-xs font-medium text-primary-foreground/80">Nonpartisan · Fact-based · Always free</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-heading font-extrabold text-primary-foreground mb-5 leading-tight tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-heading font-extrabold text-primary-foreground mb-4 leading-tight tracking-tight">
             Simplify Election Info,<br />
             <span className="bg-gradient-to-r from-civic-teal to-civic-gold bg-clip-text text-transparent">Empower Your Voice</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-primary-foreground/75 max-w-2xl mx-auto mb-9 leading-relaxed">
+          <p className="text-base md:text-lg text-primary-foreground/75 max-w-2xl mx-auto mb-9 leading-relaxed">
             The single source of truth for engaged citizens and campaign volunteers. Track bills, know your reps, and walk into every conversation prepared.
           </p>
 

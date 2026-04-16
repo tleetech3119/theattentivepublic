@@ -158,6 +158,28 @@ const Dashboard = ({ state, county, issues }: Props) => {
           ))}
         </div>
 
+        {/* How to Vote — quick access to district voting info */}
+        <section
+          onClick={() => navigate("/voting")}
+          className="bg-card rounded-xl p-5 shadow-card hover:shadow-card-hover transition-all cursor-pointer flex items-center justify-between animate-fade-up"
+          style={{ animationDelay: "0.05s" }}
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-11 h-11 rounded-xl gradient-accent flex items-center justify-center shrink-0 shadow-glow">
+              <IdCard className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <div className="min-w-0">
+              <div className="font-heading font-bold text-foreground text-sm">
+                How to Vote in {state}
+              </div>
+              <div className="text-xs text-muted-foreground truncate">
+                {county ? `${county} County • ` : ""}Polling, voter ID, deadlines & mail ballots
+              </div>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+        </section>
+
         {/* Upcoming Elections */}
         <section className="animate-fade-up" style={{ animationDelay: "0.1s" }}>
           <div className="flex items-center justify-between mb-3">
@@ -287,12 +309,17 @@ const Dashboard = ({ state, county, issues }: Props) => {
       <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-6 py-3">
         <div className="max-w-2xl mx-auto flex justify-around">
           {[
-            { icon: Home, label: "Home", active: true },
-            { icon: FileText, label: "Bills" },
-            { icon: Users, label: "Reps" },
-            { icon: BookOpen, label: "Glossary" },
-          ].map(({ icon: Icon, label, active }) => (
-            <button key={label} onClick={() => label === "Glossary" ? navigate("/glossary") : undefined} className="flex flex-col items-center gap-1">
+            { icon: Home, label: "Home", path: "/app", active: true },
+            { icon: FileText, label: "Bills", path: "/app" },
+            { icon: Users, label: "Reps", path: "/app" },
+            { icon: Vote, label: "Vote", path: "/voting" },
+            { icon: BookOpen, label: "Glossary", path: "/glossary" },
+          ].map(({ icon: Icon, label, path, active }) => (
+            <button
+              key={label}
+              onClick={() => path && path !== "/app" && navigate(path)}
+              className="flex flex-col items-center gap-1"
+            >
               <Icon className={`w-5 h-5 ${active ? "text-primary" : "text-muted-foreground"}`} />
               <span className={`text-xs ${active ? "text-primary font-medium" : "text-muted-foreground"}`}>{label}</span>
             </button>

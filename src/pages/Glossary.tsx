@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Search, Scroll, Scale, Shield } from "lucide-react";
+import { ArrowLeft, BookOpen, Search, Scroll, Scale, Shield, Gavel } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS, ADDITIONAL_AMENDMENTS } from "@/data/constitution";
+import { SUPREME_COURT_CASES, CASE_CATEGORIES } from "@/data/supremeCourtCases";
 import AmendmentTranslator from "@/components/glossary/AmendmentTranslator";
+import CaseExplainer from "@/components/glossary/CaseExplainer";
 
 interface Term {
   term: string;
@@ -92,6 +94,18 @@ const Glossary = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [caseSearch, setCaseSearch] = useState("");
+  const [activeCaseCategory, setActiveCaseCategory] = useState("All");
+
+  const filteredCases = SUPREME_COURT_CASES.filter((c) => {
+    const matchesSearch =
+      !caseSearch ||
+      c.name.toLowerCase().includes(caseSearch.toLowerCase()) ||
+      c.shortDescription.toLowerCase().includes(caseSearch.toLowerCase());
+    const matchesCategory =
+      activeCaseCategory === "All" || c.category === activeCaseCategory;
+    return matchesSearch && matchesCategory;
+  }).sort((a, b) => a.year - b.year);
 
   const filtered = GLOSSARY_TERMS.filter((t) => {
     const matchesSearch =
@@ -124,22 +138,26 @@ const Glossary = () => {
 
       <div className="max-w-2xl mx-auto px-6 -mt-4 pb-24">
         <Tabs defaultValue="glossary" className="w-full">
-          <TabsList className="grid grid-cols-4 w-full bg-card shadow-card h-auto p-1">
-            <TabsTrigger value="glossary" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+          <TabsList className="grid grid-cols-5 w-full bg-card shadow-card h-auto p-1 gap-0.5">
+            <TabsTrigger value="glossary" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <BookOpen className="w-3.5 h-3.5" />
               <span>Glossary</span>
             </TabsTrigger>
-            <TabsTrigger value="preamble" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="preamble" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Scroll className="w-3.5 h-3.5" />
               <span>Preamble</span>
             </TabsTrigger>
-            <TabsTrigger value="constitution" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="constitution" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Scale className="w-3.5 h-3.5" />
-              <span>Constitution</span>
+              <span>Articles</span>
             </TabsTrigger>
-            <TabsTrigger value="bill-of-rights" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="bill-of-rights" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Shield className="w-3.5 h-3.5" />
               <span>Amendments</span>
+            </TabsTrigger>
+            <TabsTrigger value="cases" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Gavel className="w-3.5 h-3.5" />
+              <span>Cases</span>
             </TabsTrigger>
           </TabsList>
 

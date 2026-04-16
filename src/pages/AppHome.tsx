@@ -13,7 +13,13 @@ const Index = () => {
 
   if (!parsed) return null;
 
-  return <Dashboard state={parsed.state || ""} issues={parsed.issues || []} />;
+  return (
+    <Dashboard
+      state={parsed.state || ""}
+      county={parsed.county || ""}
+      issues={parsed.issues || []}
+    />
+  );
 };
 
 export default Index;

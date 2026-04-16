@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Search } from "lucide-react";
+import { ArrowLeft, BookOpen, Search, Scroll, Scale, Shield } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS } from "@/data/constitution";
+import AmendmentTranslator from "@/components/glossary/AmendmentTranslator";
 
 interface Term {
   term: string;
@@ -111,69 +114,171 @@ const Glossary = () => {
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
           <h1 className="text-2xl font-heading font-bold text-primary-foreground flex items-center gap-2">
-            <BookOpen className="w-6 h-6" /> Political Glossary
+            <BookOpen className="w-6 h-6" /> Civic Library
           </h1>
           <p className="text-primary-foreground/60 text-sm mt-1">
-            Key terms and definitions to help you stay informed
+            Key terms, founding documents, and the Bill of Rights — explained
           </p>
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-6 -mt-4 pb-24 space-y-4">
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search terms..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 bg-card shadow-card"
-          />
-        </div>
+      <div className="max-w-2xl mx-auto px-6 -mt-4 pb-24">
+        <Tabs defaultValue="glossary" className="w-full">
+          <TabsList className="grid grid-cols-4 w-full bg-card shadow-card h-auto p-1">
+            <TabsTrigger value="glossary" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Glossary</span>
+            </TabsTrigger>
+            <TabsTrigger value="preamble" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Scroll className="w-3.5 h-3.5" />
+              <span>Preamble</span>
+            </TabsTrigger>
+            <TabsTrigger value="constitution" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Scale className="w-3.5 h-3.5" />
+              <span>Constitution</span>
+            </TabsTrigger>
+            <TabsTrigger value="bill-of-rights" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Shield className="w-3.5 h-3.5" />
+              <span>Bill of Rights</span>
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Category pills */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
-                activeCategory === cat
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-card text-muted-foreground shadow-card hover:text-foreground"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Terms */}
-        <div className="space-y-2">
-          {filtered.length === 0 && (
-            <div className="bg-card rounded-xl p-6 shadow-card text-center text-muted-foreground text-sm">
-              No terms found. Try adjusting your search.
+          {/* Glossary tab */}
+          <TabsContent value="glossary" className="space-y-4 mt-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search terms..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9 bg-card shadow-card"
+              />
             </div>
-          )}
-          {filtered.map((t) => (
-            <div key={t.term} className="bg-card rounded-xl p-4 shadow-card">
-              <div className="flex items-center justify-between mb-1">
-                <h3 className="font-heading font-bold text-foreground text-sm">
-                  {t.term}
-                </h3>
-                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                  {t.category}
-                </span>
+
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                    activeCategory === cat
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-card text-muted-foreground shadow-card hover:text-foreground"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-2">
+              {filtered.length === 0 && (
+                <div className="bg-card rounded-xl p-6 shadow-card text-center text-muted-foreground text-sm">
+                  No terms found. Try adjusting your search.
+                </div>
+              )}
+              {filtered.map((t) => (
+                <div key={t.term} className="bg-card rounded-xl p-4 shadow-card">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-heading font-bold text-foreground text-sm">
+                      {t.term}
+                    </h3>
+                    <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                      {t.category}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {t.definition}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Preamble tab */}
+          <TabsContent value="preamble" className="space-y-4 mt-4">
+            <div className="bg-card rounded-xl p-5 shadow-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Scroll className="w-5 h-5 text-civic-teal" />
+                <h2 className="font-heading font-bold text-foreground">{PREAMBLE.title}</h2>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t.definition}
+              <p className="text-xs text-muted-foreground mb-3">{PREAMBLE.intro}</p>
+              <blockquote className="border-l-4 border-civic-teal/40 pl-4 py-2 italic text-sm text-foreground leading-relaxed font-serif">
+                "{PREAMBLE.text}"
+              </blockquote>
+              <AmendmentTranslator title={PREAMBLE.title} text={PREAMBLE.text} />
+            </div>
+          </TabsContent>
+
+          {/* Constitution tab */}
+          <TabsContent value="constitution" className="space-y-3 mt-4">
+            <div className="bg-card rounded-xl p-4 shadow-card">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                The U.S. Constitution is organized into seven Articles that establish the framework of American government.
+                Each article below is a condensed summary of its core provisions — tap the translator for plain-English context.
               </p>
             </div>
-          ))}
-        </div>
+            {CONSTITUTION_ARTICLES.map((article) => (
+              <div key={article.number} className="bg-card rounded-xl p-4 shadow-card">
+                <div className="flex items-start justify-between mb-1 gap-2">
+                  <div>
+                    <h3 className="font-heading font-bold text-foreground text-sm">
+                      Article {article.number}: {article.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">{article.summary}</p>
+                  </div>
+                </div>
+                <blockquote className="mt-3 border-l-4 border-civic-teal/30 pl-3 py-1 text-xs text-foreground/90 leading-relaxed font-serif italic">
+                  {article.text}
+                </blockquote>
+                <AmendmentTranslator
+                  title={`Article ${article.number}: ${article.title}`}
+                  text={article.text}
+                />
+              </div>
+            ))}
+          </TabsContent>
+
+          {/* Bill of Rights tab */}
+          <TabsContent value="bill-of-rights" className="space-y-3 mt-4">
+            <div className="bg-card rounded-xl p-4 shadow-card">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                The first ten amendments to the Constitution, ratified December 15, 1791. They guarantee fundamental rights and protections for all Americans.
+              </p>
+            </div>
+            {BILL_OF_RIGHTS.map((amendment) => (
+              <div key={amendment.number} className="bg-card rounded-xl p-4 shadow-card">
+                <div className="flex items-start gap-3 mb-2">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-civic-teal/10 flex items-center justify-center text-civic-teal font-bold text-sm">
+                    {amendment.romanNumeral}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading font-bold text-foreground text-sm">
+                      {amendment.number}{getOrdinalSuffix(amendment.number)} Amendment
+                    </h3>
+                    <p className="text-xs text-muted-foreground">{amendment.shortName}</p>
+                  </div>
+                </div>
+                <blockquote className="border-l-4 border-civic-teal/30 pl-3 py-1 text-xs text-foreground/90 leading-relaxed font-serif italic">
+                  {amendment.text}
+                </blockquote>
+                <AmendmentTranslator
+                  title={`${amendment.number}${getOrdinalSuffix(amendment.number)} Amendment — ${amendment.shortName}`}
+                  text={amendment.text}
+                />
+              </div>
+            ))}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
 };
+
+function getOrdinalSuffix(n: number): string {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
 
 export default Glossary;

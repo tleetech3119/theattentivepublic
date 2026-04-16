@@ -7,8 +7,9 @@ import {
   ArrowLeft, Phone, Mail, MapPin, Globe, ExternalLink,
   TrendingUp, TrendingDown, Minus, Heart, Shield, Briefcase,
   GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users,
-  FileText, ChevronRight, Calendar, Loader2,
+  FileText, ChevronRight, Calendar, Loader2, Megaphone,
 } from "lucide-react";
+import ActionToolkit from "@/components/representatives/ActionToolkit";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
   healthcare: Heart, economy: Briefcase, education: GraduationCap,
@@ -268,6 +269,17 @@ const RepProfile = () => {
                 );
               })}
             </div>
+          </TabsContent>
+
+          {/* Take Action Tab */}
+          <TabsContent value="action" className="animate-fade-up">
+            <ActionToolkit
+              repId={rep.id}
+              repName={rep.name}
+              repChamber={rep.chamber}
+              repEmail={rep.contact.email}
+              repPhone={rep.contact.phone}
+            />
           </TabsContent>
 
           {/* Contact Tab */}

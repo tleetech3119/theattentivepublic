@@ -105,7 +105,7 @@ const Glossary = () => {
       <header className="gradient-hero px-6 pt-12 pb-8">
         <div className="max-w-2xl mx-auto">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="flex items-center gap-1 text-primary-foreground/70 text-sm mb-4"
           >
             <ArrowLeft className="w-4 h-4" /> Back

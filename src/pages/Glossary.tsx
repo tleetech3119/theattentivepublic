@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Search, Scroll, Scale, Shield } from "lucide-react";
+import { ArrowLeft, BookOpen, Search, Scroll, Scale, Shield, Gavel } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS, ADDITIONAL_AMENDMENTS } from "@/data/constitution";
+import { SUPREME_COURT_CASES, CASE_CATEGORIES } from "@/data/supremeCourtCases";
 import AmendmentTranslator from "@/components/glossary/AmendmentTranslator";
+import CaseExplainer from "@/components/glossary/CaseExplainer";
 
 interface Term {
   term: string;
@@ -92,6 +94,18 @@ const Glossary = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [caseSearch, setCaseSearch] = useState("");
+  const [activeCaseCategory, setActiveCaseCategory] = useState("All");
+
+  const filteredCases = SUPREME_COURT_CASES.filter((c) => {
+    const matchesSearch =
+      !caseSearch ||
+      c.name.toLowerCase().includes(caseSearch.toLowerCase()) ||
+      c.shortDescription.toLowerCase().includes(caseSearch.toLowerCase());
+    const matchesCategory =
+      activeCaseCategory === "All" || c.category === activeCaseCategory;
+    return matchesSearch && matchesCategory;
+  }).sort((a, b) => a.year - b.year);
 
   const filtered = GLOSSARY_TERMS.filter((t) => {
     const matchesSearch =
@@ -124,22 +138,26 @@ const Glossary = () => {
 
       <div className="max-w-2xl mx-auto px-6 -mt-4 pb-24">
         <Tabs defaultValue="glossary" className="w-full">
-          <TabsList className="grid grid-cols-4 w-full bg-card shadow-card h-auto p-1">
-            <TabsTrigger value="glossary" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+          <TabsList className="grid grid-cols-5 w-full bg-card shadow-card h-auto p-1 gap-0.5">
+            <TabsTrigger value="glossary" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <BookOpen className="w-3.5 h-3.5" />
               <span>Glossary</span>
             </TabsTrigger>
-            <TabsTrigger value="preamble" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="preamble" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Scroll className="w-3.5 h-3.5" />
               <span>Preamble</span>
             </TabsTrigger>
-            <TabsTrigger value="constitution" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="constitution" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Scale className="w-3.5 h-3.5" />
-              <span>Constitution</span>
+              <span>Articles</span>
             </TabsTrigger>
-            <TabsTrigger value="bill-of-rights" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger value="bill-of-rights" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Shield className="w-3.5 h-3.5" />
               <span>Amendments</span>
+            </TabsTrigger>
+            <TabsTrigger value="cases" className="text-[10px] flex flex-col gap-0.5 py-2 px-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Gavel className="w-3.5 h-3.5" />
+              <span>Cases</span>
             </TabsTrigger>
           </TabsList>
 
@@ -269,6 +287,96 @@ const Glossary = () => {
 
             {ADDITIONAL_AMENDMENTS.map((amendment) => (
               <AmendmentCard key={amendment.number} amendment={amendment} />
+            ))}
+          </TabsContent>
+
+          {/* Supreme Court Cases tab */}
+          <TabsContent value="cases" className="space-y-3 mt-4">
+            <div className="bg-card rounded-xl p-4 shadow-card">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Landmark Supreme Court decisions that shaped American law and daily life. Tap "Explain in plain English" on any case for an AI-powered breakdown.
+              </p>
+            </div>
+
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search cases..."
+                value={caseSearch}
+                onChange={(e) => setCaseSearch(e.target.value)}
+                className="pl-9 bg-card shadow-card"
+              />
+            </div>
+
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {CASE_CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCaseCategory(cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                    activeCaseCategory === cat
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-card text-muted-foreground shadow-card hover:text-foreground"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {filteredCases.length === 0 && (
+              <div className="bg-card rounded-xl p-6 shadow-card text-center text-muted-foreground text-sm">
+                No cases found. Try adjusting your search.
+              </div>
+            )}
+
+            {filteredCases.map((c) => (
+              <div key={c.id} className="bg-card rounded-xl p-4 shadow-card">
+                <div className="flex items-start gap-3 mb-2">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-civic-teal/10 flex flex-col items-center justify-center text-civic-teal">
+                    <Gavel className="w-4 h-4" />
+                    <span className="text-[9px] font-bold mt-0.5">{c.year}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading font-bold text-foreground text-sm leading-tight">
+                      {c.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                        {c.category}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground/70">
+                        {c.citation}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-xs text-foreground/90 leading-relaxed mt-2">
+                  {c.shortDescription}
+                </p>
+
+                <div className="mt-3 space-y-2">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground mb-0.5">
+                      Background
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {c.background}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground mb-0.5">
+                      Ruling
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {c.ruling}
+                    </p>
+                  </div>
+                </div>
+
+                <CaseExplainer caseData={c} />
+              </div>
             ))}
           </TabsContent>
         </Tabs>

@@ -133,7 +133,7 @@ const Dashboard = ({ state, county, issues }: Props) => {
             </div>
           </div>
           <h1 className="text-2xl font-heading font-bold text-primary-foreground mb-1">
-            Good morning 👋
+            Hello 👋
           </h1>
           <p className="text-primary-foreground/60 text-sm flex items-center gap-1">
             <MapPin className="w-3.5 h-3.5" />

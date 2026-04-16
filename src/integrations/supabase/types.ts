@@ -245,6 +245,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          selected_county: string | null
           selected_issues: Json
           selected_state: string | null
           session_id: string
@@ -253,6 +254,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          selected_county?: string | null
           selected_issues?: Json
           selected_state?: string | null
           session_id: string
@@ -261,6 +263,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          selected_county?: string | null
           selected_issues?: Json
           selected_state?: string | null
           session_id?: string

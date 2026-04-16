@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { ArrowRight, MapPin, Search } from "lucide-react";
 
 const US_STATES = [
@@ -17,9 +18,10 @@ const US_STATES = [
 
 interface Props {
   onNext: (state: string) => void;
+  onBack: () => void;
 }
 
-const OnboardingState = ({ onNext }: Props) => {
+const OnboardingState = ({ onNext, onBack }: Props) => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
 
@@ -30,6 +32,9 @@ const OnboardingState = ({ onNext }: Props) => {
   return (
     <div className="flex flex-col min-h-screen bg-background px-6 py-12">
       <div className="max-w-lg mx-auto w-full animate-fade-up">
+        <button onClick={onBack} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back
+        </button>
         <div className="flex items-center gap-2 mb-2">
           <MapPin className="w-5 h-5 text-primary" />
           <span className="text-sm font-medium text-muted-foreground">Step 1 of 3</span>

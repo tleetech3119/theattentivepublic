@@ -1,16 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { Check, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Sparkles } from "lucide-react";
 
 interface Props {
   state: string;
   issues: string[];
   onComplete: () => void;
+  onBack: () => void;
 }
 
-const OnboardingReady = ({ state, issues, onComplete }: Props) => {
+const OnboardingReady = ({ state, issues, onComplete, onBack }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 gradient-hero">
       <div className="max-w-lg mx-auto text-center animate-fade-up">
+        <button onClick={onBack} className="flex items-center gap-1 text-sm text-primary-foreground/60 hover:text-primary-foreground mb-6 transition-colors mx-auto">
+          <ArrowLeft className="w-4 h-4" /> Back
+        </button>
         <div className="w-16 h-16 rounded-full gradient-accent flex items-center justify-center mx-auto mb-8 shadow-glow animate-scale-in">
           <Sparkles className="w-8 h-8 text-primary-foreground" />
         </div>

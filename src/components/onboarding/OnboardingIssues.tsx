@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users } from "lucide-react";
 
 const ISSUES = [
   { id: "healthcare", label: "Healthcare", icon: Heart, color: "text-civic-coral" },
@@ -17,9 +17,10 @@ const ISSUES = [
 
 interface Props {
   onNext: (issues: string[]) => void;
+  onBack: () => void;
 }
 
-const OnboardingIssues = ({ onNext }: Props) => {
+const OnboardingIssues = ({ onNext, onBack }: Props) => {
   const [selected, setSelected] = useState<string[]>([]);
 
   const toggle = (id: string) => {
@@ -31,6 +32,9 @@ const OnboardingIssues = ({ onNext }: Props) => {
   return (
     <div className="flex flex-col min-h-screen bg-background px-6 py-12">
       <div className="max-w-lg mx-auto w-full animate-fade-up">
+        <button onClick={onBack} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back
+        </button>
         <div className="flex items-center gap-2 mb-2">
           <Heart className="w-5 h-5 text-primary" />
           <span className="text-sm font-medium text-muted-foreground">Step 2 of 3</span>

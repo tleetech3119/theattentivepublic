@@ -27,6 +27,7 @@ const Index = () => {
   if (step === "state") {
     return (
       <OnboardingState
+        onBack={() => setStep("welcome")}
         onNext={(state) => {
           setUserState(state);
           setStep("issues");
@@ -38,6 +39,7 @@ const Index = () => {
   if (step === "issues") {
     return (
       <OnboardingIssues
+        onBack={() => setStep("state")}
         onNext={(issues) => {
           setUserIssues(issues);
           setStep("ready");
@@ -51,6 +53,7 @@ const Index = () => {
       <OnboardingReady
         state={userState}
         issues={userIssues}
+        onBack={() => setStep("issues")}
         onComplete={() => completeOnboarding(userState, userIssues)}
       />
     );

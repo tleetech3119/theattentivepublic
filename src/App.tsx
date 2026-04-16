@@ -4,7 +4,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
-import Index from "./pages/Index.tsx";
+import Landing from "./pages/Landing.tsx";
+import Onboarding from "./pages/Onboarding.tsx";
+import AppHome from "./pages/AppHome.tsx";
 import BillDetail from "./pages/BillDetail.tsx";
 import RepProfile from "./pages/RepProfile.tsx";
 import ElectionDetail from "./pages/ElectionDetail.tsx";
@@ -22,7 +24,9 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/app" element={<AppHome />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/bill/:id" element={<BillDetail />} />
             <Route path="/rep/:id" element={<RepProfile />} />

@@ -1,23 +1,28 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import OnboardingWelcome from "@/components/onboarding/OnboardingWelcome";
 import OnboardingState from "@/components/onboarding/OnboardingState";
 import OnboardingIssues from "@/components/onboarding/OnboardingIssues";
 import OnboardingReady from "@/components/onboarding/OnboardingReady";
-import Dashboard from "@/components/dashboard/Dashboard";
 
-type Step = "welcome" | "state" | "issues" | "ready" | "dashboard";
+type Step = "welcome" | "state" | "issues" | "ready";
 
-const Index = () => {
-  const saved = localStorage.getItem("tap_onboarding");
-  const parsed = saved ? JSON.parse(saved) : null;
+const Onboarding = () => {
+  const navigate = useNavigate();
+  const [step, setStep] = useState<Step>("welcome");
+  const [userState, setUserState] = useState("");
+  const [userIssues, setUserIssues] = useState<string[]>([]);
 
-  const [step, setStep] = useState<Step>(parsed ? "dashboard" : "welcome");
-  const [userState, setUserState] = useState(parsed?.state || "");
-  const [userIssues, setUserIssues] = useState<string[]>(parsed?.issues || []);
+  // If onboarding already done, skip to app
+  useEffect(() => {
+    if (localStorage.getItem("tap_onboarding")) {
+      navigate("/app", { replace: true });
+    }
+  }, [navigate]);
 
   const completeOnboarding = (state: string, issues: string[]) => {
     localStorage.setItem("tap_onboarding", JSON.stringify({ state, issues }));
-    setStep("dashboard");
+    navigate("/app", { replace: true });
   };
 
   if (step === "welcome") {
@@ -48,18 +53,14 @@ const Index = () => {
     );
   }
 
-  if (step === "ready") {
-    return (
-      <OnboardingReady
-        state={userState}
-        issues={userIssues}
-        onBack={() => setStep("issues")}
-        onComplete={() => completeOnboarding(userState, userIssues)}
-      />
-    );
-  }
-
-  return <Dashboard state={userState} issues={userIssues} />;
+  return (
+    <OnboardingReady
+      state={userState}
+      issues={userIssues}
+      onBack={() => setStep("issues")}
+      onComplete={() => completeOnboarding(userState, userIssues)}
+    />
+  );
 };
 
-export default Index;
+export default Onboarding;

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useBill } from "@/hooks/use-bills";
 import BillTranslator from "@/components/bills/BillTranslator";
+import BillBothSides from "@/components/bills/BillBothSides";
 import {
   ArrowLeft, Calendar, CheckCircle2, Circle, Clock, FileText,
   Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home,
@@ -102,6 +103,9 @@ const BillDetail = () => {
 
         {/* AI Plain-English Translator */}
         <BillTranslator billId={bill.id} code={bill.code} title={bill.title} summary={bill.summary} />
+
+        {/* Both Sides */}
+        <BillBothSides code={bill.code} title={bill.title} summary={bill.summary} />
 
         {/* Timeline */}
         <section className="bg-card rounded-xl p-5 shadow-card animate-fade-up" style={{ animationDelay: "0.1s" }}>

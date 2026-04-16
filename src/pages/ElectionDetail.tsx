@@ -68,8 +68,8 @@ const ElectionDetail = () => {
           <h1 className="text-xl font-heading font-bold text-foreground mb-2">
             Election not found
           </h1>
-          <Button variant="outline" onClick={() => navigate("/")}>
-            Back to Dashboard
+          <Button variant="outline" onClick={() => navigate(-1)}>
+            Go Back
           </Button>
         </div>
       </div>
@@ -84,7 +84,7 @@ const ElectionDetail = () => {
       <header className="gradient-hero px-6 pt-12 pb-8">
         <div className="max-w-2xl mx-auto">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="flex items-center gap-1 text-primary-foreground/70 text-sm mb-4"
           >
             <ArrowLeft className="w-4 h-4" /> Back

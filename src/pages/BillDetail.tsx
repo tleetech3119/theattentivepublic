@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useBill } from "@/hooks/use-bills";
 import BillTranslator from "@/components/bills/BillTranslator";
 import BillBothSides from "@/components/bills/BillBothSides";
+import ConnectTheDots from "@/components/bills/ConnectTheDots";
 import WatchButton from "@/components/bills/WatchButton";
 import {
   ArrowLeft, Calendar, CheckCircle2, Circle, Clock, FileText,
@@ -112,6 +113,9 @@ const BillDetail = () => {
 
         {/* Both Sides */}
         <BillBothSides code={bill.code} title={bill.title} summary={bill.summary} />
+
+        {/* Connect the Dots: Constitution + SCOTUS */}
+        <ConnectTheDots code={bill.code} title={bill.title} summary={bill.summary} />
 
         {/* Timeline */}
         <section className="bg-card rounded-xl p-5 shadow-card animate-fade-up" style={{ animationDelay: "0.1s" }}>

@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Landing from "./pages/Landing.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import AppHome from "./pages/AppHome.tsx";
+import VotingInfo from "./pages/VotingInfo.tsx";
 import BillDetail from "./pages/BillDetail.tsx";
 import RepProfile from "./pages/RepProfile.tsx";
 import ElectionDetail from "./pages/ElectionDetail.tsx";
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/app" element={<AppHome />} />
+            <Route path="/voting" element={<VotingInfo />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/bill/:id" element={<BillDetail />} />
             <Route path="/rep/:id" element={<RepProfile />} />

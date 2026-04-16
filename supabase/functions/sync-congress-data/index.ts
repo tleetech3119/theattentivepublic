@@ -248,7 +248,7 @@ async function fetchMembers(apiKey: string, congress: number) {
               phone: "",
               email: "",
               office: "",
-              website: m.officialWebsiteUrl || m.url || "",
+              website: m.officialWebsiteUrl || "",
             },
             issue_scores: [],
             voting_history: [],

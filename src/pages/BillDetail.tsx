@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useBill } from "@/hooks/use-bills";
+import BillTranslator from "@/components/bills/BillTranslator";
 import {
   ArrowLeft, Calendar, CheckCircle2, Circle, Clock, FileText,
   Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home,
@@ -98,6 +99,9 @@ const BillDetail = () => {
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">{bill.summary}</p>
         </section>
+
+        {/* AI Plain-English Translator */}
+        <BillTranslator billId={bill.id} code={bill.code} title={bill.title} summary={bill.summary} />
 
         {/* Timeline */}
         <section className="bg-card rounded-xl p-5 shadow-card animate-fade-up" style={{ animationDelay: "0.1s" }}>

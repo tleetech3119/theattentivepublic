@@ -289,6 +289,96 @@ const Glossary = () => {
               <AmendmentCard key={amendment.number} amendment={amendment} />
             ))}
           </TabsContent>
+
+          {/* Supreme Court Cases tab */}
+          <TabsContent value="cases" className="space-y-3 mt-4">
+            <div className="bg-card rounded-xl p-4 shadow-card">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Landmark Supreme Court decisions that shaped American law and daily life. Tap "Explain in plain English" on any case for an AI-powered breakdown.
+              </p>
+            </div>
+
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search cases..."
+                value={caseSearch}
+                onChange={(e) => setCaseSearch(e.target.value)}
+                className="pl-9 bg-card shadow-card"
+              />
+            </div>
+
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {CASE_CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCaseCategory(cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                    activeCaseCategory === cat
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-card text-muted-foreground shadow-card hover:text-foreground"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {filteredCases.length === 0 && (
+              <div className="bg-card rounded-xl p-6 shadow-card text-center text-muted-foreground text-sm">
+                No cases found. Try adjusting your search.
+              </div>
+            )}
+
+            {filteredCases.map((c) => (
+              <div key={c.id} className="bg-card rounded-xl p-4 shadow-card">
+                <div className="flex items-start gap-3 mb-2">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-civic-teal/10 flex flex-col items-center justify-center text-civic-teal">
+                    <Gavel className="w-4 h-4" />
+                    <span className="text-[9px] font-bold mt-0.5">{c.year}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading font-bold text-foreground text-sm leading-tight">
+                      {c.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                        {c.category}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground/70">
+                        {c.citation}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-xs text-foreground/90 leading-relaxed mt-2">
+                  {c.shortDescription}
+                </p>
+
+                <div className="mt-3 space-y-2">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground mb-0.5">
+                      Background
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {c.background}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground mb-0.5">
+                      Ruling
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {c.ruling}
+                    </p>
+                  </div>
+                </div>
+
+                <CaseExplainer caseData={c} />
+              </div>
+            ))}
+          </TabsContent>
         </Tabs>
       </div>
     </div>

@@ -37,7 +37,7 @@ const OnboardingIssues = ({ onNext, onBack }: Props) => {
         </button>
         <div className="flex items-center gap-2 mb-2">
           <Heart className="w-5 h-5 text-primary" />
-          <span className="text-sm font-medium text-muted-foreground">Step 2 of 3</span>
+          <span className="text-sm font-medium text-muted-foreground">Step 3 of 4</span>
         </div>
         <h2 className="text-3xl font-heading font-bold text-foreground mb-2">What matters to you?</h2>
         <p className="text-muted-foreground mb-6">

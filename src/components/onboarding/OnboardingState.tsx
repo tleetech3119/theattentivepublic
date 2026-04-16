@@ -37,7 +37,7 @@ const OnboardingState = ({ onNext, onBack }: Props) => {
         </button>
         <div className="flex items-center gap-2 mb-2">
           <MapPin className="w-5 h-5 text-primary" />
-          <span className="text-sm font-medium text-muted-foreground">Step 1 of 3</span>
+          <span className="text-sm font-medium text-muted-foreground">Step 1 of 4</span>
         </div>
         <h2 className="text-3xl font-heading font-bold text-foreground mb-2">Where do you live?</h2>
         <p className="text-muted-foreground mb-6">

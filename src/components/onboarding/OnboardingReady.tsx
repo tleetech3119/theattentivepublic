@@ -3,12 +3,13 @@ import { ArrowLeft, Check, Sparkles } from "lucide-react";
 
 interface Props {
   state: string;
+  county: string;
   issues: string[];
   onComplete: () => void;
   onBack: () => void;
 }
 
-const OnboardingReady = ({ state, issues, onComplete, onBack }: Props) => {
+const OnboardingReady = ({ state, county, issues, onComplete, onBack }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 gradient-hero">
       <div className="max-w-lg mx-auto text-center animate-fade-up">
@@ -19,7 +20,7 @@ const OnboardingReady = ({ state, issues, onComplete, onBack }: Props) => {
           <Sparkles className="w-8 h-8 text-primary-foreground" />
         </div>
 
-        <span className="text-sm font-medium text-primary-foreground/60 mb-2 block">Step 3 of 3</span>
+        <span className="text-sm font-medium text-primary-foreground/60 mb-2 block">Step 4 of 4</span>
         <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary-foreground mb-4">
           You're all set!
         </h2>
@@ -31,7 +32,7 @@ const OnboardingReady = ({ state, issues, onComplete, onBack }: Props) => {
           <div className="flex items-center gap-3">
             <Check className="w-5 h-5 text-civic-teal" />
             <span className="text-primary-foreground text-sm">
-              Tracking legislation in <strong>{state}</strong>
+              Tracking <strong>{county} County, {state}</strong>
             </span>
           </div>
           <div className="flex items-center gap-3">

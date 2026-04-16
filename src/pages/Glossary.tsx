@@ -3,7 +3,7 @@ import { ArrowLeft, BookOpen, Search, Scroll, Scale, Shield } from "lucide-react
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS } from "@/data/constitution";
+import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS, ADDITIONAL_AMENDMENTS } from "@/data/constitution";
 import AmendmentTranslator from "@/components/glossary/AmendmentTranslator";
 
 interface Term {
@@ -139,7 +139,7 @@ const Glossary = () => {
             </TabsTrigger>
             <TabsTrigger value="bill-of-rights" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Shield className="w-3.5 h-3.5" />
-              <span>Bill of Rights</span>
+              <span>Amendments</span>
             </TabsTrigger>
           </TabsList>
 
@@ -239,34 +239,36 @@ const Glossary = () => {
             ))}
           </TabsContent>
 
-          {/* Bill of Rights tab */}
+          {/* Amendments tab */}
           <TabsContent value="bill-of-rights" className="space-y-3 mt-4">
             <div className="bg-card rounded-xl p-4 shadow-card">
               <p className="text-xs text-muted-foreground leading-relaxed">
-                The first ten amendments to the Constitution, ratified December 15, 1791. They guarantee fundamental rights and protections for all Americans.
+                All 27 amendments to the U.S. Constitution. The first ten — the <strong className="text-foreground">Bill of Rights</strong> — were ratified December 15, 1791. The remaining 17 were added between 1795 and 1992.
               </p>
             </div>
+
+            <div className="flex items-center gap-2 pt-2">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Bill of Rights (1–10)
+              </span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
             {BILL_OF_RIGHTS.map((amendment) => (
-              <div key={amendment.number} className="bg-card rounded-xl p-4 shadow-card">
-                <div className="flex items-start gap-3 mb-2">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-civic-teal/10 flex items-center justify-center text-civic-teal font-bold text-sm">
-                    {amendment.romanNumeral}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-heading font-bold text-foreground text-sm">
-                      {amendment.number}{getOrdinalSuffix(amendment.number)} Amendment
-                    </h3>
-                    <p className="text-xs text-muted-foreground">{amendment.shortName}</p>
-                  </div>
-                </div>
-                <blockquote className="border-l-4 border-civic-teal/30 pl-3 py-1 text-xs text-foreground/90 leading-relaxed font-serif italic">
-                  {amendment.text}
-                </blockquote>
-                <AmendmentTranslator
-                  title={`${amendment.number}${getOrdinalSuffix(amendment.number)} Amendment — ${amendment.shortName}`}
-                  text={amendment.text}
-                />
-              </div>
+              <AmendmentCard key={amendment.number} amendment={amendment} />
+            ))}
+
+            <div className="flex items-center gap-2 pt-4">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Later Amendments (11–27)
+              </span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            {ADDITIONAL_AMENDMENTS.map((amendment) => (
+              <AmendmentCard key={amendment.number} amendment={amendment} />
             ))}
           </TabsContent>
         </Tabs>
@@ -274,6 +276,31 @@ const Glossary = () => {
     </div>
   );
 };
+
+const AmendmentCard = ({ amendment }: { amendment: typeof BILL_OF_RIGHTS[number] }) => (
+  <div className="bg-card rounded-xl p-4 shadow-card">
+    <div className="flex items-start gap-3 mb-2">
+      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-civic-teal/10 flex items-center justify-center text-civic-teal font-bold text-xs">
+        {amendment.romanNumeral}
+      </div>
+      <div className="flex-1 min-w-0">
+        <h3 className="font-heading font-bold text-foreground text-sm">
+          {amendment.number}
+          {getOrdinalSuffix(amendment.number)} Amendment
+        </h3>
+        <p className="text-xs text-muted-foreground">{amendment.shortName}</p>
+        <p className="text-[10px] text-muted-foreground/70 mt-0.5">Ratified {amendment.ratified}</p>
+      </div>
+    </div>
+    <blockquote className="border-l-4 border-civic-teal/30 pl-3 py-1 text-xs text-foreground/90 leading-relaxed font-serif italic">
+      {amendment.text}
+    </blockquote>
+    <AmendmentTranslator
+      title={`${amendment.number}${getOrdinalSuffix(amendment.number)} Amendment — ${amendment.shortName}`}
+      text={amendment.text}
+    />
+  </div>
+);
 
 function getOrdinalSuffix(n: number): string {
   const s = ["th", "st", "nd", "rd"];

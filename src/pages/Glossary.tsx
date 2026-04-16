@@ -3,7 +3,7 @@ import { ArrowLeft, BookOpen, Search, Scroll, Scale, Shield } from "lucide-react
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS } from "@/data/constitution";
+import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS, ADDITIONAL_AMENDMENTS } from "@/data/constitution";
 import AmendmentTranslator from "@/components/glossary/AmendmentTranslator";
 
 interface Term {

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Shield, ArrowRight } from "lucide-react";
-import tapLogo from "@/assets/tap-logo-v3.png";
+import tapLogo from "@/assets/tap-logo-v4.png";
 
 interface Props {
   onNext: () => void;
@@ -10,12 +10,17 @@ const OnboardingWelcome = ({ onNext }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 gradient-hero">
       <div className="max-w-lg mx-auto text-center animate-fade-up">
-        <img src={tapLogo} alt="TAP logo" width={120} height={120} className="mx-auto mb-6 drop-shadow-lg" />
+        <div className="inline-block bg-primary-foreground rounded-2xl p-5 mb-6 shadow-2xl">
+          <img
+            src={tapLogo}
+            alt="TAP — The Attentive Public"
+            width={200}
+            height={200}
+            className="block w-40 h-40 md:w-48 md:h-48"
+          />
+        </div>
 
-        <h1 className="text-4xl md:text-5xl font-heading font-extrabold text-primary-foreground mb-4 leading-tight">
-          The Attentive Public
-        </h1>
-        <p className="text-lg text-primary-foreground/70 mb-3">
+        <p className="text-lg text-primary-foreground/80 mb-3 leading-relaxed">
           Your personal guide to what's happening in government — made simple, unbiased, and actionable.
         </p>
 

@@ -14,6 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      bill_notifications: {
+        Row: {
+          bill_id: number
+          change_type: string
+          created_at: string
+          detail: string | null
+          id: string
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          bill_id: number
+          change_type: string
+          created_at?: string
+          detail?: string | null
+          id?: string
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          bill_id?: number
+          change_type?: string
+          created_at?: string
+          detail?: string | null
+          id?: string
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bill_watches: {
+        Row: {
+          bill_id: number
+          created_at: string
+          id: string
+          last_checked_at: string
+          snapshot_last_action: string
+          snapshot_progress: number
+          snapshot_status: string
+          snapshot_timeline_count: number
+          snapshot_votes_count: number
+          user_id: string
+        }
+        Insert: {
+          bill_id: number
+          created_at?: string
+          id?: string
+          last_checked_at?: string
+          snapshot_last_action: string
+          snapshot_progress: number
+          snapshot_status: string
+          snapshot_timeline_count?: number
+          snapshot_votes_count?: number
+          user_id: string
+        }
+        Update: {
+          bill_id?: number
+          created_at?: string
+          id?: string
+          last_checked_at?: string
+          snapshot_last_action?: string
+          snapshot_progress?: number
+          snapshot_status?: string
+          snapshot_timeline_count?: number
+          snapshot_votes_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       bills: {
         Row: {
           code: string

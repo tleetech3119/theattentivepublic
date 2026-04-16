@@ -7,10 +7,16 @@ import { useBills } from "@/hooks/use-bills";
 import { useRepresentatives } from "@/hooks/use-representatives";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import NotificationsBell from "@/components/notifications/NotificationsBell";
+import { useAuth } from "@/contexts/AuthContext";
 import {
-  FileText, Users, Vote, Bell, TrendingUp, ArrowRight,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  FileText, Users, Vote, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
+  User as UserIcon, LogOut, LogIn,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
@@ -69,6 +75,7 @@ const Dashboard = ({ state, issues }: Props) => {
   const navigate = useNavigate();
   const { bills, loading: billsLoading } = useBills();
   const { reps, loading: repsLoading } = useRepresentatives(state);
+  const { user, signOut } = useAuth();
   const [syncing, setSyncing] = useState(false);
 
   const handleSync = async () => {
@@ -98,14 +105,30 @@ const Dashboard = ({ state, issues }: Props) => {
               <img src={tapLogo} alt="TAP" width={32} height={32} />
               <span className="font-heading font-bold text-primary-foreground text-lg">TAP</span>
             </div>
-            <div className="flex items-center gap-2">
-              <button onClick={handleSync} disabled={syncing} className="relative">
+            <div className="flex items-center gap-3">
+              <button onClick={handleSync} disabled={syncing} className="relative" aria-label="Sync data">
                 <RefreshCw className={`w-5 h-5 text-primary-foreground/70 ${syncing ? "animate-spin" : ""}`} />
               </button>
-              <button className="relative">
-                <Bell className="w-5 h-5 text-primary-foreground/70" />
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-accent rounded-full" />
-              </button>
+              <NotificationsBell />
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="w-8 h-8 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 flex items-center justify-center" aria-label="Account">
+                      <UserIcon className="w-4 h-4 text-primary-foreground" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <div className="px-2 py-1.5 text-xs text-muted-foreground truncate">{user.email}</div>
+                    <DropdownMenuItem onClick={signOut}>
+                      <LogOut className="w-4 h-4 mr-2" /> Sign out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <button onClick={() => navigate("/auth")} className="text-xs text-primary-foreground/80 hover:text-primary-foreground flex items-center gap-1" aria-label="Sign in">
+                  <LogIn className="w-4 h-4" /> Sign in
+                </button>
+              )}
             </div>
           </div>
           <h1 className="text-2xl font-heading font-bold text-primary-foreground mb-1">

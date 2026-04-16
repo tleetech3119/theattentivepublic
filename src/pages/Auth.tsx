@@ -17,7 +17,10 @@ const Auth = () => {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate("/", { replace: true });
+    if (!authLoading && user) {
+      const dest = localStorage.getItem("tap_onboarding") ? "/app" : "/onboarding";
+      navigate(dest, { replace: true });
+    }
   }, [user, authLoading, navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -26,14 +29,14 @@ const Auth = () => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: window.location.origin },
+      options: { emailRedirectTo: `${window.location.origin}/onboarding` },
     });
     setBusy(false);
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Account created — you're signed in.");
-      navigate("/", { replace: true });
+      toast.success("Account created — let's set you up.");
+      navigate("/onboarding", { replace: true });
     }
   };
 
@@ -45,7 +48,8 @@ const Auth = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      navigate("/", { replace: true });
+      const dest = localStorage.getItem("tap_onboarding") ? "/app" : "/onboarding";
+      navigate(dest, { replace: true });
     }
   };
 

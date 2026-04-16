@@ -16,7 +16,7 @@ import {
   FileText, Users, Vote, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
-  User as UserIcon, LogOut, LogIn,
+  User as UserIcon, LogOut, LogIn, IdCard,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
@@ -68,10 +68,11 @@ function daysUntil(date: Date): number {
 
 interface Props {
   state: string;
+  county?: string;
   issues: string[];
 }
 
-const Dashboard = ({ state, issues }: Props) => {
+const Dashboard = ({ state, county, issues }: Props) => {
   const navigate = useNavigate();
   const { bills, loading: billsLoading } = useBills();
   const { reps, loading: repsLoading } = useRepresentatives(state);
@@ -135,7 +136,8 @@ const Dashboard = ({ state, issues }: Props) => {
             Good morning 👋
           </h1>
           <p className="text-primary-foreground/60 text-sm flex items-center gap-1">
-            <MapPin className="w-3.5 h-3.5" /> {state} • {issues.length} topics tracked
+            <MapPin className="w-3.5 h-3.5" />
+            {county ? `${county} County, ${state}` : state} • {issues.length} topics tracked
           </p>
         </div>
       </header>

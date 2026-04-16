@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useBill } from "@/hooks/use-bills";
 import BillTranslator from "@/components/bills/BillTranslator";
 import BillBothSides from "@/components/bills/BillBothSides";
+import WatchButton from "@/components/bills/WatchButton";
 import {
   ArrowLeft, Calendar, CheckCircle2, Circle, Clock, FileText,
   Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home,
@@ -79,6 +80,11 @@ const BillDetail = () => {
       </header>
 
       <div className="max-w-2xl mx-auto px-6 -mt-8 space-y-6">
+        {/* Watch action */}
+        <div className="flex justify-end animate-fade-up">
+          <WatchButton bill={bill} />
+        </div>
+
         {/* Progress Card */}
         <div className="bg-card rounded-xl p-5 shadow-card animate-fade-up">
           <div className="flex items-center justify-between mb-3">

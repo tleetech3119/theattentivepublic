@@ -7,8 +7,9 @@ import {
   ArrowLeft, Phone, Mail, MapPin, Globe, ExternalLink,
   TrendingUp, TrendingDown, Minus, Heart, Shield, Briefcase,
   GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users,
-  FileText, ChevronRight, Calendar, Loader2,
+  FileText, ChevronRight, Calendar, Loader2, Megaphone,
 } from "lucide-react";
+import ActionToolkit from "@/components/representatives/ActionToolkit";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
   healthcare: Heart, economy: Briefcase, education: GraduationCap,
@@ -102,11 +103,14 @@ const RepProfile = () => {
 
       <div className="max-w-2xl mx-auto px-6 -mt-4 pb-12">
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="w-full bg-card shadow-card rounded-xl p-1 mb-6">
+          <TabsList className="w-full bg-card shadow-card rounded-xl p-1 mb-6 flex-wrap h-auto">
             <TabsTrigger value="overview" className="flex-1 text-xs">Overview</TabsTrigger>
             <TabsTrigger value="legislation" className="flex-1 text-xs">Bills</TabsTrigger>
             <TabsTrigger value="votes" className="flex-1 text-xs">Votes</TabsTrigger>
             <TabsTrigger value="alignment" className="flex-1 text-xs">Alignment</TabsTrigger>
+            <TabsTrigger value="action" className="flex-1 text-xs gap-1">
+              <Megaphone className="w-3 h-3" /> Take Action
+            </TabsTrigger>
             <TabsTrigger value="contact" className="flex-1 text-xs">Contact</TabsTrigger>
           </TabsList>
 
@@ -268,6 +272,17 @@ const RepProfile = () => {
                 );
               })}
             </div>
+          </TabsContent>
+
+          {/* Take Action Tab */}
+          <TabsContent value="action" className="animate-fade-up">
+            <ActionToolkit
+              repId={rep.id}
+              repName={rep.name}
+              repChamber={rep.chamber}
+              repEmail={rep.contact.email}
+              repPhone={rep.contact.phone}
+            />
           </TabsContent>
 
           {/* Contact Tab */}

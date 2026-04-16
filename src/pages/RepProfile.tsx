@@ -273,14 +273,14 @@ const RepProfile = () => {
           {/* Contact Tab */}
           <TabsContent value="contact" className="space-y-3 animate-fade-up">
             {[
-              { icon: Phone, label: "Phone", value: rep.contact.phone, href: `tel:${rep.contact.phone}` },
-              { icon: Mail, label: "Email", value: rep.contact.email, href: `mailto:${rep.contact.email}` },
+              { icon: Phone, label: "Phone", value: rep.contact.phone, href: rep.contact.phone ? `tel:${rep.contact.phone}` : undefined },
+              { icon: Mail, label: "Email", value: rep.contact.email, href: rep.contact.email ? `mailto:${rep.contact.email}` : undefined },
               { icon: MapPin, label: "Office", value: rep.contact.office },
-              { icon: Globe, label: "Website", value: rep.contact.website, href: rep.contact.website },
+              { icon: Globe, label: "Website", value: rep.contact.website, href: rep.contact.website || undefined },
               ...(rep.contact.twitter ? [{ icon: ExternalLink, label: "Twitter", value: rep.contact.twitter, href: `https://twitter.com/${rep.contact.twitter.replace("@", "")}` }] : []),
             ].map(({ icon: Icon, label, value, href }) => (
               <div key={label} className="bg-card rounded-xl p-4 shadow-card">
-                {href ? (
+                {href && value ? (
                   <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
                     <div className="w-10 h-10 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
                       <Icon className="w-5 h-5 text-civic-teal" />
@@ -298,7 +298,7 @@ const RepProfile = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-xs text-muted-foreground">{label}</div>
-                      <div className="text-sm font-medium text-foreground">{value}</div>
+                      <div className="text-sm font-medium text-muted-foreground italic">{value || "Not available"}</div>
                     </div>
                   </div>
                 )}

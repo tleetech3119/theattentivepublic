@@ -139,7 +139,7 @@ const Glossary = () => {
             </TabsTrigger>
             <TabsTrigger value="bill-of-rights" className="text-xs flex flex-col gap-0.5 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <Shield className="w-3.5 h-3.5" />
-              <span>Bill of Rights</span>
+              <span>Amendments</span>
             </TabsTrigger>
           </TabsList>
 

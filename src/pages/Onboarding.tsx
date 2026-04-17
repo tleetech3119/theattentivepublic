@@ -32,44 +32,38 @@ const Onboarding = () => {
       JSON.stringify({ state, county, issues })
     );
 
-    // Persist to Supabase keyed by user id (or anonymous session id fallback)
-    try {
-      const sessionId =
-        user?.id ??
-        localStorage.getItem("tap_session_id") ??
-        (() => {
-          const id = crypto.randomUUID();
-          localStorage.setItem("tap_session_id", id);
-          return id;
-        })();
-
-      // Upsert by session_id
-      const { data: existing } = await supabase
-        .from("user_preferences")
-        .select("id")
-        .eq("session_id", sessionId)
-        .maybeSingle();
-
-      if (existing) {
-        await supabase
+    // Only persist to the backend for authenticated users — anonymous users
+    // keep their preferences in localStorage to avoid storing unsecured rows.
+    if (user) {
+      try {
+        const { data: existing } = await supabase
           .from("user_preferences")
-          .update({
+          .select("id")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (existing) {
+          await supabase
+            .from("user_preferences")
+            .update({
+              selected_state: state,
+              selected_county: county,
+              selected_issues: issues,
+            })
+            .eq("id", existing.id);
+        } else {
+          await supabase.from("user_preferences").insert({
+            user_id: user.id,
+            session_id: user.id,
             selected_state: state,
             selected_county: county,
             selected_issues: issues,
-          })
-          .eq("id", existing.id);
-      } else {
-        await supabase.from("user_preferences").insert({
-          session_id: sessionId,
-          selected_state: state,
-          selected_county: county,
-          selected_issues: issues,
-        });
+          });
+        }
+      } catch (err) {
+        // Non-fatal — user still gets the app
+        console.error("Failed to persist preferences:", err);
       }
-    } catch (err) {
-      // Non-fatal — user still gets the app
-      console.error("Failed to persist preferences:", err);
     }
 
     navigate("/app", { replace: true });

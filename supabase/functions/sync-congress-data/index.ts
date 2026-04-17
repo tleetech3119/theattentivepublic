@@ -8,8 +8,30 @@ Deno.serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
+  // Require authentication — this endpoint uses the service role key and
+  // performs heavy upserts, so it must not be callable anonymously.
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+  const authClient = createClient(supabaseUrl, anonKey);
+  const token = authHeader.replace("Bearer ", "");
+  const { data: claimsData, error: authError } = await authClient.auth.getClaims(token);
+  if (authError || !claimsData?.claims) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const CONGRESS_API_KEY = Deno.env.get("CONGRESS_API_KEY");
-  
+
   if (!CONGRESS_API_KEY) {
     return new Response(JSON.stringify({ error: "CONGRESS_API_KEY not configured" }), {
       status: 500,
@@ -17,7 +39,6 @@ Deno.serve(async (req) => {
     });
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const supabase = createClient(supabaseUrl, supabaseKey);
 

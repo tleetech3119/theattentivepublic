@@ -112,9 +112,11 @@ const Dashboard = ({ state, county, issues }: Props) => {
               <span className="font-heading font-bold text-primary-foreground text-lg">TAP</span>
             </div>
             <div className="flex items-center gap-3">
-              <button onClick={handleSync} disabled={syncing} className="relative" aria-label="Sync data">
-                <RefreshCw className={`w-5 h-5 text-primary-foreground/70 ${syncing ? "animate-spin" : ""}`} />
-              </button>
+              {user && (
+                <button onClick={handleSync} disabled={syncing} className="relative" aria-label="Sync data">
+                  <RefreshCw className={`w-5 h-5 text-primary-foreground/70 ${syncing ? "animate-spin" : ""}`} />
+                </button>
+              )}
               <NotificationsBell />
               {user ? (
                 <DropdownMenu>

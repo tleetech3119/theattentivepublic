@@ -16,7 +16,7 @@ import {
   FileText, Users, Vote, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
-  User as UserIcon, LogOut, LogIn, IdCard,
+  User as UserIcon, LogOut, LogIn, IdCard, Pencil,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
@@ -79,6 +79,11 @@ const Dashboard = ({ state, county, issues }: Props) => {
   const { user, signOut } = useAuth();
   const [syncing, setSyncing] = useState(false);
 
+  const handleChangeLocation = () => {
+    localStorage.removeItem("tap_onboarding");
+    navigate("/onboarding");
+  };
+
   const handleSync = async () => {
     setSyncing(true);
     try {
@@ -120,6 +125,9 @@ const Dashboard = ({ state, county, issues }: Props) => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <div className="px-2 py-1.5 text-xs text-muted-foreground truncate">{user.email}</div>
+                    <DropdownMenuItem onClick={handleChangeLocation}>
+                      <MapPin className="w-4 h-4 mr-2" /> Change location
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={signOut}>
                       <LogOut className="w-4 h-4 mr-2" /> Sign out
                     </DropdownMenuItem>
@@ -135,10 +143,15 @@ const Dashboard = ({ state, county, issues }: Props) => {
           <h1 className="text-2xl font-heading font-bold text-primary-foreground mb-1">
             Hello 👋
           </h1>
-          <p className="text-primary-foreground/60 text-sm flex items-center gap-1">
+          <button
+            onClick={handleChangeLocation}
+            className="text-primary-foreground/60 hover:text-primary-foreground text-sm flex items-center gap-1 transition-colors group"
+            aria-label="Change your state, county, or issues"
+          >
             <MapPin className="w-3.5 h-3.5" />
-            {county ? `${county} County, ${state}` : state} • {issues.length} topics tracked
-          </p>
+            <span>{county ? `${county} County, ${state}` : state} • {issues.length} topics tracked</span>
+            <Pencil className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </button>
         </div>
       </header>
 

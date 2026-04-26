@@ -37,10 +37,29 @@ const STATE_NAME_TO_CODE: Record<string, string> = {
   wisconsin: "WI", wyoming: "WY", "district of columbia": "DC",
 };
 
+const VALID_STATE_CODES = new Set(Object.values(STATE_NAME_TO_CODE));
+
+/**
+ * Normalizes a state input to a valid 2-letter USPS code.
+ * Accepts either a 2-letter code (e.g. "SC", "sc") or a full state name
+ * (e.g. "South Carolina", "south carolina"). Returns null for anything else.
+ */
 function toStateCode(state: string): string | null {
+  if (typeof state !== "string") return null;
   const trimmed = state.trim();
-  if (/^[A-Za-z]{2}$/.test(trimmed)) return trimmed.toUpperCase();
+  if (!trimmed) return null;
+
+  if (/^[A-Za-z]{2}$/.test(trimmed)) {
+    const upper = trimmed.toUpperCase();
+    return VALID_STATE_CODES.has(upper) ? upper : null;
+  }
+
   return STATE_NAME_TO_CODE[trimmed.toLowerCase()] ?? null;
+}
+
+function invalidStateMessage(state: string): string {
+  const display = (state ?? "").toString().trim() || "(empty)";
+  return `"${display}" isn't a valid US state. Use a 2-letter code (e.g. "SC") or a full state name (e.g. "South Carolina").`;
 }
 
 /**
@@ -56,17 +75,20 @@ export function useStateBills(state: string | undefined) {
 
   useEffect(() => {
     let cancelled = false;
-    if (!state) {
+    if (!state || !state.trim()) {
       setBills([]);
       setLoading(false);
+      setError(null);
       return;
     }
 
     const stateCode = toStateCode(state);
     if (!stateCode) {
       setBills([]);
+      setSyncing(false);
       setLoading(false);
-      setError(`Unknown state: ${state}`);
+      setError(invalidStateMessage(state));
+      console.warn("[useStateBills] Invalid state input, skipping fetch:", state);
       return;
     }
     setLoading(true);

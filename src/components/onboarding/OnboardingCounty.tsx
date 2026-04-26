@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, MapPin, Search, Building2 } from "lucide-react";
+import { ArrowLeft, MapPin, Search, Building2 } from "lucide-react";
 import { COUNTIES_BY_STATE } from "@/data/counties";
 
 interface Props {

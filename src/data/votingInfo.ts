@@ -427,7 +427,7 @@ export const STATE_VOTING_INFO: Record<string, StateVotingInfo> = {
     earlyVoting: true, earlyVotingNotes: "Begins 30 days before election.",
     sosName: "Nebraska Secretary of State",
     sosUrl: "https://sos.nebraska.gov/elections",
-    registerUrl: "https://www.nebraska.gov/apps-sos-voter-registration",
+    registerUrl: "https://sos.nebraska.gov/elections/registering-vote",
     pollingPlaceUrl: "https://www.votercheck.necvr.ne.gov",
     absenteeUrl: "https://sos.nebraska.gov/elections/early-voting-absentee-ballot",
   },

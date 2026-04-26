@@ -315,7 +315,7 @@ export const STATE_VOTING_INFO: Record<string, StateVotingInfo> = {
     earlyVoting: true, earlyVotingNotes: "Absentee in-person available ~30 days before election.",
     sosName: "Maine Secretary of State",
     sosUrl: "https://www.maine.gov/sos/cec/elec",
-    registerUrl: "https://www.maine.gov/sos/cec/elec/voter-info/regindex.html",
+    registerUrl: "https://www.maine.gov/sos/cec/elec/voter-info/index.html",
     pollingPlaceUrl: "https://apps.web.maine.gov/cgi-bin/online/AbsenteeBallot/index.pl",
     absenteeUrl: "https://www.maine.gov/sos/cec/elec/voter-info/absenteeguide.html",
   },

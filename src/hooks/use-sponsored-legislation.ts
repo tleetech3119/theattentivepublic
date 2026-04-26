@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface SponsoredBill {
   id: string;
@@ -16,35 +17,46 @@ export function useSponsoredLegislation(repId: string | undefined) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     if (!repId) {
+      setBills([]);
       setLoading(false);
       return;
     }
 
-    const fetchLegislation = async () => {
-      setLoading(true);
+    setLoading(true);
+    (async () => {
       try {
-        const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+        // Forward the user's session token if available so the function
+        // can authorize gracefully; otherwise fall back to the anon key.
+        const { data: sessionData } = await supabase.auth.getSession();
         const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+        const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+        const token = sessionData.session?.access_token ?? anonKey;
+
         const res = await fetch(
           `https://${projectId}.supabase.co/functions/v1/get-rep-legislation?rep_id=${encodeURIComponent(repId)}`,
           {
             headers: {
-              Authorization: `Bearer ${anonKey}`,
+              Authorization: `Bearer ${token}`,
               apikey: anonKey,
             },
-          }
+          },
         );
         const result = await res.json();
-        setBills(result.legislation || []);
+        if (!cancelled) setBills(result.legislation ?? []);
       } catch (err) {
         console.error("Failed to fetch sponsored legislation:", err);
+        if (!cancelled) setBills([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    };
+    })();
 
-    fetchLegislation();
+    return () => {
+      cancelled = true;
+    };
   }, [repId]);
 
   return { bills, loading };

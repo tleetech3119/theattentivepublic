@@ -83,15 +83,7 @@ const RepProfile = () => {
             </div>
           </div>
           {/* Quick Stats Row */}
-          <div className="grid grid-cols-3 gap-3 mt-6">
-            <div className="bg-primary-foreground/10 rounded-xl p-3 text-center backdrop-blur-sm">
-              <div className="text-2xl font-heading font-bold text-primary-foreground">{rep.rating}</div>
-              <div className="text-xs text-primary-foreground/60">Rating</div>
-            </div>
-            <div className="bg-primary-foreground/10 rounded-xl p-3 text-center backdrop-blur-sm">
-              <div className="text-2xl font-heading font-bold text-primary-foreground">{avgScore}%</div>
-              <div className="text-xs text-primary-foreground/60">Alignment</div>
-            </div>
+          <div className="grid grid-cols-1 gap-3 mt-6">
             <div className="bg-primary-foreground/10 rounded-xl p-3 text-center backdrop-blur-sm">
               <div className="text-2xl font-heading font-bold text-primary-foreground">{rep.votingHistory.length}</div>
               <div className="text-xs text-primary-foreground/60">Votes Tracked</div>

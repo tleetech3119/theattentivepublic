@@ -23,8 +23,28 @@ export interface StateBill {
 const LIST_COLUMNS =
   "id,state,bill_code,title,summary,status,topic,progress,last_action,last_action_date,state_url,legiscan_url";
 
+const STATE_NAME_TO_CODE: Record<string, string> = {
+  alabama: "AL", alaska: "AK", arizona: "AZ", arkansas: "AR", california: "CA",
+  colorado: "CO", connecticut: "CT", delaware: "DE", florida: "FL", georgia: "GA",
+  hawaii: "HI", idaho: "ID", illinois: "IL", indiana: "IN", iowa: "IA",
+  kansas: "KS", kentucky: "KY", louisiana: "LA", maine: "ME", maryland: "MD",
+  massachusetts: "MA", michigan: "MI", minnesota: "MN", mississippi: "MS", missouri: "MO",
+  montana: "MT", nebraska: "NE", nevada: "NV", "new hampshire": "NH", "new jersey": "NJ",
+  "new mexico": "NM", "new york": "NY", "north carolina": "NC", "north dakota": "ND",
+  ohio: "OH", oklahoma: "OK", oregon: "OR", pennsylvania: "PA", "rhode island": "RI",
+  "south carolina": "SC", "south dakota": "SD", tennessee: "TN", texas: "TX", utah: "UT",
+  vermont: "VT", virginia: "VA", washington: "WA", "west virginia": "WV",
+  wisconsin: "WI", wyoming: "WY", "district of columbia": "DC",
+};
+
+function toStateCode(state: string): string | null {
+  const trimmed = state.trim();
+  if (/^[A-Za-z]{2}$/.test(trimmed)) return trimmed.toUpperCase();
+  return STATE_NAME_TO_CODE[trimmed.toLowerCase()] ?? null;
+}
+
 /**
- * Fetches state bills for a given USPS state code.
+ * Fetches state bills for a given USPS state code OR full state name.
  * Triggers an on-demand LegiScan sync if the state has never been synced
  * or if the cached data is stale (server-side cooldown handles dedup).
  */
@@ -42,7 +62,13 @@ export function useStateBills(state: string | undefined) {
       return;
     }
 
-    const stateCode = state.toUpperCase();
+    const stateCode = toStateCode(state);
+    if (!stateCode) {
+      setBills([]);
+      setLoading(false);
+      setError(`Unknown state: ${state}`);
+      return;
+    }
     setLoading(true);
     setError(null);
 

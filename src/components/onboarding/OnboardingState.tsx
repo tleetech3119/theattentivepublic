@@ -55,11 +55,15 @@ const OnboardingState = ({ onNext, onBack }: Props) => {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-2 max-h-[50vh] overflow-y-auto pr-1 mb-8">
+        <div className="grid grid-cols-2 gap-2 max-h-[60vh] overflow-y-auto pr-1 mb-8">
           {filtered.map((state) => (
             <button
               key={state}
-              onClick={() => setSelected(state)}
+              onClick={() => {
+                setSelected(state);
+                // Auto-advance after a brief visual confirmation
+                setTimeout(() => onNext(state), 150);
+              }}
               className={`px-4 py-3 rounded-xl text-sm font-medium text-left transition-all ${
                 selected === state
                   ? "bg-primary text-primary-foreground shadow-glow"
@@ -70,16 +74,6 @@ const OnboardingState = ({ onNext, onBack }: Props) => {
             </button>
           ))}
         </div>
-
-        <Button
-          variant="hero"
-          size="lg"
-          className="w-full rounded-xl py-6 text-base"
-          disabled={!selected}
-          onClick={() => onNext(selected)}
-        >
-          Continue <ArrowRight className="w-5 h-5 ml-1" />
-        </Button>
       </div>
     </div>
   );

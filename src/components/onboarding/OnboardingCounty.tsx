@@ -66,7 +66,10 @@ const OnboardingCounty = ({ state, onNext, onBack }: Props) => {
             filtered.map((county) => (
               <button
                 key={county}
-                onClick={() => setSelected(county)}
+                onClick={() => {
+                  setSelected(county);
+                  setTimeout(() => onNext(county), 150);
+                }}
                 className={`px-4 py-3 rounded-xl text-sm font-medium text-left transition-all ${
                   selected === county
                     ? "bg-primary text-primary-foreground shadow-glow"
@@ -78,16 +81,6 @@ const OnboardingCounty = ({ state, onNext, onBack }: Props) => {
             ))
           )}
         </div>
-
-        <Button
-          variant="hero"
-          size="lg"
-          className="w-full rounded-xl py-6 text-base"
-          disabled={!selected}
-          onClick={() => onNext(selected)}
-        >
-          Continue <ArrowRight className="w-5 h-5 ml-1" />
-        </Button>
       </div>
     </div>
   );

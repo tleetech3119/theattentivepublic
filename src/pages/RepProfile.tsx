@@ -98,11 +98,9 @@ const RepProfile = () => {
             <TabsTrigger value="overview" className="flex-1 text-xs">Overview</TabsTrigger>
             <TabsTrigger value="legislation" className="flex-1 text-xs">Bills</TabsTrigger>
             <TabsTrigger value="votes" className="flex-1 text-xs">Votes</TabsTrigger>
-            <TabsTrigger value="alignment" className="flex-1 text-xs">Alignment</TabsTrigger>
             <TabsTrigger value="action" className="flex-1 text-xs gap-1">
               <Megaphone className="w-3 h-3" /> Take Action
             </TabsTrigger>
-            <TabsTrigger value="contact" className="flex-1 text-xs">Contact</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}

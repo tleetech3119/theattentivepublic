@@ -373,9 +373,6 @@ const Dashboard = ({ state, county, issues }: Props) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-civic-green bg-civic-green/10 px-2 py-0.5 rounded-full">
-                    {rep.rating}
-                  </span>
                   <ChevronRight className="w-4 h-4 text-muted-foreground" />
                 </div>
               </div>

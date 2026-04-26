@@ -59,8 +59,6 @@ const RepProfile = () => {
   const partyBg = rep.party === "D" ? "bg-civic-teal-light text-civic-teal" : rep.party === "R" ? "bg-civic-coral-light text-civic-coral" : "bg-muted text-muted-foreground";
   const partyLabel = rep.party === "D" ? "Democrat" : rep.party === "R" ? "Republican" : "Independent";
 
-  const avgScore = Math.round(rep.issueScores.reduce((a, s) => a + s.score, 0) / rep.issueScores.length);
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}

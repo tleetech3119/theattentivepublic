@@ -4,10 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRepresentative } from "@/hooks/use-representatives";
 import { useSponsoredLegislation } from "@/hooks/use-sponsored-legislation";
 import {
-  ArrowLeft, Phone, Mail, MapPin, Globe, ExternalLink,
-  TrendingUp, TrendingDown, Minus, Heart, Shield, Briefcase,
+  ArrowLeft, Heart, Shield, Briefcase,
   GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users,
-  FileText, ChevronRight, Calendar, Loader2, Megaphone,
+  FileText, Calendar, Loader2, Megaphone,
 } from "lucide-react";
 import ActionToolkit from "@/components/representatives/ActionToolkit";
 
@@ -60,8 +59,6 @@ const RepProfile = () => {
   const partyBg = rep.party === "D" ? "bg-civic-teal-light text-civic-teal" : rep.party === "R" ? "bg-civic-coral-light text-civic-coral" : "bg-muted text-muted-foreground";
   const partyLabel = rep.party === "D" ? "Democrat" : rep.party === "R" ? "Republican" : "Independent";
 
-  const avgScore = Math.round(rep.issueScores.reduce((a, s) => a + s.score, 0) / rep.issueScores.length);
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -84,15 +81,7 @@ const RepProfile = () => {
             </div>
           </div>
           {/* Quick Stats Row */}
-          <div className="grid grid-cols-3 gap-3 mt-6">
-            <div className="bg-primary-foreground/10 rounded-xl p-3 text-center backdrop-blur-sm">
-              <div className="text-2xl font-heading font-bold text-primary-foreground">{rep.rating}</div>
-              <div className="text-xs text-primary-foreground/60">Rating</div>
-            </div>
-            <div className="bg-primary-foreground/10 rounded-xl p-3 text-center backdrop-blur-sm">
-              <div className="text-2xl font-heading font-bold text-primary-foreground">{avgScore}%</div>
-              <div className="text-xs text-primary-foreground/60">Alignment</div>
-            </div>
+          <div className="grid grid-cols-1 gap-3 mt-6">
             <div className="bg-primary-foreground/10 rounded-xl p-3 text-center backdrop-blur-sm">
               <div className="text-2xl font-heading font-bold text-primary-foreground">{rep.votingHistory.length}</div>
               <div className="text-xs text-primary-foreground/60">Votes Tracked</div>
@@ -107,11 +96,9 @@ const RepProfile = () => {
             <TabsTrigger value="overview" className="flex-1 text-xs">Overview</TabsTrigger>
             <TabsTrigger value="legislation" className="flex-1 text-xs">Bills</TabsTrigger>
             <TabsTrigger value="votes" className="flex-1 text-xs">Votes</TabsTrigger>
-            <TabsTrigger value="alignment" className="flex-1 text-xs">Alignment</TabsTrigger>
             <TabsTrigger value="action" className="flex-1 text-xs gap-1">
               <Megaphone className="w-3 h-3" /> Take Action
             </TabsTrigger>
-            <TabsTrigger value="contact" className="flex-1 text-xs">Contact</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -132,34 +119,6 @@ const RepProfile = () => {
                     {c}
                   </div>
                 ))}
-              </div>
-            </div>
-            {/* Top Issues */}
-            <div className="bg-card rounded-xl p-5 shadow-card">
-              <h3 className="font-heading font-bold text-foreground mb-3">Top Issue Alignment</h3>
-              <div className="space-y-3">
-                {rep.issueScores.sort((a, b) => b.score - a.score).slice(0, 4).map((s) => {
-                  const Icon = ISSUE_ICONS[s.issue] || FileText;
-                  return (
-                    <div key={s.issue} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                        <Icon className="w-4 h-4 text-civic-teal" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-medium text-foreground capitalize">{ISSUE_LABELS[s.issue] || s.issue}</span>
-                          <span className="text-sm font-semibold text-foreground">{s.score}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className="h-full gradient-accent rounded-full transition-all"
-                            style={{ width: `${s.score}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </TabsContent>
@@ -231,49 +190,6 @@ const RepProfile = () => {
             })}
           </TabsContent>
 
-          {/* Alignment Tab */}
-          <TabsContent value="alignment" className="space-y-4 animate-fade-up">
-            <div className="bg-card rounded-xl p-5 shadow-card">
-              <div className="text-center mb-4">
-                <div className="text-4xl font-heading font-bold text-foreground">{avgScore}%</div>
-                <div className="text-sm text-muted-foreground">Overall Alignment Score</div>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {rep.issueScores.sort((a, b) => b.score - a.score).map((s) => {
-                const Icon = ISSUE_ICONS[s.issue] || FileText;
-                const TrendIcon = s.trend === "up" ? TrendingUp : s.trend === "down" ? TrendingDown : Minus;
-                const trendColor = s.trend === "up" ? "text-civic-green" : s.trend === "down" ? "text-destructive" : "text-muted-foreground";
-                return (
-                  <div key={s.issue} className="bg-card rounded-xl p-4 shadow-card">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                        <Icon className="w-5 h-5 text-civic-teal" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium text-foreground text-sm capitalize">{ISSUE_LABELS[s.issue] || s.issue}</span>
-                          <div className="flex items-center gap-1.5">
-                            <TrendIcon className={`w-3.5 h-3.5 ${trendColor}`} />
-                            <span className="text-sm font-bold text-foreground">{s.score}%</span>
-                          </div>
-                        </div>
-                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full transition-all ${
-                              s.score >= 75 ? "bg-civic-green" : s.score >= 50 ? "bg-civic-gold" : "bg-destructive"
-                            }`}
-                            style={{ width: `${s.score}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </TabsContent>
-
           {/* Take Action Tab */}
           <TabsContent value="action" className="animate-fade-up">
             <ActionToolkit
@@ -283,42 +199,6 @@ const RepProfile = () => {
               repEmail={rep.contact.email}
               repPhone={rep.contact.phone}
             />
-          </TabsContent>
-
-          {/* Contact Tab */}
-          <TabsContent value="contact" className="space-y-3 animate-fade-up">
-            {[
-              { icon: Phone, label: "Phone", value: rep.contact.phone, href: rep.contact.phone ? `tel:${rep.contact.phone}` : undefined },
-              { icon: Mail, label: "Email", value: rep.contact.email, href: rep.contact.email ? `mailto:${rep.contact.email}` : undefined },
-              { icon: MapPin, label: "Office", value: rep.contact.office },
-              { icon: Globe, label: "Website", value: rep.contact.website, href: rep.contact.website || undefined },
-              ...(rep.contact.twitter ? [{ icon: ExternalLink, label: "Twitter", value: rep.contact.twitter, href: `https://twitter.com/${rep.contact.twitter.replace("@", "")}` }] : []),
-            ].map(({ icon: Icon, label, value, href }) => (
-              <div key={label} className="bg-card rounded-xl p-4 shadow-card">
-                {href && value ? (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-                    <div className="w-10 h-10 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-civic-teal" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs text-muted-foreground">{label}</div>
-                      <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">{value}</div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
-                  </a>
-                ) : (
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-civic-teal" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs text-muted-foreground">{label}</div>
-                      <div className="text-sm font-medium text-muted-foreground italic">{value || "Not available"}</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
           </TabsContent>
         </Tabs>
       </div>

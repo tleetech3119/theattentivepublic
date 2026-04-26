@@ -192,49 +192,6 @@ const RepProfile = () => {
             })}
           </TabsContent>
 
-          {/* Alignment Tab */}
-          <TabsContent value="alignment" className="space-y-4 animate-fade-up">
-            <div className="bg-card rounded-xl p-5 shadow-card">
-              <div className="text-center mb-4">
-                <div className="text-4xl font-heading font-bold text-foreground">{avgScore}%</div>
-                <div className="text-sm text-muted-foreground">Overall Alignment Score</div>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {rep.issueScores.sort((a, b) => b.score - a.score).map((s) => {
-                const Icon = ISSUE_ICONS[s.issue] || FileText;
-                const TrendIcon = s.trend === "up" ? TrendingUp : s.trend === "down" ? TrendingDown : Minus;
-                const trendColor = s.trend === "up" ? "text-civic-green" : s.trend === "down" ? "text-destructive" : "text-muted-foreground";
-                return (
-                  <div key={s.issue} className="bg-card rounded-xl p-4 shadow-card">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                        <Icon className="w-5 h-5 text-civic-teal" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium text-foreground text-sm capitalize">{ISSUE_LABELS[s.issue] || s.issue}</span>
-                          <div className="flex items-center gap-1.5">
-                            <TrendIcon className={`w-3.5 h-3.5 ${trendColor}`} />
-                            <span className="text-sm font-bold text-foreground">{s.score}%</span>
-                          </div>
-                        </div>
-                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full transition-all ${
-                              s.score >= 75 ? "bg-civic-green" : s.score >= 50 ? "bg-civic-gold" : "bg-destructive"
-                            }`}
-                            style={{ width: `${s.score}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </TabsContent>
-
           {/* Take Action Tab */}
           <TabsContent value="action" className="animate-fade-up">
             <ActionToolkit
@@ -244,42 +201,6 @@ const RepProfile = () => {
               repEmail={rep.contact.email}
               repPhone={rep.contact.phone}
             />
-          </TabsContent>
-
-          {/* Contact Tab */}
-          <TabsContent value="contact" className="space-y-3 animate-fade-up">
-            {[
-              { icon: Phone, label: "Phone", value: rep.contact.phone, href: rep.contact.phone ? `tel:${rep.contact.phone}` : undefined },
-              { icon: Mail, label: "Email", value: rep.contact.email, href: rep.contact.email ? `mailto:${rep.contact.email}` : undefined },
-              { icon: MapPin, label: "Office", value: rep.contact.office },
-              { icon: Globe, label: "Website", value: rep.contact.website, href: rep.contact.website || undefined },
-              ...(rep.contact.twitter ? [{ icon: ExternalLink, label: "Twitter", value: rep.contact.twitter, href: `https://twitter.com/${rep.contact.twitter.replace("@", "")}` }] : []),
-            ].map(({ icon: Icon, label, value, href }) => (
-              <div key={label} className="bg-card rounded-xl p-4 shadow-card">
-                {href && value ? (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group">
-                    <div className="w-10 h-10 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-civic-teal" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs text-muted-foreground">{label}</div>
-                      <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">{value}</div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
-                  </a>
-                ) : (
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                      <Icon className="w-5 h-5 text-civic-teal" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs text-muted-foreground">{label}</div>
-                      <div className="text-sm font-medium text-muted-foreground italic">{value || "Not available"}</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
           </TabsContent>
         </Tabs>
       </div>

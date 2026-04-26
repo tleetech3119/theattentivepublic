@@ -27,15 +27,21 @@ export function useRepresentatives(state?: string) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let query = supabase.from("representatives").select("*");
+    let cancelled = false;
+    setLoading(true);
+    let query = supabase.from("representatives").select("*").limit(200);
     if (state) {
       query = query.eq("state", state);
     }
     query.then(({ data, error }) => {
+      if (cancelled) return;
       if (error) console.error("Failed to load reps:", error);
       else if (data) setReps(data.map(mapRow));
       setLoading(false);
     });
+    return () => {
+      cancelled = true;
+    };
   }, [state]);
 
   return { reps, loading };
@@ -46,17 +52,31 @@ export function useRepresentative(id: string | undefined) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) { setLoading(false); return; }
+    let cancelled = false;
+    if (!id) {
+      setRep(null);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     supabase
       .from("representatives")
       .select("*")
       .eq("id", id)
       .single()
       .then(({ data, error }) => {
-        if (error || !data) console.error("Failed to load rep:", error);
-        else setRep(mapRow(data));
+        if (cancelled) return;
+        if (error || !data) {
+          console.error("Failed to load rep:", error);
+          setRep(null);
+        } else {
+          setRep(mapRow(data));
+        }
         setLoading(false);
       });
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   return { rep, loading };

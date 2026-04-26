@@ -13,14 +13,15 @@ Deno.serve(async (req) => {
   }
 
   const url = new URL(req.url);
-  const repId = url.searchParams.get("rep_id");
-
-  if (!repId) {
-    return new Response(JSON.stringify({ error: "rep_id required" }), {
+  const repIdRaw = url.searchParams.get("rep_id") ?? "";
+  // Bioguide IDs are 1 letter + 6 digits, but be tolerant: only allow alphanumerics, length 4-12
+  if (!/^[A-Za-z0-9]{4,12}$/.test(repIdRaw)) {
+    return new Response(JSON.stringify({ error: "Invalid rep_id" }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
+  const repId = repIdRaw;
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;

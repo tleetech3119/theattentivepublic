@@ -241,6 +241,99 @@ export type Database = {
           },
         ]
       }
+      state_bills: {
+        Row: {
+          bill_code: string
+          created_at: string
+          history: Json
+          id: number
+          introduced_date: string | null
+          last_action: string
+          last_action_date: string | null
+          legiscan_url: string | null
+          progress: number
+          session_name: string | null
+          sponsors: Json
+          state: string
+          state_url: string | null
+          status: string
+          subjects: Json
+          summary: string
+          title: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          bill_code: string
+          created_at?: string
+          history?: Json
+          id: number
+          introduced_date?: string | null
+          last_action?: string
+          last_action_date?: string | null
+          legiscan_url?: string | null
+          progress?: number
+          session_name?: string | null
+          sponsors?: Json
+          state: string
+          state_url?: string | null
+          status?: string
+          subjects?: Json
+          summary?: string
+          title: string
+          topic?: string
+          updated_at?: string
+        }
+        Update: {
+          bill_code?: string
+          created_at?: string
+          history?: Json
+          id?: number
+          introduced_date?: string | null
+          last_action?: string
+          last_action_date?: string | null
+          legiscan_url?: string | null
+          progress?: number
+          session_name?: string | null
+          sponsors?: Json
+          state?: string
+          state_url?: string | null
+          status?: string
+          subjects?: Json
+          summary?: string
+          title?: string
+          topic?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      state_sync_log: {
+        Row: {
+          bill_count: number
+          created_at: string
+          last_error: string | null
+          last_synced_at: string
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          bill_count?: number
+          created_at?: string
+          last_error?: string | null
+          last_synced_at?: string
+          state: string
+          updated_at?: string
+        }
+        Update: {
+          bill_count?: number
+          created_at?: string
+          last_error?: string | null
+          last_synced_at?: string
+          state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           created_at: string

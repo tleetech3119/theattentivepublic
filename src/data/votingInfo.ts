@@ -525,7 +525,7 @@ export const STATE_VOTING_INFO: Record<string, StateVotingInfo> = {
     earlyVoting: true, earlyVotingNotes: "Varies by county; up to 15 days before election.",
     sosName: "North Dakota Secretary of State",
     sosUrl: "https://www.sos.nd.gov/elections",
-    registerUrl: "https://www.sos.nd.gov/elections/voter/voter-id",
+    registerUrl: "https://www.sos.nd.gov/elections",
     pollingPlaceUrl: "https://vip.sos.nd.gov",
     absenteeUrl: "https://www.sos.nd.gov/elections/voter/vote-absentee-mail",
   },

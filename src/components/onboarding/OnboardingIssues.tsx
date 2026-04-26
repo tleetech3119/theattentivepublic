@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users, Baby, Vote } from "lucide-react";
 
 const ISSUES = [
   { id: "healthcare", label: "Healthcare", icon: Heart, color: "text-civic-coral" },
+  { id: "reproductive_rights", label: "Reproductive Rights", icon: Baby, color: "text-civic-coral" },
   { id: "economy", label: "Economy & Jobs", icon: Briefcase, color: "text-civic-teal" },
   { id: "education", label: "Education", icon: GraduationCap, color: "text-civic-purple" },
   { id: "environment", label: "Environment", icon: Leaf, color: "text-civic-green" },
@@ -13,6 +14,7 @@ const ISSUES = [
   { id: "taxes", label: "Taxes & Spending", icon: DollarSign, color: "text-civic-coral" },
   { id: "immigration", label: "Immigration", icon: Users, color: "text-civic-teal" },
   { id: "defense", label: "National Security", icon: Shield, color: "text-civic-navy" },
+  { id: "voting", label: "Voting Rights", icon: Vote, color: "text-civic-purple" },
 ];
 
 interface Props {

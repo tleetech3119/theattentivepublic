@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import tapLogo from "@/assets/tap-logo-v3.png";
 import { useBills } from "@/hooks/use-bills";
+import { useStateBills } from "@/hooks/use-state-bills";
 import { useRepresentatives } from "@/hooks/use-representatives";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -16,13 +18,19 @@ import {
   FileText, Users, Vote, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
-  User as UserIcon, LogOut, LogIn, IdCard, Pencil,
+  User as UserIcon, LogOut, LogIn, IdCard, Pencil, Baby, Loader2, ExternalLink,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
   healthcare: Heart, economy: Briefcase, education: GraduationCap,
   environment: Leaf, justice: Scale, housing: Home, technology: Wifi,
   taxes: DollarSign, immigration: Users, defense: Shield,
+  reproductive_rights: Baby, voting: Vote,
+};
+
+const TOPIC_LABEL: Record<string, string> = {
+  reproductive_rights: "Reproductive Rights",
+  voting: "Voting Rights",
 };
 
 const ELECTIONS_2026 = [
@@ -76,6 +84,7 @@ const Dashboard = ({ state, county, issues }: Props) => {
   const navigate = useNavigate();
   const { bills, loading: billsLoading } = useBills();
   const { reps, loading: repsLoading } = useRepresentatives(state);
+  const { bills: stateBills, loading: stateBillsLoading, syncing: stateBillsSyncing } = useStateBills(state);
   const { user, signOut } = useAuth();
   const [syncing, setSyncing] = useState(false);
 
@@ -99,7 +108,10 @@ const Dashboard = ({ state, county, issues }: Props) => {
   };
 
   const relevantBills = bills.filter((b) => issues.includes(b.topic));
-  const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 3);
+  const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 5);
+
+  const relevantStateBills = stateBills.filter((b) => issues.includes(b.topic));
+  const displayStateBills = (relevantStateBills.length > 0 ? relevantStateBills : stateBills).slice(0, 10);
 
   return (
     <div className="min-h-screen bg-background">
@@ -225,44 +237,118 @@ const Dashboard = ({ state, county, issues }: Props) => {
           </div>
         </section>
 
-        {/* Legislation Tracker */}
+        {/* Legislation Tracker — Federal + State tabs */}
         <section className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading font-bold text-foreground flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-civic-teal" /> Legislation For You
             </h2>
-            <button className="text-xs text-primary font-medium flex items-center gap-0.5">
-              View all <ChevronRight className="w-3 h-3" />
-            </button>
           </div>
-          <div className="space-y-3">
-            {displayBills.map((bill) => {
-              const Icon = ISSUE_ICONS[bill.topic] || FileText;
-              return (
-                <div key={bill.id} onClick={() => navigate(`/bill/${bill.id}`)} className="bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                      <Icon className="w-4 h-4 text-civic-teal" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-foreground text-sm mb-1">{bill.title}</div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="secondary" className="text-xs capitalize">{bill.topic}</Badge>
-                        <span className="text-xs text-muted-foreground">{bill.status}</span>
-                      </div>
-                      <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full gradient-accent rounded-full transition-all"
-                          style={{ width: `${bill.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
-                  </div>
+          <Tabs defaultValue="federal" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-3">
+              <TabsTrigger value="federal">
+                Federal <span className="ml-1.5 text-xs opacity-70">({displayBills.length})</span>
+              </TabsTrigger>
+              <TabsTrigger value="state">
+                {state} State {stateBillsSyncing && <Loader2 className="w-3 h-3 ml-1 animate-spin" />}
+                {!stateBillsSyncing && <span className="ml-1.5 text-xs opacity-70">({displayStateBills.length})</span>}
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="federal" className="space-y-3 mt-0">
+              {displayBills.length === 0 && !billsLoading && (
+                <div className="bg-card rounded-xl p-6 text-center text-sm text-muted-foreground shadow-card">
+                  No federal bills match your topics yet.
                 </div>
-              );
-            })}
-          </div>
+              )}
+              {displayBills.map((bill) => {
+                const Icon = ISSUE_ICONS[bill.topic] || FileText;
+                const topicLabel = TOPIC_LABEL[bill.topic] ?? bill.topic;
+                return (
+                  <div key={bill.id} onClick={() => navigate(`/bill/${bill.id}`)} className="bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
+                        <Icon className="w-4 h-4 text-civic-teal" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-civic-teal/30 text-civic-teal">FED</Badge>
+                          <span className="text-xs text-muted-foreground">{bill.code}</span>
+                        </div>
+                        <div className="font-medium text-foreground text-sm mb-1">{bill.title}</div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="secondary" className="text-xs capitalize">{topicLabel}</Badge>
+                          <span className="text-xs text-muted-foreground">{bill.status}</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                          <div className="h-full gradient-accent rounded-full transition-all" style={{ width: `${bill.progress}%` }} />
+                        </div>
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
+                    </div>
+                  </div>
+                );
+              })}
+            </TabsContent>
+
+            <TabsContent value="state" className="space-y-3 mt-0">
+              {stateBillsLoading && (
+                <div className="bg-card rounded-xl p-6 text-center text-sm text-muted-foreground shadow-card">
+                  <Loader2 className="w-4 h-4 mx-auto mb-2 animate-spin" />
+                  Loading {state} bills…
+                </div>
+              )}
+              {!stateBillsLoading && displayStateBills.length === 0 && (
+                <div className="bg-card rounded-xl p-6 text-center text-sm text-muted-foreground shadow-card">
+                  {stateBillsSyncing
+                    ? `Fetching ${state} legislature data… check back in a moment.`
+                    : `No ${state} bills found yet. Try refreshing in a few minutes.`}
+                </div>
+              )}
+              {displayStateBills.map((bill) => {
+                const Icon = ISSUE_ICONS[bill.topic] || FileText;
+                const topicLabel = TOPIC_LABEL[bill.topic] ?? bill.topic;
+                const link = bill.state_url || bill.legiscan_url;
+                return (
+                  <a
+                    key={bill.id}
+                    href={link ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-civic-purple/10 flex items-center justify-center shrink-0">
+                        <Icon className="w-4 h-4 text-civic-purple" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4 border-civic-purple/30 text-civic-purple">{bill.state}</Badge>
+                          <span className="text-xs text-muted-foreground">{bill.bill_code}</span>
+                        </div>
+                        <div className="font-medium text-foreground text-sm mb-1 line-clamp-2">{bill.title}</div>
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <Badge variant="secondary" className="text-xs capitalize">{topicLabel}</Badge>
+                          <span className="text-xs text-muted-foreground">{bill.status}</span>
+                        </div>
+                        {bill.last_action && (
+                          <div className="text-xs text-muted-foreground/80 line-clamp-1">
+                            {bill.last_action_date ? `${bill.last_action_date} — ` : ""}{bill.last_action}
+                          </div>
+                        )}
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
+                    </div>
+                  </a>
+                );
+              })}
+              {displayStateBills.length > 0 && (
+                <p className="text-[11px] text-muted-foreground text-center pt-1">
+                  State bill data via <a href="https://legiscan.com" target="_blank" rel="noopener noreferrer" className="underline">LegiScan</a>
+                </p>
+              )}
+            </TabsContent>
+          </Tabs>
         </section>
 
         {/* Your Representatives */}

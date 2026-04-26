@@ -18,7 +18,7 @@ import {
   FileText, Users, Vote, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
-  User as UserIcon, LogOut, LogIn, IdCard, Pencil, Baby, Loader2, ExternalLink,
+  User as UserIcon, LogOut, LogIn, IdCard, Pencil, Baby, Loader2,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {

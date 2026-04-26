@@ -18,6 +18,7 @@ export function useSponsoredLegislation(repId: string | undefined) {
 
   useEffect(() => {
     let cancelled = false;
+
     if (!repId) {
       setBills([]);
       setLoading(false);
@@ -27,15 +28,13 @@ export function useSponsoredLegislation(repId: string | undefined) {
     setLoading(true);
     (async () => {
       try {
-        const { data, error } = await supabase.functions.invoke("get-rep-legislation", {
-          body: null,
-          // pass rep_id via query string — invoke supports it via headers/path; fall back to manual URL
-        });
-        // The invoke helper doesn't take query params, so use direct fetch with the SDK's session
+        // Forward the user's session token if available so the function
+        // can authorize gracefully; otherwise fall back to the anon key.
         const { data: sessionData } = await supabase.auth.getSession();
-        const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
         const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+        const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
         const token = sessionData.session?.access_token ?? anonKey;
+
         const res = await fetch(
           `https://${projectId}.supabase.co/functions/v1/get-rep-legislation?rep_id=${encodeURIComponent(repId)}`,
           {
@@ -43,14 +42,13 @@ export function useSponsoredLegislation(repId: string | undefined) {
               Authorization: `Bearer ${token}`,
               apikey: anonKey,
             },
-          }
+          },
         );
         const result = await res.json();
         if (!cancelled) setBills(result.legislation ?? []);
-        // suppress unused-var lint
-        void data; void error;
       } catch (err) {
         console.error("Failed to fetch sponsored legislation:", err);
+        if (!cancelled) setBills([]);
       } finally {
         if (!cancelled) setLoading(false);
       }

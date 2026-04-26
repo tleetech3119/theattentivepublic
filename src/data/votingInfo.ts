@@ -175,7 +175,7 @@ export const STATE_VOTING_INFO: Record<string, StateVotingInfo> = {
     earlyVoting: true, earlyVotingNotes: "Mandatory 8 days; counties may extend to 14.",
     sosName: "Florida Department of State",
     sosUrl: "https://dos.fl.gov/elections",
-    registerUrl: "https://registertovoteflorida.gov",
+    registerUrl: "https://dos.fl.gov/elections/for-voters/voter-registration/",
     pollingPlaceUrl: "https://registration.elections.myflorida.com/CheckVoterStatus",
     absenteeUrl: "https://dos.fl.gov/elections/for-voters/voting/vote-by-mail",
   },

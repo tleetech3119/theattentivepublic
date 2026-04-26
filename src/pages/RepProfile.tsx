@@ -123,34 +123,6 @@ const RepProfile = () => {
                 ))}
               </div>
             </div>
-            {/* Top Issues */}
-            <div className="bg-card rounded-xl p-5 shadow-card">
-              <h3 className="font-heading font-bold text-foreground mb-3">Top Issue Alignment</h3>
-              <div className="space-y-3">
-                {rep.issueScores.sort((a, b) => b.score - a.score).slice(0, 4).map((s) => {
-                  const Icon = ISSUE_ICONS[s.issue] || FileText;
-                  return (
-                    <div key={s.issue} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-civic-teal-light flex items-center justify-center shrink-0">
-                        <Icon className="w-4 h-4 text-civic-teal" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-medium text-foreground capitalize">{ISSUE_LABELS[s.issue] || s.issue}</span>
-                          <span className="text-sm font-semibold text-foreground">{s.score}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className="h-full gradient-accent rounded-full transition-all"
-                            style={{ width: `${s.score}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
           </TabsContent>
 
           {/* Sponsored Legislation Tab */}

@@ -308,14 +308,11 @@ const Dashboard = ({ state, county, issues }: Props) => {
               {displayStateBills.map((bill) => {
                 const Icon = ISSUE_ICONS[bill.topic] || FileText;
                 const topicLabel = TOPIC_LABEL[bill.topic] ?? bill.topic;
-                const link = bill.state_url || bill.legiscan_url;
                 return (
-                  <a
+                  <div
                     key={bill.id}
-                    href={link ?? "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer"
+                    onClick={() => navigate(`/state-bill/${bill.id}`)}
+                    className="bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow cursor-pointer"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-9 h-9 rounded-lg bg-civic-purple/10 flex items-center justify-center shrink-0">
@@ -337,9 +334,9 @@ const Dashboard = ({ state, county, issues }: Props) => {
                           </div>
                         )}
                       </div>
-                      <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
+                      <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
                     </div>
-                  </a>
+                  </div>
                 );
               })}
               {displayStateBills.length > 0 && (

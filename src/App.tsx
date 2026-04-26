@@ -9,6 +9,7 @@ import Onboarding from "./pages/Onboarding.tsx";
 import AppHome from "./pages/AppHome.tsx";
 import VotingInfo from "./pages/VotingInfo.tsx";
 import BillDetail from "./pages/BillDetail.tsx";
+import StateBillDetail from "./pages/StateBillDetail.tsx";
 import RepProfile from "./pages/RepProfile.tsx";
 import ElectionDetail from "./pages/ElectionDetail.tsx";
 import Glossary from "./pages/Glossary.tsx";
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/voting" element={<VotingInfo />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/bill/:id" element={<BillDetail />} />
+            <Route path="/state-bill/:id" element={<StateBillDetail />} />
             <Route path="/rep/:id" element={<RepProfile />} />
             <Route path="/election/:slug" element={<ElectionDetail />} />
             <Route path="/glossary" element={<Glossary />} />

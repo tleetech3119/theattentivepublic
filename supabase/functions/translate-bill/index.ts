@@ -12,17 +12,20 @@ async function requireUser(req: Request): Promise<{ userId: string } | Response>
       status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
+  const token = authHeader.replace("Bearer ", "");
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: `Bearer ${token}` } } },
   );
-  const { data, error } = await supabase.auth.getClaims(authHeader.replace("Bearer ", ""));
-  if (error || !data?.claims?.sub) {
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data?.user?.id) {
+    console.error("Auth failed:", error?.message);
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-  return { userId: data.claims.sub as string };
+  return { userId: data.user.id };
 }
 
 Deno.serve(async (req) => {

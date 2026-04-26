@@ -4,10 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRepresentative } from "@/hooks/use-representatives";
 import { useSponsoredLegislation } from "@/hooks/use-sponsored-legislation";
 import {
-  ArrowLeft, Phone, Mail, MapPin, Globe, ExternalLink,
-  TrendingUp, TrendingDown, Minus, Heart, Shield, Briefcase,
+  ArrowLeft, Heart, Shield, Briefcase,
   GraduationCap, Leaf, Scale, Home, Wifi, DollarSign, Users,
-  FileText, ChevronRight, Calendar, Loader2, Megaphone,
+  FileText, Calendar, Loader2, Megaphone,
 } from "lucide-react";
 import ActionToolkit from "@/components/representatives/ActionToolkit";
 

@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import tapLogo from "@/assets/tap-logo-v3.png";
 import { useBills } from "@/hooks/use-bills";
+import { useStateBills } from "@/hooks/use-state-bills";
 import { useRepresentatives } from "@/hooks/use-representatives";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -16,13 +18,19 @@ import {
   FileText, Users, Vote, TrendingUp, ArrowRight,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
-  User as UserIcon, LogOut, LogIn, IdCard, Pencil,
+  User as UserIcon, LogOut, LogIn, IdCard, Pencil, Baby, Loader2, ExternalLink,
 } from "lucide-react";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
   healthcare: Heart, economy: Briefcase, education: GraduationCap,
   environment: Leaf, justice: Scale, housing: Home, technology: Wifi,
   taxes: DollarSign, immigration: Users, defense: Shield,
+  reproductive_rights: Baby, voting: Vote,
+};
+
+const TOPIC_LABEL: Record<string, string> = {
+  reproductive_rights: "Reproductive Rights",
+  voting: "Voting Rights",
 };
 
 const ELECTIONS_2026 = [
@@ -76,6 +84,7 @@ const Dashboard = ({ state, county, issues }: Props) => {
   const navigate = useNavigate();
   const { bills, loading: billsLoading } = useBills();
   const { reps, loading: repsLoading } = useRepresentatives(state);
+  const { bills: stateBills, loading: stateBillsLoading, syncing: stateBillsSyncing } = useStateBills(state);
   const { user, signOut } = useAuth();
   const [syncing, setSyncing] = useState(false);
 
@@ -99,7 +108,10 @@ const Dashboard = ({ state, county, issues }: Props) => {
   };
 
   const relevantBills = bills.filter((b) => issues.includes(b.topic));
-  const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 3);
+  const displayBills = relevantBills.length > 0 ? relevantBills : bills.slice(0, 5);
+
+  const relevantStateBills = stateBills.filter((b) => issues.includes(b.topic));
+  const displayStateBills = (relevantStateBills.length > 0 ? relevantStateBills : stateBills).slice(0, 10);
 
   return (
     <div className="min-h-screen bg-background">

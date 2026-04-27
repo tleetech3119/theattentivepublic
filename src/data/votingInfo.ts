@@ -609,8 +609,8 @@ export const STATE_VOTING_INFO: Record<string, StateVotingInfo> = {
     earlyVoting: true, earlyVotingNotes: "2 weeks of no-excuse in-person early voting.",
     sosName: "South Carolina Election Commission",
     sosUrl: "https://scvotes.gov",
-    registerUrl: "https://vrems.scvotes.sc.gov/Voter/Login",
-    pollingPlaceUrl: "https://vrems.scvotes.sc.gov/Voter/Login",
+    registerUrl: "https://scvotes.gov/voters/register-to-vote/",
+    pollingPlaceUrl: "https://scvotes.gov/voters/where-do-i-vote/",
     absenteeUrl: "https://scvotes.gov/voters/early-voting",
   },
   "South Dakota": {

@@ -483,8 +483,8 @@ export const STATE_VOTING_INFO: Record<string, StateVotingInfo> = {
     earlyVoting: true, earlyVotingNotes: "Begins 28 days before election (in-county locations).",
     sosName: "New Mexico Secretary of State",
     sosUrl: "https://www.sos.nm.gov/voting-and-elections",
-    registerUrl: "https://portal.sos.state.nm.us/OVR/WebPages/InstructionsStep1.aspx",
-    pollingPlaceUrl: "https://voterportal.servis.sos.state.nm.us",
+    registerUrl: "https://portal1.sos.nm.gov/OVR/WebPages/InstructionsStep1.aspx",
+    pollingPlaceUrl: "https://voterportal.servis.sos.nm.gov",
     absenteeUrl: "https://www.sos.nm.gov/voting-and-elections/voter-information/absentee-voting",
   },
   "New York": {

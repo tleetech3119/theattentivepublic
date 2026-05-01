@@ -1,7 +1,29 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, MapPin, Users, AlertCircle } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Users, AlertCircle, Landmark, CheckCircle2 } from "lucide-react";
+
+// 36 states + 3 territories holding gubernatorial elections on Nov 3, 2026.
+// Source: National Governors Association / Ballotpedia 2026 schedule.
+const GUBERNATORIAL_STATES_2026 = [
+  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+  "Connecticut", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois",
+  "Iowa", "Kansas", "Maine", "Maryland", "Massachusetts", "Michigan",
+  "Minnesota", "Nebraska", "Nevada", "New Hampshire", "New Mexico", "New York",
+  "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+  "South Dakota", "Tennessee", "Texas", "Vermont", "Wisconsin", "Wyoming",
+];
+
+function getUserState(): string | null {
+  try {
+    const raw = localStorage.getItem("tap_onboarding");
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed?.state || null;
+  } catch {
+    return null;
+  }
+}
 
 const ELECTIONS_2026 = [
   {
@@ -156,6 +178,72 @@ const ElectionDetail = () => {
             </div>
           )}
         </section>
+
+        {/* Gubernatorial states list — only for the governors race */}
+        {election.slug === "2026-governors" && (() => {
+          const userState = getUserState();
+          const userIsElecting = !!userState && GUBERNATORIAL_STATES_2026.includes(userState);
+          return (
+            <section className="bg-card rounded-xl p-5 shadow-card">
+              <h2 className="font-heading font-bold text-foreground mb-3 flex items-center gap-2">
+                <Landmark className="w-4 h-4 text-civic-purple" /> Your State
+              </h2>
+
+              {userState ? (
+                <div
+                  className={`flex items-start gap-3 p-4 rounded-lg border mb-4 ${
+                    userIsElecting
+                      ? "bg-primary/10 border-primary/30"
+                      : "bg-muted/30 border-border"
+                  }`}
+                >
+                  {userIsElecting ? (
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
+                  )}
+                  <div>
+                    <div className="font-medium text-foreground text-sm">
+                      {userIsElecting
+                        ? `${userState} is electing a governor in 2026`
+                        : `${userState} is not holding a gubernatorial election in 2026`}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {userIsElecting
+                        ? "The general election is on Nov 3, 2026. Watch for primary dates earlier in the year."
+                        : "Your state's next gubernatorial race falls in a different cycle."}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground mb-4">
+                  Set your state in onboarding to see whether you have a gubernatorial race this year.
+                </p>
+              )}
+
+              <h3 className="text-sm font-semibold text-foreground mb-2">
+                All 36 states electing governors in 2026
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                {GUBERNATORIAL_STATES_2026.map((s) => {
+                  const isUser = s === userState;
+                  return (
+                    <div
+                      key={s}
+                      className={`text-xs px-2.5 py-1.5 rounded-md border ${
+                        isUser
+                          ? "bg-primary text-primary-foreground border-primary font-semibold"
+                          : "bg-muted/40 text-muted-foreground border-border"
+                      }`}
+                    >
+                      {s}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* Key Dates */}
         <section className="bg-card rounded-xl p-5 shadow-card">

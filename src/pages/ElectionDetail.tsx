@@ -1,7 +1,29 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, MapPin, Users, AlertCircle } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Users, AlertCircle, Landmark, CheckCircle2 } from "lucide-react";
+
+// 36 states + 3 territories holding gubernatorial elections on Nov 3, 2026.
+// Source: National Governors Association / Ballotpedia 2026 schedule.
+const GUBERNATORIAL_STATES_2026 = [
+  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
+  "Connecticut", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois",
+  "Iowa", "Kansas", "Maine", "Maryland", "Massachusetts", "Michigan",
+  "Minnesota", "Nebraska", "Nevada", "New Hampshire", "New Mexico", "New York",
+  "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+  "South Dakota", "Tennessee", "Texas", "Vermont", "Wisconsin", "Wyoming",
+];
+
+function getUserState(): string | null {
+  try {
+    const raw = localStorage.getItem("tap_onboarding");
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed?.state || null;
+  } catch {
+    return null;
+  }
+}
 
 const ELECTIONS_2026 = [
   {

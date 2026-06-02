@@ -86,6 +86,12 @@ const GLOSSARY_TERMS: Term[] = [
       "A party leader in Congress responsible for ensuring party members vote according to the party's position.",
     category: "Government",
   },
+  {
+    term: "Battleground State",
+    definition:
+      "A state where the outcome of an election is expected to be highly competitive, with no single party holding a clear advantage. Also called a swing state, these races often attract heavy campaign spending and national attention because they can decide the overall result.",
+    category: "Elections",
+  },
 ];
 
 const CATEGORIES = ["All", ...Array.from(new Set(GLOSSARY_TERMS.map((t) => t.category)))];

@@ -137,6 +137,39 @@ export type Database = {
         }
         Relationships: []
       }
+      candidate_summaries: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          office: string
+          source_url: string | null
+          state: string
+          summary: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          office?: string
+          source_url?: string | null
+          state: string
+          summary: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          office?: string
+          source_url?: string | null
+          state?: string
+          summary?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       representatives: {
         Row: {
           bio: string

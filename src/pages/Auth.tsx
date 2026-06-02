@@ -17,6 +17,7 @@ const Auth = () => {
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [electionUpdates, setElectionUpdates] = useState(true);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -29,11 +30,23 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: `${window.location.origin}/onboarding` },
     });
+    if (!error && data.user) {
+      // Record election-update preference (best-effort; ignore failure)
+      await supabase.from("user_preferences").upsert(
+        {
+          user_id: data.user.id,
+          session_id: data.user.id,
+          election_updates_opt_in: electionUpdates,
+          election_updates_opt_in_at: electionUpdates ? new Date().toISOString() : null,
+        },
+        { onConflict: "user_id" },
+      );
+    }
     setBusy(false);
     if (error) {
       toast.error(error.message);

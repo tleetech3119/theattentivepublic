@@ -3,6 +3,7 @@ import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,6 +17,7 @@ const Auth = () => {
   const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [electionUpdates, setElectionUpdates] = useState(true);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -28,11 +30,23 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: `${window.location.origin}/onboarding` },
     });
+    if (!error && data.user) {
+      // Record election-update preference (best-effort; ignore failure)
+      await supabase.from("user_preferences").upsert(
+        {
+          user_id: data.user.id,
+          session_id: data.user.id,
+          election_updates_opt_in: electionUpdates,
+          election_updates_opt_in_at: electionUpdates ? new Date().toISOString() : null,
+        },
+        { onConflict: "user_id" },
+      );
+    }
     setBusy(false);
     if (error) {
       toast.error(error.message);
@@ -110,6 +124,16 @@ const Auth = () => {
                   <Input id="su-pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password" />
                   <p className="text-xs text-muted-foreground mt-1">At least 8 characters.</p>
                 </div>
+                <label className="flex items-start gap-2 text-xs text-muted-foreground cursor-pointer pt-1">
+                  <Checkbox
+                    checked={electionUpdates}
+                    onCheckedChange={(v) => setElectionUpdates(v === true)}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    Email me updates about upcoming elections in my state. You can change this anytime.
+                  </span>
+                </label>
                 <Button type="submit" className="w-full" disabled={busy}>
                   {busy ? "Creating account…" : "Create account"}
                 </Button>

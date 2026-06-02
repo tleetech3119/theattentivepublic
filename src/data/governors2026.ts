@@ -188,14 +188,20 @@ export const GOV_RACES_2026: GovRace[] = [
     primaryDate: "Jun 9, 2026",
     incumbentTermLimited: true,
     candidates: [
+      // Verified against Ballotpedia June 9, 2026 primary ballots
       { name: "Shenna Bellows", party: "D", note: "Secretary of State" },
-      { name: "Hannah Pingree", party: "D", note: "Fmr. House Speaker" },
-      { name: "Troy Jackson", party: "D", note: "Fmr. Senate President" },
+      { name: "Troy Dale Jackson", party: "D", note: "Fmr. Senate President" },
       { name: "Angus King III", party: "D" },
+      { name: "Hannah Pingree", party: "D", note: "Fmr. House Speaker" },
       { name: "Nirav Shah", party: "D", note: "Fmr. Maine CDC Director" },
-      { name: "Robert Charles", party: "R", note: "Fmr. U.S. State Dept." },
+      { name: "Jonathan Bush", party: "R" },
+      { name: "Bobby Charles", party: "R", note: "Fmr. U.S. State Dept." },
+      { name: "David Jones", party: "R", note: "Businessman" },
       { name: "James Libby", party: "R", note: "Fmr. State Senator" },
       { name: "Garrett Mason", party: "R", note: "Fmr. Senate Majority Leader" },
+      { name: "Owen McCarthy", party: "R" },
+      { name: "Ben Midgley", party: "R" },
+      { name: "Robert J. Wessels", party: "R", note: "Fmr. Paris selectman" },
     ],
   },
   {
@@ -257,9 +263,20 @@ export const GOV_RACES_2026: GovRace[] = [
     primaryDate: "Jun 9, 2026",
     battleground: true,
     candidates: [
+      // Verified against Ballotpedia June 9, 2026 primary ballots
+      { name: "Sunshine Arterburn", party: "D" },
+      { name: "Miqehl Bayfield", party: "D" },
+      { name: "Emile Bouari", party: "D" },
+      { name: "James Cooper", party: "D" },
       { name: "Aaron Ford", party: "D", note: "Attorney General" },
       { name: "Alexis Hill", party: "D", note: "Washoe Co. Commissioner" },
       { name: "Joe Lombardo", party: "R", note: "Incumbent Governor" },
+      { name: "Donald Beaudry Jr.", party: "R" },
+      { name: "Irina Hansen", party: "R" },
+      { name: "M. Kameron Hawkins", party: "R" },
+      { name: "Matthew Winterhawk", party: "R" },
+      { name: "Jose Zelaya", party: "R" },
+      { name: "Barak Zilberberg", party: "R" },
     ],
   },
   {
@@ -349,13 +366,16 @@ export const GOV_RACES_2026: GovRace[] = [
     primaryDate: "Jun 9, 2026",
     incumbentTermLimited: true,
     candidates: [
+      // Verified against Ballotpedia June 9, 2026 primary ballots
       { name: "Jermaine Johnson", party: "D", note: "State Representative" },
+      { name: "Mullins McLeod", party: "D", note: "Attorney" },
       { name: "Billy Webster", party: "D" },
-      { name: "Alan Wilson", party: "R", note: "Attorney General" },
       { name: "Pamela Evette", party: "R", note: "Lt. Governor" },
+      { name: "Josh Kimbrell", party: "R", note: "State Senator" },
       { name: "Nancy Mace", party: "R", note: "U.S. Representative" },
       { name: "Ralph Norman", party: "R", note: "U.S. Representative" },
-      { name: "Josh Kimbrell", party: "R", note: "State Senator" },
+      { name: "Rom Reddy", party: "R" },
+      { name: "Alan Wilson", party: "R", note: "Attorney General" },
     ],
   },
   {

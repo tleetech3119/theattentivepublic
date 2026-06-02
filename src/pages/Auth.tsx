@@ -124,6 +124,16 @@ const Auth = () => {
                   <Input id="su-pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password" />
                   <p className="text-xs text-muted-foreground mt-1">At least 8 characters.</p>
                 </div>
+                <label className="flex items-start gap-2 text-xs text-muted-foreground cursor-pointer pt-1">
+                  <Checkbox
+                    checked={electionUpdates}
+                    onCheckedChange={(v) => setElectionUpdates(v === true)}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    Email me updates about upcoming elections in my state. You can change this anytime.
+                  </span>
+                </label>
                 <Button type="submit" className="w-full" disabled={busy}>
                   {busy ? "Creating account…" : "Create account"}
                 </Button>

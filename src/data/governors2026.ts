@@ -263,9 +263,20 @@ export const GOV_RACES_2026: GovRace[] = [
     primaryDate: "Jun 9, 2026",
     battleground: true,
     candidates: [
+      // Verified against Ballotpedia June 9, 2026 primary ballots
+      { name: "Sunshine Arterburn", party: "D" },
+      { name: "Miqehl Bayfield", party: "D" },
+      { name: "Emile Bouari", party: "D" },
+      { name: "James Cooper", party: "D" },
       { name: "Aaron Ford", party: "D", note: "Attorney General" },
       { name: "Alexis Hill", party: "D", note: "Washoe Co. Commissioner" },
       { name: "Joe Lombardo", party: "R", note: "Incumbent Governor" },
+      { name: "Donald Beaudry Jr.", party: "R" },
+      { name: "Irina Hansen", party: "R" },
+      { name: "M. Kameron Hawkins", party: "R" },
+      { name: "Matthew Winterhawk", party: "R" },
+      { name: "Jose Zelaya", party: "R" },
+      { name: "Barak Zilberberg", party: "R" },
     ],
   },
   {

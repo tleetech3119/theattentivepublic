@@ -238,7 +238,7 @@ const Dashboard = ({ state, county, issues }: Props) => {
         </section>
 
         {/* Legislation Tracker — Federal + State tabs */}
-        <section className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
+        <section id="bills-section" className="animate-fade-up scroll-mt-24" style={{ animationDelay: "0.2s" }}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading font-bold text-foreground flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-civic-teal" /> Legislation For You

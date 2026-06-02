@@ -244,7 +244,13 @@ const ElectionDetail = () => {
 
               {userState && <HouseCandidates state={userState} />}
 
-              <section className="bg-card rounded-xl p-5 shadow-card">
+              <section className="bg-card rounded-xl p-5 shadow-card border-l-4 border-civic-purple">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-civic-purple/15 text-civic-purple border-0 text-[10px] uppercase tracking-wider font-bold">
+                    <Building2 className="w-3 h-3 mr-1" /> U.S. Senate
+                  </Badge>
+                  <span className="text-[10px] text-muted-foreground">All 33 races nationwide</span>
+                </div>
                 <h2 className="font-heading font-bold text-foreground mb-3">
                   All 33 U.S. Senate races in 2026
                 </h2>

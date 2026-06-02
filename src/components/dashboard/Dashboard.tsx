@@ -404,15 +404,15 @@ const Dashboard = ({ state, county, issues }: Props) => {
       <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-6 py-3">
         <div className="max-w-2xl mx-auto flex justify-around">
           {[
-            { icon: Home, label: "Home", path: "/app", active: true },
-            { icon: FileText, label: "Bills", path: "/app" },
-            { icon: Users, label: "Reps", path: "/app" },
-            { icon: Vote, label: "Vote", path: "/voting" },
-            { icon: BookOpen, label: "Glossary", path: "/glossary" },
-          ].map(({ icon: Icon, label, path, active }) => (
+            { icon: Home, label: "Home", action: () => window.scrollTo({ top: 0, behavior: "smooth" }), active: true },
+            { icon: FileText, label: "Bills", action: () => document.getElementById("bills-section")?.scrollIntoView({ behavior: "smooth" }) },
+            { icon: Users, label: "Reps", action: () => document.getElementById("reps-section")?.scrollIntoView({ behavior: "smooth" }) },
+            { icon: Vote, label: "Vote", action: () => navigate("/voting") },
+            { icon: BookOpen, label: "Glossary", action: () => navigate("/glossary") },
+          ].map(({ icon: Icon, label, action, active }) => (
             <button
               key={label}
-              onClick={() => path && path !== "/app" && navigate(path)}
+              onClick={action}
               className="flex flex-col items-center gap-1"
             >
               <Icon className={`w-5 h-5 ${active ? "text-primary" : "text-muted-foreground"}`} />

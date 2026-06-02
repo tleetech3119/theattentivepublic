@@ -188,14 +188,20 @@ export const GOV_RACES_2026: GovRace[] = [
     primaryDate: "Jun 9, 2026",
     incumbentTermLimited: true,
     candidates: [
+      // Verified against Ballotpedia June 9, 2026 primary ballots
       { name: "Shenna Bellows", party: "D", note: "Secretary of State" },
-      { name: "Hannah Pingree", party: "D", note: "Fmr. House Speaker" },
-      { name: "Troy Jackson", party: "D", note: "Fmr. Senate President" },
+      { name: "Troy Dale Jackson", party: "D", note: "Fmr. Senate President" },
       { name: "Angus King III", party: "D" },
+      { name: "Hannah Pingree", party: "D", note: "Fmr. House Speaker" },
       { name: "Nirav Shah", party: "D", note: "Fmr. Maine CDC Director" },
-      { name: "Robert Charles", party: "R", note: "Fmr. U.S. State Dept." },
+      { name: "Jonathan Bush", party: "R" },
+      { name: "Bobby Charles", party: "R", note: "Fmr. U.S. State Dept." },
+      { name: "David Jones", party: "R", note: "Businessman" },
       { name: "James Libby", party: "R", note: "Fmr. State Senator" },
       { name: "Garrett Mason", party: "R", note: "Fmr. Senate Majority Leader" },
+      { name: "Owen McCarthy", party: "R" },
+      { name: "Ben Midgley", party: "R" },
+      { name: "Robert J. Wessels", party: "R", note: "Fmr. Paris selectman" },
     ],
   },
   {

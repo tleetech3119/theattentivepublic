@@ -170,6 +170,30 @@ export type Database = {
         }
         Relationships: []
       }
+      house_candidates_cache: {
+        Row: {
+          candidates: Json
+          created_at: string
+          expires_at: string
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          candidates: Json
+          created_at?: string
+          expires_at?: string
+          state: string
+          updated_at?: string
+        }
+        Update: {
+          candidates?: Json
+          created_at?: string
+          expires_at?: string
+          state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       representatives: {
         Row: {
           bio: string

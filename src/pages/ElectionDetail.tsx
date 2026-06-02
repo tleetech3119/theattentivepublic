@@ -133,47 +133,50 @@ const ElectionDetail = () => {
           </p>
         </section>
 
-        {/* Candidates / Nominees */}
-        <section className="bg-card rounded-xl p-5 shadow-card">
-          <h2 className="font-heading font-bold text-foreground mb-3 flex items-center gap-2">
-            <Users className="w-4 h-4 text-civic-purple" /> Nominees & Candidates
-          </h2>
-          {election.candidates.length > 0 ? (
-            <div className="space-y-2">
-              {election.candidates.map((c, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
-                >
-                  <div>
-                    <div className="font-medium text-foreground text-sm">
-                      {c.name}
+        {/* Candidates / Nominees — hide for slugs that render their own dedicated candidate lists below */}
+        {election.slug !== "2026-midterms" && election.slug !== "2026-governors" && (
+          <section className="bg-card rounded-xl p-5 shadow-card">
+            <h2 className="font-heading font-bold text-foreground mb-3 flex items-center gap-2">
+              <Users className="w-4 h-4 text-civic-purple" /> Nominees & Candidates
+            </h2>
+            {election.candidates.length > 0 ? (
+              <div className="space-y-2">
+                {election.candidates.map((c, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
+                  >
+                    <div>
+                      <div className="font-medium text-foreground text-sm">
+                        {c.name}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {c.office}
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground">
-                      {c.office}
-                    </div>
+                    <Badge variant="secondary" className="text-xs capitalize">
+                      {c.party}
+                    </Badge>
                   </div>
-                  <Badge variant="secondary" className="text-xs capitalize">
-                    {c.party}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/30 border border-border">
-              <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0" />
-              <div>
-                <div className="font-medium text-foreground text-sm">
-                  Awaiting Candidates
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Nominations have not been finalized yet. Check back closer to
-                  election day for a full list of candidates.
-                </p>
+                ))}
               </div>
-            </div>
-          )}
-        </section>
+            ) : (
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/30 border border-border">
+                <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0" />
+                <div>
+                  <div className="font-medium text-foreground text-sm">
+                    Awaiting Candidates
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Nominations have not been finalized yet. Check back closer to
+                    election day for a full list of candidates.
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
 
         {/* Senate + House — only for the midterms event */}
         {election.slug === "2026-midterms" && (() => {

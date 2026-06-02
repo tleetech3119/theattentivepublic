@@ -172,69 +172,127 @@ const ElectionDetail = () => {
           )}
         </section>
 
-        {/* Gubernatorial states list — only for the governors race */}
+        {/* Gubernatorial races — only for the governors event */}
         {election.slug === "2026-governors" && (() => {
           const userState = getUserState();
-          const userIsElecting = !!userState && GUBERNATORIAL_STATES_2026.includes(userState);
+          const userRace = userState
+            ? GOV_RACES_2026.find((r) => r.state === userState)
+            : undefined;
+          const userIsElecting = !!userRace;
           return (
-            <section className="bg-card rounded-xl p-5 shadow-card">
-              <h2 className="font-heading font-bold text-foreground mb-3 flex items-center gap-2">
-                <Landmark className="w-4 h-4 text-civic-purple" /> Your State
-              </h2>
+            <>
+              <section className="bg-card rounded-xl p-5 shadow-card">
+                <h2 className="font-heading font-bold text-foreground mb-3 flex items-center gap-2">
+                  <Landmark className="w-4 h-4 text-civic-purple" /> Your State
+                </h2>
 
-              {userState ? (
-                <div
-                  className={`flex items-start gap-3 p-4 rounded-lg border mb-4 ${
-                    userIsElecting
-                      ? "bg-primary/10 border-primary/30"
-                      : "bg-muted/30 border-border"
-                  }`}
-                >
-                  {userIsElecting ? (
-                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                  ) : (
-                    <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
-                  )}
-                  <div>
-                    <div className="font-medium text-foreground text-sm">
-                      {userIsElecting
-                        ? `${userState} is electing a governor in 2026`
-                        : `${userState} is not holding a gubernatorial election in 2026`}
+                {userState ? (
+                  <div
+                    className={`flex items-start gap-3 p-4 rounded-lg border ${
+                      userIsElecting
+                        ? "bg-primary/10 border-primary/30"
+                        : "bg-muted/30 border-border"
+                    }`}
+                  >
+                    {userIsElecting ? (
+                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
+                    )}
+                    <div>
+                      <div className="font-medium text-foreground text-sm">
+                        {userIsElecting
+                          ? `${userState} is electing a governor in 2026`
+                          : `${userState} is not holding a gubernatorial election in 2026`}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {userIsElecting
+                          ? `Primary: ${userRace!.primaryDate}. General election Nov 3, 2026.`
+                          : "Your state's next gubernatorial race falls in a different cycle."}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {userIsElecting
-                        ? "The general election is on Nov 3, 2026. Watch for primary dates earlier in the year."
-                        : "Your state's next gubernatorial race falls in a different cycle."}
-                    </p>
                   </div>
-                </div>
-              ) : (
-                <p className="text-xs text-muted-foreground mb-4">
-                  Set your state in onboarding to see whether you have a gubernatorial race this year.
-                </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    Set your state in onboarding to see whether you have a gubernatorial race this year.
+                  </p>
+                )}
+              </section>
+
+              {userRace && (
+                <section className="bg-card rounded-xl p-5 shadow-card">
+                  <h2 className="font-heading font-bold text-foreground mb-1 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-civic-purple" /> {userRace.state} Candidates
+                  </h2>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Major-party candidates who have filed or declared. Updated periodically.
+                  </p>
+                  <div className="space-y-2">
+                    {userRace.candidates.map((c, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between p-3 rounded-lg bg-muted/50 gap-3"
+                      >
+                        <div className="min-w-0">
+                          <div className="font-medium text-foreground text-sm truncate">
+                            {c.name}
+                          </div>
+                          {c.note && (
+                            <div className="text-xs text-muted-foreground truncate">
+                              {c.note}
+                            </div>
+                          )}
+                        </div>
+                        <Badge
+                          className={`text-xs shrink-0 border-0 ${
+                            c.party === "D"
+                              ? "bg-blue-500/15 text-blue-700 dark:text-blue-300"
+                              : "bg-red-500/15 text-red-700 dark:text-red-300"
+                          }`}
+                        >
+                          {c.party === "D" ? "Democrat" : "Republican"}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </section>
               )}
 
-              <h3 className="text-sm font-semibold text-foreground mb-2">
-                All 36 states electing governors in 2026
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-                {GUBERNATORIAL_STATES_2026.map((s) => {
-                  const isUser = s === userState;
-                  return (
-                    <div
-                      key={s}
-                      className={`text-xs px-2.5 py-1.5 rounded-md border ${
-                        isUser
-                          ? "bg-primary text-primary-foreground border-primary font-semibold"
-                          : "bg-muted/40 text-muted-foreground border-border"
-                      }`}
-                    >
-                      {s}
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
+              <section className="bg-card rounded-xl p-5 shadow-card">
+                <h2 className="font-heading font-bold text-foreground mb-3">
+                  All 36 states electing governors in 2026
+                </h2>
+                <div className="space-y-1.5">
+                  {GOV_RACES_2026.map((r) => {
+                    const isUser = r.state === userState;
+                    return (
+                      <div
+                        key={r.state}
+                        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md border text-xs ${
+                          isUser
+                            ? "bg-primary/10 border-primary/40"
+                            : "bg-muted/30 border-border"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="font-semibold text-foreground truncate">
+                            {r.state}
+                          </span>
+                          {r.battleground && (
+                            <Badge className="bg-accent/20 text-accent border-0 text-[10px] px-1.5 py-0">
+                              Battleground
+                            </Badge>
+                          )}
+                        </div>
+                        <span className="text-muted-foreground shrink-0">
+                          Primary {r.primaryDate}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            </>
           );
         })()}
 

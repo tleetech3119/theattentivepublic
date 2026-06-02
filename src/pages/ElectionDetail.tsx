@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, MapPin, Users, AlertCircle, Landmark, CheckCircle2 } from "lucide-react";
 import { GOV_RACES_2026 } from "@/data/governors2026";
+import { CandidateLink } from "@/components/CandidateLink";
 
 const GUBERNATORIAL_STATES_2026 = GOV_RACES_2026.map((r) => r.state);
 

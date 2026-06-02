@@ -235,7 +235,11 @@ const ElectionDetail = () => {
                       >
                         <div className="min-w-0">
                           <div className="font-medium text-foreground text-sm truncate">
-                            {c.name}
+                            <CandidateLink
+                              name={c.name}
+                              state={userRace.state}
+                              party={c.party}
+                            />
                           </div>
                           {c.note && (
                             <div className="text-xs text-muted-foreground truncate">

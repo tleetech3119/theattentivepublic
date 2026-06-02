@@ -271,28 +271,68 @@ const ElectionDetail = () => {
                   {GOV_RACES_2026.map((r) => {
                     const isUser = r.state === userState;
                     return (
-                      <div
+                      <details
                         key={r.state}
-                        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-md border text-xs ${
+                        className={`group rounded-md border text-xs ${
                           isUser
                             ? "bg-primary/10 border-primary/40"
                             : "bg-muted/30 border-border"
                         }`}
                       >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="font-semibold text-foreground truncate">
-                            {r.state}
+                        <summary className="flex items-center justify-between gap-2 px-3 py-2 cursor-pointer list-none">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-muted-foreground group-open:rotate-90 transition-transform">
+                              ›
+                            </span>
+                            <span className="font-semibold text-foreground truncate">
+                              {r.state}
+                            </span>
+                            {r.battleground && (
+                              <Badge className="bg-accent/20 text-accent border-0 text-[10px] px-1.5 py-0">
+                                Battleground
+                              </Badge>
+                            )}
+                          </div>
+                          <span className="text-muted-foreground shrink-0">
+                            Primary {r.primaryDate}
                           </span>
-                          {r.battleground && (
-                            <Badge className="bg-accent/20 text-accent border-0 text-[10px] px-1.5 py-0">
-                              Battleground
-                            </Badge>
+                        </summary>
+                        <div className="px-3 pb-3 pt-1 space-y-1.5 border-t border-border/50">
+                          {r.candidates.length === 0 && (
+                            <p className="text-muted-foreground italic">
+                              Candidates TBD
+                            </p>
                           )}
+                          {r.candidates.map((c, i) => (
+                            <div
+                              key={i}
+                              className="flex items-center justify-between gap-2"
+                            >
+                              <div className="min-w-0 truncate">
+                                <CandidateLink
+                                  name={c.name}
+                                  state={r.state}
+                                  party={c.party}
+                                />
+                                {c.note && (
+                                  <span className="text-muted-foreground ml-1">
+                                    · {c.note}
+                                  </span>
+                                )}
+                              </div>
+                              <Badge
+                                className={`shrink-0 border-0 text-[10px] px-1.5 py-0 ${
+                                  c.party === "D"
+                                    ? "bg-blue-500/15 text-blue-700 dark:text-blue-300"
+                                    : "bg-red-500/15 text-red-700 dark:text-red-300"
+                                }`}
+                              >
+                                {c.party === "D" ? "Dem" : "Rep"}
+                              </Badge>
+                            </div>
+                          ))}
                         </div>
-                        <span className="text-muted-foreground shrink-0">
-                          Primary {r.primaryDate}
-                        </span>
-                      </div>
+                      </details>
                     );
                   })}
                 </div>

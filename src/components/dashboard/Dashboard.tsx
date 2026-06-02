@@ -349,7 +349,7 @@ const Dashboard = ({ state, county, issues }: Props) => {
         </section>
 
         {/* Your Representatives */}
-        <section className="animate-fade-up" style={{ animationDelay: "0.3s" }}>
+        <section id="reps-section" className="animate-fade-up scroll-mt-24" style={{ animationDelay: "0.3s" }}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-heading font-bold text-foreground flex items-center gap-2">
               <Users className="w-4 h-4 text-civic-purple" /> Your Representatives

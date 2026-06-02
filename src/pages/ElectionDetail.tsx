@@ -3,7 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, MapPin, Users, AlertCircle, Landmark, CheckCircle2 } from "lucide-react";
 import { GOV_RACES_2026 } from "@/data/governors2026";
+import { SENATE_RACES_2026 } from "@/data/senate2026";
 import { CandidateLink } from "@/components/CandidateLink";
+import { HouseCandidates } from "@/components/HouseCandidates";
 
 const GUBERNATORIAL_STATES_2026 = GOV_RACES_2026.map((r) => r.state);
 
@@ -172,6 +174,152 @@ const ElectionDetail = () => {
             </div>
           )}
         </section>
+
+        {/* Senate + House — only for the midterms event */}
+        {election.slug === "2026-midterms" && (() => {
+          const userState = getUserState();
+          const userSenateRace = userState
+            ? SENATE_RACES_2026.find((r) => r.state === userState)
+            : undefined;
+          return (
+            <>
+              {userSenateRace && (
+                <section className="bg-card rounded-xl p-5 shadow-card">
+                  <h2 className="font-heading font-bold text-foreground mb-1 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-civic-purple" /> {userState} U.S. Senate Race
+                  </h2>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    {userSenateRace.seatStatus === "retiring"
+                      ? "Open seat — incumbent retiring."
+                      : userSenateRace.seatStatus === "open"
+                        ? "Open seat."
+                        : "Incumbent seeking re-election."}
+                    {userSenateRace.battleground && " Considered a battleground race."}
+                  </p>
+                  <div className="space-y-2">
+                    {userSenateRace.candidates.map((c, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between p-3 rounded-lg bg-muted/50 gap-3"
+                      >
+                        <div className="min-w-0">
+                          <div className="font-medium text-foreground text-sm truncate">
+                            <CandidateLink
+                              name={c.name}
+                              state={userSenateRace.state}
+                              party={c.party}
+                              office="U.S. Senate"
+                            />
+                          </div>
+                          {c.note && (
+                            <div className="text-xs text-muted-foreground truncate">
+                              {c.note}
+                            </div>
+                          )}
+                        </div>
+                        <Badge
+                          className={`text-xs shrink-0 border-0 ${
+                            c.party === "D"
+                              ? "bg-blue-500/15 text-blue-700 dark:text-blue-300"
+                              : c.party === "R"
+                                ? "bg-red-500/15 text-red-700 dark:text-red-300"
+                                : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {c.party === "D" ? "Democrat" : c.party === "R" ? "Republican" : c.party}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {userState && <HouseCandidates state={userState} />}
+
+              <section className="bg-card rounded-xl p-5 shadow-card">
+                <h2 className="font-heading font-bold text-foreground mb-3">
+                  All 33 U.S. Senate races in 2026
+                </h2>
+                <div className="space-y-1.5">
+                  {SENATE_RACES_2026.map((r) => {
+                    const isUser = r.state === userState;
+                    return (
+                      <details
+                        key={r.state}
+                        className={`group rounded-md border text-xs ${
+                          isUser
+                            ? "bg-primary/10 border-primary/40"
+                            : "bg-muted/30 border-border"
+                        }`}
+                      >
+                        <summary className="flex items-center justify-between gap-2 px-3 py-2 cursor-pointer list-none">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-muted-foreground group-open:rotate-90 transition-transform">
+                              ›
+                            </span>
+                            <span className="font-semibold text-foreground truncate">
+                              {r.state}
+                            </span>
+                            {r.battleground && (
+                              <Badge className="bg-accent/20 text-accent border-0 text-[10px] px-1.5 py-0">
+                                Battleground
+                              </Badge>
+                            )}
+                            {r.seatStatus === "retiring" && (
+                              <Badge className="bg-muted text-muted-foreground border-0 text-[10px] px-1.5 py-0">
+                                Open seat
+                              </Badge>
+                            )}
+                          </div>
+                          <span className="text-muted-foreground shrink-0">
+                            {r.incumbentParty === "D" ? "Dem-held" : r.incumbentParty === "R" ? "Rep-held" : "Ind-held"}
+                          </span>
+                        </summary>
+                        <div className="px-3 pb-3 pt-1 space-y-1.5 border-t border-border/50">
+                          {r.candidates.length === 0 ? (
+                            <p className="text-muted-foreground italic">Candidates TBD</p>
+                          ) : (
+                            r.candidates.map((c, i) => (
+                              <div
+                                key={i}
+                                className="flex items-center justify-between gap-2"
+                              >
+                                <div className="min-w-0 truncate">
+                                  <CandidateLink
+                                    name={c.name}
+                                    state={r.state}
+                                    party={c.party}
+                                    office="U.S. Senate"
+                                  />
+                                  {c.note && (
+                                    <span className="text-muted-foreground ml-1">
+                                      · {c.note}
+                                    </span>
+                                  )}
+                                </div>
+                                <Badge
+                                  className={`shrink-0 border-0 text-[10px] px-1.5 py-0 ${
+                                    c.party === "D"
+                                      ? "bg-blue-500/15 text-blue-700 dark:text-blue-300"
+                                      : c.party === "R"
+                                        ? "bg-red-500/15 text-red-700 dark:text-red-300"
+                                        : "bg-muted text-muted-foreground"
+                                  }`}
+                                >
+                                  {c.party === "D" ? "Dem" : c.party === "R" ? "Rep" : c.party}
+                                </Badge>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </details>
+                    );
+                  })}
+                </div>
+              </section>
+            </>
+          );
+        })()}
 
         {/* Gubernatorial races — only for the governors event */}
         {election.slug === "2026-governors" && (() => {

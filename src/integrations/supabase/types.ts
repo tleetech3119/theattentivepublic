@@ -370,6 +370,8 @@ export type Database = {
       user_preferences: {
         Row: {
           created_at: string
+          election_updates_opt_in: boolean
+          election_updates_opt_in_at: string | null
           id: string
           selected_county: string | null
           selected_issues: Json
@@ -380,6 +382,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          election_updates_opt_in?: boolean
+          election_updates_opt_in_at?: string | null
           id?: string
           selected_county?: string | null
           selected_issues?: Json
@@ -390,6 +394,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          election_updates_opt_in?: boolean
+          election_updates_opt_in_at?: string | null
           id?: string
           selected_county?: string | null
           selected_issues?: Json

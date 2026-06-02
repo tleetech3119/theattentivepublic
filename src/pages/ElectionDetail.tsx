@@ -184,9 +184,17 @@ const ElectionDetail = () => {
           return (
             <>
               {userSenateRace && (
-                <section className="bg-card rounded-xl p-5 shadow-card">
+                <section className="bg-card rounded-xl p-5 shadow-card border-l-4 border-civic-purple">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge className="bg-civic-purple/15 text-civic-purple border-0 text-[10px] uppercase tracking-wider font-bold">
+                      <Building2 className="w-3 h-3 mr-1" /> U.S. Senate
+                    </Badge>
+                    <span className="text-[10px] text-muted-foreground">
+                      Upper chamber · 6-year terms · 2 senators per state
+                    </span>
+                  </div>
                   <h2 className="font-heading font-bold text-foreground mb-1 flex items-center gap-2">
-                    <Users className="w-4 h-4 text-civic-purple" /> {userState} U.S. Senate Race
+                    {userState} Senate Race
                   </h2>
                   <p className="text-xs text-muted-foreground mb-3">
                     {userSenateRace.seatStatus === "retiring"

@@ -366,13 +366,16 @@ export const GOV_RACES_2026: GovRace[] = [
     primaryDate: "Jun 9, 2026",
     incumbentTermLimited: true,
     candidates: [
+      // Verified against Ballotpedia June 9, 2026 primary ballots
       { name: "Jermaine Johnson", party: "D", note: "State Representative" },
+      { name: "Mullins McLeod", party: "D", note: "Attorney" },
       { name: "Billy Webster", party: "D" },
-      { name: "Alan Wilson", party: "R", note: "Attorney General" },
       { name: "Pamela Evette", party: "R", note: "Lt. Governor" },
+      { name: "Josh Kimbrell", party: "R", note: "State Senator" },
       { name: "Nancy Mace", party: "R", note: "U.S. Representative" },
       { name: "Ralph Norman", party: "R", note: "U.S. Representative" },
-      { name: "Josh Kimbrell", party: "R", note: "State Senator" },
+      { name: "Rom Reddy", party: "R" },
+      { name: "Alan Wilson", party: "R", note: "Attorney General" },
     ],
   },
   {

@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { ArrowLeft, Bell } from "lucide-react";
+import Seo from "@/components/seo/Seo";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -71,6 +72,12 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Sign in to The Attentive Public"
+        description="Sign in or create a free account to watch bills, save representatives, and get personalized civic alerts."
+        path="/auth"
+        noindex
+      />
       <header className="gradient-hero px-6 pt-10 pb-12">
         <div className="max-w-md mx-auto">
           <Link to="/" className="flex items-center gap-1.5 text-primary-foreground/70 text-sm mb-6 hover:text-primary-foreground transition-colors">

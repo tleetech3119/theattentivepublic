@@ -63,7 +63,7 @@ const RepProfile = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title={`${rep.name} — ${rep.title || "Representative"} | TAP`}
+        title={`${rep.name} — ${rep.chamber === "Senate" ? "U.S. Senator" : "U.S. Representative"} | TAP`}
         description={`Voting history, committees, contact info, and action toolkit for ${rep.name}${rep.state ? `, ${rep.state}` : ""}.`}
         path={`/rep/${id}`}
         type="profile"
@@ -71,7 +71,7 @@ const RepProfile = () => {
           "@context": "https://schema.org",
           "@type": "Person",
           name: rep.name,
-          jobTitle: rep.title || "Elected representative",
+          jobTitle: rep.chamber === "Senate" ? "U.S. Senator" : "U.S. Representative",
           image: (rep as any).photo_url,
         }}
       />

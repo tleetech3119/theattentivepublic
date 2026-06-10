@@ -7,6 +7,7 @@ import { PREAMBLE, CONSTITUTION_ARTICLES, BILL_OF_RIGHTS, ADDITIONAL_AMENDMENTS 
 import { SUPREME_COURT_CASES, CASE_CATEGORIES } from "@/data/supremeCourtCases";
 import AmendmentTranslator from "@/components/glossary/AmendmentTranslator";
 import CaseExplainer from "@/components/glossary/CaseExplainer";
+import Seo from "@/components/seo/Seo";
 
 interface Term {
   term: string;
@@ -125,6 +126,20 @@ const Glossary = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Civic Library & Glossary — Constitution, amendments, Supreme Court"
+        description="Plain-English explanations of the U.S. Constitution, every amendment, landmark Supreme Court cases, and the civic terms every voter should know."
+        path="/glossary"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: GLOSSARY_TERMS.slice(0, 20).map((t) => ({
+            "@type": "Question",
+            name: t.term,
+            acceptedAnswer: { "@type": "Answer", text: t.definition },
+          })),
+        }}
+      />
       <header className="gradient-hero px-6 pt-12 pb-8">
         <div className="max-w-2xl mx-auto">
           <button

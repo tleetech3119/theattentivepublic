@@ -9,6 +9,7 @@ import {
   FileText, Calendar, Loader2, Megaphone,
 } from "lucide-react";
 import ActionToolkit from "@/components/representatives/ActionToolkit";
+import Seo from "@/components/seo/Seo";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
   healthcare: Heart, economy: Briefcase, education: GraduationCap,
@@ -61,6 +62,19 @@ const RepProfile = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title={`${rep.name} — ${rep.title || "Representative"} | TAP`}
+        description={`Voting history, committees, contact info, and action toolkit for ${rep.name}${rep.state ? `, ${rep.state}` : ""}.`}
+        path={`/rep/${id}`}
+        type="profile"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: rep.name,
+          jobTitle: rep.title || "Elected representative",
+          image: (rep as any).photo_url,
+        }}
+      />
       {/* Header */}
       <header className="gradient-hero px-6 pt-12 pb-8">
         <div className="max-w-2xl mx-auto">

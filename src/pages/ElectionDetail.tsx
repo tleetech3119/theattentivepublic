@@ -6,6 +6,7 @@ import { GOV_RACES_2026 } from "@/data/governors2026";
 import { SENATE_RACES_2026 } from "@/data/senate2026";
 import { CandidateLink } from "@/components/CandidateLink";
 import { HouseCandidates } from "@/components/HouseCandidates";
+import Seo from "@/components/seo/Seo";
 
 const GUBERNATORIAL_STATES_2026 = GOV_RACES_2026.map((r) => r.state);
 
@@ -98,6 +99,11 @@ const ElectionDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title={`${election.title} — ${election.date} | TAP`}
+        description={election.details.slice(0, 158)}
+        path={`/election/${slug}`}
+      />
       {/* Header */}
       <header className="gradient-hero px-6 pt-12 pb-8">
         <div className="max-w-2xl mx-auto">

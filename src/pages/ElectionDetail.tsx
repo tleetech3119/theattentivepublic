@@ -134,48 +134,207 @@ const ElectionDetail = () => {
         </section>
 
         {/* Candidates / Nominees — hide for slugs that render their own dedicated candidate lists below */}
-        {election.slug !== "2026-midterms" && election.slug !== "2026-governors" && (
+        {election.slug !== "2026-midterms" && election.slug !== "2026-governors" && election.slug !== "2026-primaries" && (
           <section className="bg-card rounded-xl p-5 shadow-card">
             <h2 className="font-heading font-bold text-foreground mb-3 flex items-center gap-2">
               <Users className="w-4 h-4 text-civic-purple" /> Nominees & Candidates
             </h2>
-            {election.candidates.length > 0 ? (
-              <div className="space-y-2">
-                {election.candidates.map((c, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
-                  >
-                    <div>
-                      <div className="font-medium text-foreground text-sm">
-                        {c.name}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {c.office}
-                      </div>
-                    </div>
-                    <Badge variant="secondary" className="text-xs capitalize">
-                      {c.party}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/30 border border-border">
-                <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0" />
-                <div>
-                  <div className="font-medium text-foreground text-sm">
-                    Awaiting Candidates
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Nominations have not been finalized yet. Check back closer to
-                    election day for a full list of candidates.
-                  </p>
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/30 border border-border">
+              <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0" />
+              <div>
+                <div className="font-medium text-foreground text-sm">
+                  Awaiting Candidates
                 </div>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Nominations have not been finalized yet. Check back closer to
+                  election day for a full list of candidates.
+                </p>
               </div>
-            )}
+            </div>
           </section>
         )}
+
+        {/* State Primaries — dedicated view */}
+        {election.slug === "2026-primaries" && (() => {
+          const userState = getUserState();
+          const today = new Date();
+          const userGov = userState ? GOV_RACES_2026.find((r) => r.state === userState) : undefined;
+          const userSenate = userState ? SENATE_RACES_2026.find((r) => r.state === userState) : undefined;
+          const userPrimaryDate = userGov?.primaryDate;
+          const userPrimaryPast = userPrimaryDate ? new Date(userPrimaryDate) < today : false;
+          const resultsUrl = userState
+            ? `https://ballotpedia.org/${encodeURIComponent(userState.replace(/ /g, "_"))}_elections,_2026`
+            : null;
+
+          return (
+            <>
+              {userState ? (
+                <section className="bg-card rounded-xl p-5 shadow-card border-l-4 border-civic-purple">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <Badge className="bg-civic-purple/15 text-civic-purple border-0 text-[10px] uppercase tracking-wider font-bold">
+                      Your State
+                    </Badge>
+                    {userPrimaryDate && (
+                      <Badge className={`border-0 text-[10px] ${userPrimaryPast ? "bg-muted text-muted-foreground" : "bg-accent/20 text-accent"}`}>
+                        {userPrimaryPast ? "Primary complete" : `Primary ${userPrimaryDate}`}
+                      </Badge>
+                    )}
+                  </div>
+                  <h2 className="font-heading font-bold text-foreground mb-1">
+                    {userState} Primary
+                  </h2>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    {userPrimaryDate
+                      ? userPrimaryPast
+                        ? `The ${userState} primary was held on ${userPrimaryDate}. Official results are linked below.`
+                        : `Voters head to the polls on ${userPrimaryDate} to pick party nominees for federal and state offices.`
+                      : `${userState} primary date not yet confirmed in our database.`}
+                  </p>
+
+                  {userPrimaryPast && resultsUrl && (
+                    <a
+                      href={resultsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline mb-4"
+                    >
+                      View official results on Ballotpedia →
+                    </a>
+                  )}
+
+                  {userSenate && (
+                    <div className="mt-3">
+                      <div className="text-[11px] uppercase tracking-wider font-bold text-muted-foreground mb-2">
+                        U.S. Senate primary candidates
+                      </div>
+                      <div className="space-y-1.5">
+                        {userSenate.candidates.map((c, i) => (
+                          <div key={i} className="flex items-center justify-between gap-2 p-2 rounded bg-muted/40">
+                            <div className="min-w-0 text-sm">
+                              <CandidateLink name={c.name} state={userSenate.state} party={c.party} office="U.S. Senate" />
+                              {c.note && <span className="text-xs text-muted-foreground ml-1">· {c.note}</span>}
+                            </div>
+                            <Badge className={`shrink-0 border-0 text-[10px] ${c.party === "D" ? "bg-blue-500/15 text-blue-700 dark:text-blue-300" : c.party === "R" ? "bg-red-500/15 text-red-700 dark:text-red-300" : "bg-muted text-muted-foreground"}`}>
+                              {c.party === "D" ? "Dem" : c.party === "R" ? "Rep" : c.party}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {userGov && (
+                    <div className="mt-4">
+                      <div className="text-[11px] uppercase tracking-wider font-bold text-muted-foreground mb-2">
+                        Gubernatorial primary candidates
+                      </div>
+                      <div className="space-y-1.5">
+                        {userGov.candidates.map((c, i) => (
+                          <div key={i} className="flex items-center justify-between gap-2 p-2 rounded bg-muted/40">
+                            <div className="min-w-0 text-sm">
+                              <CandidateLink name={c.name} state={userGov.state} party={c.party} office="Governor" />
+                              {c.note && <span className="text-xs text-muted-foreground ml-1">· {c.note}</span>}
+                            </div>
+                            <Badge className={`shrink-0 border-0 text-[10px] ${c.party === "D" ? "bg-blue-500/15 text-blue-700 dark:text-blue-300" : "bg-red-500/15 text-red-700 dark:text-red-300"}`}>
+                              {c.party === "D" ? "Dem" : "Rep"}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {!userSenate && !userGov && (
+                    <div className="p-3 rounded bg-muted/30 text-xs text-muted-foreground">
+                      No Senate or gubernatorial primary in {userState} this cycle. Your state may still hold U.S. House and state-legislative primaries — check your local Secretary of State website.
+                    </div>
+                  )}
+                </section>
+              ) : (
+                <section className="bg-card rounded-xl p-5 shadow-card">
+                  <p className="text-sm text-muted-foreground">
+                    Set your state in onboarding to see your primary date and candidates.
+                  </p>
+                </section>
+              )}
+
+              {/* All state primaries by date */}
+              <section className="bg-card rounded-xl p-5 shadow-card">
+                <h2 className="font-heading font-bold text-foreground mb-1">All 2026 state primaries</h2>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Sorted by date. Tap a state to see declared candidates. Past primaries link to official results.
+                </p>
+                <div className="space-y-1.5">
+                  {[...GOV_RACES_2026]
+                    .sort((a, b) => new Date(a.primaryDate).getTime() - new Date(b.primaryDate).getTime())
+                    .map((r) => {
+                      const past = new Date(r.primaryDate) < today;
+                      const isUser = r.state === userState;
+                      const senate = SENATE_RACES_2026.find((s) => s.state === r.state);
+                      return (
+                        <details key={r.state} className={`group rounded-md border text-xs ${isUser ? "bg-primary/10 border-primary/40" : "bg-muted/30 border-border"}`}>
+                          <summary className="flex items-center justify-between gap-2 px-3 py-2 cursor-pointer list-none">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="text-muted-foreground group-open:rotate-90 transition-transform">›</span>
+                              <span className="font-semibold text-foreground truncate">{r.state}</span>
+                              {past && (
+                                <Badge className="bg-muted text-muted-foreground border-0 text-[10px] px-1.5 py-0">Complete</Badge>
+                              )}
+                            </div>
+                            <span className="text-muted-foreground shrink-0">{r.primaryDate}</span>
+                          </summary>
+                          <div className="px-3 pb-3 pt-1 space-y-2 border-t border-border/50">
+                            {past && (
+                              <a
+                                href={`https://ballotpedia.org/${encodeURIComponent(r.state.replace(/ /g, "_"))}_elections,_2026`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block text-[11px] font-semibold text-primary hover:underline"
+                              >
+                                View results on Ballotpedia →
+                              </a>
+                            )}
+                            {senate && senate.candidates.length > 0 && (
+                              <div>
+                                <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold mt-1 mb-1">U.S. Senate</div>
+                                {senate.candidates.map((c, i) => (
+                                  <div key={i} className="flex items-center justify-between gap-2">
+                                    <div className="min-w-0 truncate">
+                                      <CandidateLink name={c.name} state={r.state} party={c.party} office="U.S. Senate" />
+                                      {c.note && <span className="text-muted-foreground ml-1">· {c.note}</span>}
+                                    </div>
+                                    <Badge className={`shrink-0 border-0 text-[10px] px-1.5 py-0 ${c.party === "D" ? "bg-blue-500/15 text-blue-700 dark:text-blue-300" : c.party === "R" ? "bg-red-500/15 text-red-700 dark:text-red-300" : "bg-muted text-muted-foreground"}`}>
+                                      {c.party === "D" ? "Dem" : c.party === "R" ? "Rep" : c.party}
+                                    </Badge>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            <div>
+                              <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold mt-1 mb-1">Governor</div>
+                              {r.candidates.length === 0 ? (
+                                <p className="text-muted-foreground italic">Candidates TBD</p>
+                              ) : r.candidates.map((c, i) => (
+                                <div key={i} className="flex items-center justify-between gap-2">
+                                  <div className="min-w-0 truncate">
+                                    <CandidateLink name={c.name} state={r.state} party={c.party} />
+                                    {c.note && <span className="text-muted-foreground ml-1">· {c.note}</span>}
+                                  </div>
+                                  <Badge className={`shrink-0 border-0 text-[10px] px-1.5 py-0 ${c.party === "D" ? "bg-blue-500/15 text-blue-700 dark:text-blue-300" : "bg-red-500/15 text-red-700 dark:text-red-300"}`}>
+                                    {c.party === "D" ? "Dem" : "Rep"}
+                                  </Badge>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </details>
+                      );
+                    })}
+                </div>
+              </section>
+            </>
+          );
+        })()}
 
 
         {/* Senate + House — only for the midterms event */}

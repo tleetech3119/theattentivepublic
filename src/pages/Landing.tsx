@@ -227,7 +227,7 @@ const Landing = () => {
       <footer className="px-6 py-10 border-t border-border">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src={tapLogo} alt="TAP" className="w-8 h-8 rounded" />
+            <img src={tapLogo} alt="TAP — The Attentive Public" className="w-8 h-8 rounded" />
             <span className="text-sm text-muted-foreground">
               <span className="font-heading font-bold text-foreground">TAP</span> — The Attentive Public
             </span>

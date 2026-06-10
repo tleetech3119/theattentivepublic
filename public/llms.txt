@@ -1,0 +1,24 @@
+# The Attentive Public (TAP)
+
+> Nonpartisan civic engagement platform for tracking U.S. legislation, representatives, and elections in plain English.
+
+The Attentive Public helps everyday voters follow what their government is doing. We summarize bills using AI, show both sides of every debate, list your federal and state representatives with contact info, and explain elections — without spin.
+
+## Pages
+
+- [Home](/): What TAP is and why it exists.
+- [Civic Dashboard](/app): Personalized feed of bills, representatives, and elections for your state.
+- [Voting Information](/voting): Registration deadlines, polling info, and how to vote.
+- [2026 Midterms Voting Guide](/guides/2026-midterms-voting-guide): Step-by-step guide to voting in the 2026 midterm elections.
+- [Civic Library / Glossary](/glossary): Constitution, amendments, landmark Supreme Court cases, and civic terms.
+
+## Elections
+
+- [2026 Midterm Elections](/election/2026-midterms): All 435 House seats + 34 Senate seats.
+- [2026 State Primaries](/election/2026-primaries): Primary dates and candidates by state.
+- [2026 Gubernatorial Races](/election/2026-governors): 36 governor races.
+- [Voter Registration Deadlines](/election/2026-registration): Per-state deadlines.
+
+## Optional
+
+- [Sign in](/auth): Account access for saving watched bills and personalized notifications.

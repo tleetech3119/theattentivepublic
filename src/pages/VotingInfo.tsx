@@ -8,6 +8,7 @@ import {
   CheckCircle2, XCircle, Building2, FileCheck, Vote as VoteIcon,
   AlertCircle, Printer,
 } from "lucide-react";
+import Seo from "@/components/seo/Seo";
 
 interface YesNoProps {
   yes: boolean;
@@ -65,6 +66,13 @@ const VotingInfo = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
+      <Seo
+        title={state ? `Voting Info for ${state} — TAP` : "Voting Information — TAP"}
+        description={state
+          ? `Registration deadlines, polling info, and ID rules for voters in ${state}.`
+          : "Voter registration deadlines, ID requirements, and polling information for every U.S. state."}
+        path="/voting"
+      />
       {/* Header */}
       <header className="gradient-hero px-6 pt-10 pb-10">
         <div className="max-w-2xl mx-auto">

@@ -11,6 +11,7 @@ import {
   Heart, Shield, Briefcase, GraduationCap, Leaf, Scale, Home,
   Wifi, DollarSign, Users, ThumbsUp, ThumbsDown, Minus,
 } from "lucide-react";
+import Seo from "@/components/seo/Seo";
 
 const ISSUE_ICONS: Record<string, React.ElementType> = {
   healthcare: Heart, economy: Briefcase, education: GraduationCap,
@@ -46,6 +47,18 @@ const BillDetail = () => {
 
   return (
     <div className="min-h-screen bg-background pb-8">
+      <Seo
+        title={`${bill.title.slice(0, 55)} — Bill on TAP`}
+        description={(bill.summary || bill.title).slice(0, 158)}
+        path={`/bill/${id}`}
+        type="article"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Legislation",
+          name: bill.title,
+          description: bill.summary || bill.title,
+        }}
+      />
       {/* Header */}
       <header className="gradient-hero px-6 pt-10 pb-16">
         <div className="max-w-2xl mx-auto">

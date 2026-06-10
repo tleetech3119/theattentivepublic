@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import tapLogo from "@/assets/tap-logo-v4.png";
 import { useAuth } from "@/contexts/AuthContext";
+import Seo from "@/components/seo/Seo";
 
 const FEATURES = [
   {
@@ -71,6 +72,11 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="The Attentive Public — Nonpartisan civic engagement hub"
+        description="Track legislation, know your representatives, and stay informed on 2026 elections — nonpartisan, AI-powered, always free."
+        path="/"
+      />
       {/* Top nav */}
       <header className="absolute top-0 left-0 right-0 z-10 px-6 py-5">
         <div className="max-w-6xl mx-auto flex items-center justify-end">
@@ -227,7 +233,7 @@ const Landing = () => {
       <footer className="px-6 py-10 border-t border-border">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <img src={tapLogo} alt="TAP" className="w-8 h-8 rounded" />
+            <img src={tapLogo} alt="TAP — The Attentive Public" className="w-8 h-8 rounded" />
             <span className="text-sm text-muted-foreground">
               <span className="font-heading font-bold text-foreground">TAP</span> — The Attentive Public
             </span>

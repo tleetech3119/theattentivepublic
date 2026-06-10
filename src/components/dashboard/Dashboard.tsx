@@ -120,7 +120,7 @@ const Dashboard = ({ state, county, issues }: Props) => {
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-              <img src={tapLogo} alt="TAP" width={32} height={32} />
+              <img src={tapLogo} alt="TAP — The Attentive Public" width={32} height={32} />
               <span className="font-heading font-bold text-primary-foreground text-lg">TAP</span>
             </div>
             <div className="flex items-center gap-3">
@@ -154,8 +154,9 @@ const Dashboard = ({ state, county, issues }: Props) => {
               )}
             </div>
           </div>
+          <p className="text-primary-foreground/80 text-sm mb-1">Hello 👋</p>
           <h1 className="text-2xl font-heading font-bold text-primary-foreground mb-1">
-            Hello 👋
+            Your Civic Dashboard
           </h1>
           <button
             onClick={handleChangeLocation}

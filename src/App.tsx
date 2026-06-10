@@ -15,6 +15,7 @@ import ElectionDetail from "./pages/ElectionDetail.tsx";
 import Glossary from "./pages/Glossary.tsx";
 import Auth from "./pages/Auth.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import MidtermsGuide from "./pages/MidtermsGuide.tsx";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/rep/:id" element={<RepProfile />} />
             <Route path="/election/:slug" element={<ElectionDetail />} />
             <Route path="/glossary" element={<Glossary />} />
+            <Route path="/guides/2026-midterms-voting-guide" element={<MidtermsGuide />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

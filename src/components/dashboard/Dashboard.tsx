@@ -15,7 +15,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  FileText, Users, Vote, TrendingUp, ArrowRight,
+  FileText, Users, Vote, TrendingUp, ArrowRight, ArrowLeft,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
   User as UserIcon, LogOut, LogIn, IdCard, Pencil, Baby, Loader2,

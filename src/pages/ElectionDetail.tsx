@@ -4,9 +4,87 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, MapPin, Users, AlertCircle, Landmark, CheckCircle2, Building2 } from "lucide-react";
 import { GOV_RACES_2026 } from "@/data/governors2026";
 import { SENATE_RACES_2026 } from "@/data/senate2026";
+import { getPrimaryResult, type StatePrimaryResult } from "@/data/primaryResults2026";
 import { CandidateLink } from "@/components/CandidateLink";
 import { HouseCandidates } from "@/components/HouseCandidates";
 import Seo from "@/components/seo/Seo";
+
+function PrimaryResultsBlock({
+  state,
+  result,
+  compact = false,
+}: {
+  state: string;
+  result: StatePrimaryResult | undefined;
+  compact?: boolean;
+}) {
+  const ballotpedia = `https://ballotpedia.org/${encodeURIComponent(state.replace(/ /g, "_"))}_elections,_2026`;
+  const gov = result?.governor;
+  const hasContent = gov && (gov.nominees?.length || gov.runoffs?.length || gov.note);
+
+  return (
+    <div className={`rounded-lg border border-accent/30 bg-accent/5 ${compact ? "p-2.5" : "p-3"} space-y-2`}>
+      <div className="flex items-center justify-between gap-2">
+        <span className={`font-bold text-foreground ${compact ? "text-[11px]" : "text-xs"} uppercase tracking-wider`}>
+          Results
+        </span>
+        <a
+          href={ballotpedia}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`font-semibold text-primary hover:underline ${compact ? "text-[10px]" : "text-[11px]"}`}
+        >
+          Official results ↗
+        </a>
+      </div>
+
+      {gov?.nominees && gov.nominees.length > 0 && (
+        <div className="space-y-1">
+          <div className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
+            Nominees advancing to Nov 3
+          </div>
+          {gov.nominees.map((n, i) => (
+            <div key={i} className="flex items-center gap-2 text-xs">
+              <CheckCircle2 className="w-3.5 h-3.5 text-green-600 shrink-0" />
+              <span className="font-medium text-foreground">{n.name}</span>
+              <Badge className={`shrink-0 border-0 text-[10px] px-1.5 py-0 ${n.party === "D" ? "bg-blue-500/15 text-blue-700 dark:text-blue-300" : "bg-red-500/15 text-red-700 dark:text-red-300"}`}>
+                {n.party === "D" ? "Dem" : "Rep"}
+              </Badge>
+              {n.uncontested && (
+                <span className="text-[10px] text-muted-foreground">· uncontested</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {gov?.runoffs && gov.runoffs.length > 0 && (
+        <div className="space-y-1">
+          <div className="text-[10px] uppercase tracking-wider font-bold text-civic-purple">
+            Runoff scheduled
+          </div>
+          {gov.runoffs.map((r, i) => (
+            <div key={i} className="text-xs text-foreground">
+              <span className="font-semibold">{r.party === "D" ? "Democratic" : "Republican"} {r.office} runoff</span>
+              <span className="text-muted-foreground"> · {r.date}</span>
+              <div className="text-[11px] text-muted-foreground">{r.candidates.join(" vs. ")}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {gov?.note && (
+        <p className="text-[11px] text-muted-foreground italic">{gov.note}</p>
+      )}
+
+      {!hasContent && (
+        <p className="text-[11px] text-muted-foreground">
+          Final results posted by the state. Use the Ballotpedia link above for live tallies.
+        </p>
+      )}
+    </div>
+  );
+}
 
 const GUBERNATORIAL_STATES_2026 = GOV_RACES_2026.map((r) => r.state);
 
@@ -168,9 +246,6 @@ const ElectionDetail = () => {
           const userSenate = userState ? SENATE_RACES_2026.find((r) => r.state === userState) : undefined;
           const userPrimaryDate = userGov?.primaryDate;
           const userPrimaryPast = userPrimaryDate ? new Date(userPrimaryDate) < today : false;
-          const resultsUrl = userState
-            ? `https://ballotpedia.org/${encodeURIComponent(userState.replace(/ /g, "_"))}_elections,_2026`
-            : null;
 
           return (
             <>
@@ -197,15 +272,10 @@ const ElectionDetail = () => {
                       : `${userState} primary date not yet confirmed in our database.`}
                   </p>
 
-                  {userPrimaryPast && resultsUrl && (
-                    <a
-                      href={resultsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline mb-4"
-                    >
-                      View official results on Ballotpedia →
-                    </a>
+                  {userPrimaryPast && (
+                    <div className="mb-4">
+                      <PrimaryResultsBlock state={userState!} result={getPrimaryResult(userState!)} />
+                    </div>
                   )}
 
                   {userSenate && (
@@ -291,14 +361,7 @@ const ElectionDetail = () => {
                           </summary>
                           <div className="px-3 pb-3 pt-1 space-y-2 border-t border-border/50">
                             {past && (
-                              <a
-                                href={`https://ballotpedia.org/${encodeURIComponent(r.state.replace(/ /g, "_"))}_elections,_2026`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-block text-[11px] font-semibold text-primary hover:underline"
-                              >
-                                View results on Ballotpedia →
-                              </a>
+                              <PrimaryResultsBlock state={r.state} result={getPrimaryResult(r.state)} compact />
                             )}
                             {senate && senate.candidates.length > 0 && (
                               <div>

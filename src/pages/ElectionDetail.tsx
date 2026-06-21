@@ -246,9 +246,6 @@ const ElectionDetail = () => {
           const userSenate = userState ? SENATE_RACES_2026.find((r) => r.state === userState) : undefined;
           const userPrimaryDate = userGov?.primaryDate;
           const userPrimaryPast = userPrimaryDate ? new Date(userPrimaryDate) < today : false;
-          const resultsUrl = userState
-            ? `https://ballotpedia.org/${encodeURIComponent(userState.replace(/ /g, "_"))}_elections,_2026`
-            : null;
 
           return (
             <>

@@ -1,0 +1,9 @@
+{
+  "appId": "app.lovable.cecc3fcc9b8f4759a5aefe9b550073b1",
+  "appName": "theattentivepublic",
+  "webDir": "dist",
+  "server": {
+    "url": "https://cecc3fcc-9b8f-4759-a5ae-fe9b550073b1.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  }
+}

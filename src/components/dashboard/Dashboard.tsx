@@ -15,7 +15,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  FileText, Users, Vote, TrendingUp, ArrowRight,
+  FileText, Users, Vote, TrendingUp, ArrowRight, ArrowLeft,
   Calendar, MapPin, Heart, Shield, Briefcase, GraduationCap,
   Leaf, Scale, Home, Wifi, DollarSign, ChevronRight, RefreshCw, BookOpen,
   User as UserIcon, LogOut, LogIn, IdCard, Pencil, Baby, Loader2,
@@ -158,15 +158,27 @@ const Dashboard = ({ state, county, issues }: Props) => {
           <h1 className="text-2xl font-heading font-bold text-primary-foreground mb-1">
             Your Civic Dashboard
           </h1>
-          <button
-            onClick={handleChangeLocation}
-            className="text-primary-foreground/60 hover:text-primary-foreground text-sm flex items-center gap-1 transition-colors group"
-            aria-label="Change your state, county, or issues"
-          >
-            <MapPin className="w-3.5 h-3.5" />
-            <span>{county ? `${county} County, ${state}` : state} • {issues.length} topics tracked</span>
-            <Pencil className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={handleChangeLocation}
+              className="text-primary-foreground/60 hover:text-primary-foreground text-sm flex items-center gap-1 transition-colors group"
+              aria-label="Change your state, county, or issues"
+            >
+              <MapPin className="w-3.5 h-3.5" />
+              <span>{county ? `${county} County, ${state}` : state} • {issues.length} topics tracked</span>
+              <Pencil className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
+            <Button
+              size="sm"
+              variant="hero-outline"
+              onClick={handleChangeLocation}
+              className="ml-auto rounded-full border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground text-xs h-7 px-3"
+              aria-label="Go back to edit state, county, or issues"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Edit preferences
+            </Button>
+          </div>
         </div>
       </header>
 

@@ -143,8 +143,14 @@ const VotingInfo = () => {
             </div>
             <div className="flex-1">
               <h2 className="font-heading font-bold text-foreground text-base">Voter Registration</h2>
-              <p className="text-xs text-muted-foreground">Deadline: {info.registrationDeadlineRule}</p>
+              <p className="text-xs text-muted-foreground">Rule: {info.registrationDeadlineRule}</p>
             </div>
+          </div>
+          <div className="mb-4 rounded-lg border border-civic-teal/30 bg-civic-teal/5 px-3 py-2">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-civic-teal mb-0.5">
+              Deadline for Nov 3, 2026 General Election
+            </div>
+            <div className="text-sm font-semibold text-foreground">{info.registrationDeadlineDate}</div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             <div className="bg-secondary/50 rounded-lg p-3">

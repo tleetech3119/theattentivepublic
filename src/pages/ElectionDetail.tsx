@@ -275,15 +275,10 @@ const ElectionDetail = () => {
                       : `${userState} primary date not yet confirmed in our database.`}
                   </p>
 
-                  {userPrimaryPast && resultsUrl && (
-                    <a
-                      href={resultsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline mb-4"
-                    >
-                      View official results on Ballotpedia →
-                    </a>
+                  {userPrimaryPast && (
+                    <div className="mb-4">
+                      <PrimaryResultsBlock state={userState!} result={getPrimaryResult(userState!)} />
+                    </div>
                   )}
 
                   {userSenate && (

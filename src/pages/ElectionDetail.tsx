@@ -364,14 +364,7 @@ const ElectionDetail = () => {
                           </summary>
                           <div className="px-3 pb-3 pt-1 space-y-2 border-t border-border/50">
                             {past && (
-                              <a
-                                href={`https://ballotpedia.org/${encodeURIComponent(r.state.replace(/ /g, "_"))}_elections,_2026`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-block text-[11px] font-semibold text-primary hover:underline"
-                              >
-                                View results on Ballotpedia →
-                              </a>
+                              <PrimaryResultsBlock state={r.state} result={getPrimaryResult(r.state)} compact />
                             )}
                             {senate && senate.candidates.length > 0 && (
                               <div>
